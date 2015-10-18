@@ -1,0 +1,40 @@
+[
+{
+	name:"Gain Strength",
+	description:"Grants +1 Strength",
+	id:"gain_str",
+	effects:
+	[
+		{
+		key:"strength",
+		magnitude:"1"
+		}
+	]
+},
+{
+	name:"Gain Resolve",
+	description:"Grants +1 Resolve",
+	id:"gain_dex"
+},
+{
+	name:"Better Criticals",
+	description:"Deal more damage with your critical hits",
+	id:"more_crits"
+},
+{
+	name:"Super Charge",
+	description:"Become more awesome",
+	id:"test_perk",
+	effects:
+	[
+		{
+		key:"strength",
+		magnitude:"2"
+		},
+		{
+		key:"charisma",
+		magnitude:"1"
+		}
+	]
+}
+]
