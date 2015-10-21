@@ -1,6 +1,7 @@
 package com.erhodes.fallout;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,6 +35,8 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
     ArrayList<Perk> mPerkList;
     ListView mPerkView;
     PerkAdapter mAdapter;
+    CharacterInterface mActivity;
+    Character mCharacter;
 
     public static PerkFragment newInstance() {
         PerkFragment fragment = new PerkFragment();
@@ -49,7 +53,7 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
         //Load in the perks. TODO: Load them in somewhere better
         mPerkList = new ArrayList<Perk>();
         try {
-            Reader reader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("perks.xml")));
+            Reader reader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("perks.json")));
             Gson gson = new GsonBuilder().create();
             Perk[] perkArray = gson.fromJson(reader, Perk[].class);
             Log.d("Eric","total perks read: " + perkArray.length);
@@ -57,8 +61,9 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
                 mPerkList.add(p);
             }
         } catch (IOException ex) {
-
+            // well shit
         }
+        mCharacter = mActivity.getCharacter();
     }
 
     @Override
@@ -75,8 +80,31 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mActivity = (CharacterInterface)activity;
+        } catch (ClassCastException ex) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement CharacterInterface");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Perk perk = (Perk)parent.getItemAtPosition(position);
+        if (mCharacter.hasPerk(perk)) {
+            mCharacter.removePerk(perk);
+            Toast.makeText(getActivity(),"removed perk", Toast.LENGTH_LONG).show();
+        } else {
+            mCharacter.applyPerk(perk);
+            Toast.makeText(getActivity(), "added perk", Toast.LENGTH_LONG).show();
+        }
         Log.d("Eric","perk " + perk.name + " has the following effects: ");
         if (perk.effects != null) {
             for (Effect e : perk.effects) {
@@ -85,10 +113,11 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
         }
     }
 
-    public class PerkAdapter extends ArrayAdapter<Perk> {int mResourceId;
+    public class PerkAdapter extends ArrayAdapter<Perk> {
+        int mResourceId;
         Context mContext;
-        public PerkAdapter(Context context, int resourceId, ArrayList<Perk> creatureList) {
-            super(context, resourceId, creatureList);
+        public PerkAdapter(Context context, int resourceId, ArrayList<Perk> perkList) {
+            super(context, resourceId, perkList);
             mResourceId = resourceId;
             mContext = context;
         }

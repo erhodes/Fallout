@@ -12,9 +12,16 @@
 	]
 },
 {
-	name:"Gain Resolve",
-	description:"Grants +1 Resolve",
-	id:"gain_dex"
+	name:"Gain Morale",
+	description:"Grants +5 Morale",
+	id:"gain_morale",
+	effects:
+	[
+		{
+		key:"morale",
+		magnitude:"5"
+		}
+	]
 },
 {
 	name:"Better Criticals",

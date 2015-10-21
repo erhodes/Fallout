@@ -1,11 +1,18 @@
 package com.erhodes.fallout;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -14,53 +21,85 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class CharacterFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private Character mCharacter;
+    private ListView mListView;
+    private TextView mNameView;
+    private CharacterInterface mActivity;
+    private AttributeAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CharacterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CharacterFragment newInstance(String param1, String param2) {
-        CharacterFragment fragment = new CharacterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static CharacterFragment newInstance() {
+        return new CharacterFragment();
     }
 
     public CharacterFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        mCharacter = mActivity.getCharacter();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_character, container, false);
+        View view = inflater.inflate(R.layout.fragment_character, container, false);
+
+        mNameView = (TextView)view.findViewById(R.id.charNameView);
+        mNameView.setText(mCharacter.name);
+        mListView = (ListView)view.findViewById(R.id.attributeListView);
+        mAdapter = new AttributeAdapter(getActivity(), R.layout.list_attribute_summary, Attributes.getAllAttributes());
+        mListView.setAdapter(mAdapter);
+        return view;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mActivity = (CharacterInterface)activity;
+        } catch (ClassCastException ex) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement CharacterInterface");
+        }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    public class AttributeAdapter extends ArrayAdapter<String> {
+        int mResourceId;
+        Context mContext;
+        public AttributeAdapter(Context context, int resourceId, ArrayList<String> attributeList) {
+            super(context, resourceId, attributeList);
+            mResourceId = resourceId;
+            mContext = context;
+        }
+
+        protected class ViewHolder {
+            TextView nameView;
+        }
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(mResourceId, null);
+                holder = new ViewHolder();
+                holder.nameView = (TextView)convertView.findViewById(R.id.textView);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            final String string = getItem(position);
+            holder.nameView.setText(string + " : " + mCharacter.getAttribute(string));
+            return convertView;
+        }
+    }
 }

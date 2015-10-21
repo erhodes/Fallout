@@ -15,8 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+interface CharacterInterface {
+    public Character getCharacter();
+}
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CharacterInterface {
+
+    private Character mCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mCharacter = new Character("Johanson");
         if (savedInstanceState == null) {
             startFragment(PerkFragment.newInstance());
         }
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_character) {
-            startFragment(CharacterFragment.newInstance("w","d"));
+            startFragment(CharacterFragment.newInstance());
         } else if (id == R.id.nav_perks) {
             startFragment(PerkFragment.newInstance());
         }
@@ -104,5 +111,9 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.content_frame, fragment)
                 .commit();
 
+    }
+
+    public Character getCharacter() {
+        return mCharacter;
     }
 }
