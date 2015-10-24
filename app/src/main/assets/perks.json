@@ -11,6 +11,31 @@
 		}
 	]
 },
+[
+{
+	name:"Gain Endurance",
+	description:"Grants +1 Endurance",
+	id:"gain_end",
+	effects:
+	[
+		{
+		key:"endurance",
+		magnitude:"1"
+		}
+	]
+},
+{
+	name:"Gain Resolve",
+	description:"Grants +1 Resolve",
+	id:"gain_resolve",
+	effects:
+	[
+		{
+			key:"resolve",
+			magnitude:1
+		}
+	]
+},
 {
 	name:"Gain Morale",
 	description:"Grants +5 Morale",
@@ -20,6 +45,18 @@
 		{
 		key:"morale",
 		magnitude:"5"
+		}
+	]
+},
+{
+	name:"Pack Rat",
+	description:"Carry 50 lbs more weight",
+	id:"gain_carry_weight",
+	effects:
+	[
+		{
+			key:"weight_limit",
+			magnitude:50
 		}
 	]
 },

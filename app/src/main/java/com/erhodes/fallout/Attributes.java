@@ -8,14 +8,17 @@ import java.util.ArrayList;
 public abstract class Attributes {
     // primary attributes
     public static final String STRENGTH = "strength";
+    public static final String ENDURANCE = "endurance";
     public static final String RESOLVE = "resolve";
 
     // derived attributes
     public static final String MORALE = "morale";
+    public static final String WEIGHT_LIMIT = "weight_limit";
 
     public static ArrayList<String> getPrimaryAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.add(STRENGTH);
+        attributes.add(ENDURANCE);
         attributes.add(RESOLVE);
         return attributes;
     }
@@ -23,6 +26,7 @@ public abstract class Attributes {
     public static ArrayList<String> getDerivedAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.add(MORALE);
+        attributes.add(WEIGHT_LIMIT);
         return attributes;
     }
 

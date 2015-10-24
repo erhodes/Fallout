@@ -6,6 +6,12 @@
     <string name="perks">Perks</string>
     <string name="inventory">Inventory</string>
 
+    <!-- Attributes -->
+    <string name="strength">Strength</string>
+    <string name="resolve">Resolve</string>
+
+    <string name="morale">Morale</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

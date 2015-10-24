@@ -10,28 +10,53 @@ import java.util.HashSet;
  * Created by Eric on 17/10/2015.
  */
 public class Character {
-    private HashMap<String, Integer> mAttributes;
+    private HashMap<String, Attribute> mAttributes;
     private HashSet<String> mAcquiredPerks;
+    public int mCarriedWeight;
     public String name;
 
 
     Character(String n) {
         name = n;
-        mAttributes = new HashMap<String, Integer>();
-        mAcquiredPerks = new HashSet<String>();
+        mAttributes = new HashMap<>();
+        mAcquiredPerks = new HashSet<>();
+
+        mAttributes.put(Attributes.STRENGTH, new Attribute("Strength",Attributes.STRENGTH,4));
+        mAttributes.put(Attributes.ENDURANCE, new Attribute("Endurance",Attributes.ENDURANCE,4));
+        mAttributes.put(Attributes.RESOLVE, new Attribute("Resolve",Attributes.RESOLVE, 4));
+
+        //maybe derived attributes should each be their own class. Might be a better way to organize the logic
+        mAttributes.put(Attributes.MORALE, new DerivedAttribute("Morale",Attributes.MORALE,mAttributes.get(Attributes.RESOLVE)) {
+            @Override
+            public void calculateFinalValue() {
+                finalValue = mBase.getFinalValue() * 3 + modifier;
+            }
+        });
+
+        mAttributes.put(Attributes.WEIGHT_LIMIT, new DerivedAttribute("Weight Limit", Attributes.WEIGHT_LIMIT, mAttributes.get(Attributes.STRENGTH)) {
+            @Override
+            public void calculateFinalValue() {
+                finalValue = mBase.getFinalValue() * 25 + modifier;
+            }
+        });
+        calculateAttributes();
     }
 
-    public void modifyAttribute(String attrKey, int mag) {
-        int base = getAttribute(attrKey);
-        mAttributes.put(attrKey, base + mag);
-    }
-
-    public int getAttribute(String attrKey) {
-        Integer value = mAttributes.get(attrKey);
-        if (value == null) {
-            value = 0;
+    public void calculateAttributes() {
+        for (String s: Attributes.getPrimaryAttributes()) {
+            getAttribute(s).calculateFinalValue();
         }
-        return value;
+        for (String s: Attributes.getDerivedAttributes()) {
+            getAttribute(s).calculateFinalValue();
+        }
+    }
+    public void modifyAttribute(String attrKey, int mag) {
+        mAttributes.get(attrKey).addModifier(mag);
+        calculateAttributes();
+    }
+
+    public Attribute getAttribute(String attrKey) {
+        return mAttributes.get(attrKey);
     }
     public void applyEffect(Effect e) {
         modifyAttribute(e.key, e.magnitude);
