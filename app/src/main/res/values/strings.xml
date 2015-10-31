@@ -5,6 +5,7 @@
     <string name="combat">Combat</string>
     <string name="perks">Perks</string>
     <string name="inventory">Inventory</string>
+    <string name="loot">Loot</string>
 
     <!-- Attributes -->
     <string name="strength">Strength</string>

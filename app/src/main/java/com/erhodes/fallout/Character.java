@@ -12,6 +12,7 @@ import java.util.HashSet;
 public class Character {
     private HashMap<String, Attribute> mAttributes;
     private HashSet<String> mAcquiredPerks;
+    private ArrayList<Item> mInventory;
     public int mCarriedWeight;
     public String name;
 
@@ -20,6 +21,7 @@ public class Character {
         name = n;
         mAttributes = new HashMap<>();
         mAcquiredPerks = new HashSet<>();
+        mInventory = new ArrayList<>();
 
         mAttributes.put(Attributes.STRENGTH, new Attribute("Strength",Attributes.STRENGTH,4));
         mAttributes.put(Attributes.ENDURANCE, new Attribute("Endurance",Attributes.ENDURANCE,4));
@@ -44,10 +46,10 @@ public class Character {
 
     public void calculateAttributes() {
         for (String s: Attributes.getPrimaryAttributes()) {
-            getAttribute(s).calculateFinalValue();
+            getAttribute(s);
         }
         for (String s: Attributes.getDerivedAttributes()) {
-            getAttribute(s).calculateFinalValue();
+            getAttribute(s);
         }
     }
     public void modifyAttribute(String attrKey, int mag) {
@@ -55,8 +57,8 @@ public class Character {
         calculateAttributes();
     }
 
-    public Attribute getAttribute(String attrKey) {
-        return mAttributes.get(attrKey);
+    public int getAttribute(String attrKey) {
+        return mAttributes.get(attrKey).getFinalValue();
     }
     public void applyEffect(Effect e) {
         modifyAttribute(e.key, e.magnitude);
@@ -66,6 +68,7 @@ public class Character {
         modifyAttribute(e.key, -e.magnitude);
     }
 
+    // Perk Methods
     public boolean hasPerk(Perk p) {
         Log.d("Eric", "contains perk name? " + mAcquiredPerks.contains(p.id));
         return mAcquiredPerks.contains(p.id);
@@ -88,5 +91,26 @@ public class Character {
             removeEffect(e);
         }
         return true;
+    }
+
+    // Inventory Methods
+
+    /**
+     * Add an item to the character's inventory. Returns true if successful, false if the character
+     * cannot carry the additional weight.
+     * @param i
+     * @return
+     */
+    public boolean acquireItem(Item i) {
+        if (i.weight + mCarriedWeight > getAttribute(Attributes.WEIGHT_LIMIT)) {
+            return false;
+        }
+        mCarriedWeight += i.weight;
+        mInventory.add(i);
+        return true;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return mInventory;
     }
 }

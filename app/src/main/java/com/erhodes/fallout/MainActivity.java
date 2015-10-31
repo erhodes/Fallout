@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        ItemManager.loadItems(this);
+
         mCharacter = new Character("Johanson");
         if (savedInstanceState == null) {
             startFragment(PerkFragment.newInstance());
@@ -98,6 +100,10 @@ public class MainActivity extends AppCompatActivity
             startFragment(CharacterFragment.newInstance());
         } else if (id == R.id.nav_perks) {
             startFragment(PerkFragment.newInstance());
+        } else if (id == R.id.nav_loot) {
+            startFragment(LootFragment.newInstance());
+        } else if (id == R.id.nav_inventory) {
+            startFragment(ItemFragment.newInstance());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

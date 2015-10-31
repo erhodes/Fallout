@@ -1,0 +1,14 @@
+[
+{
+	displayName:"Rock",
+	id:"rock",
+	description:"It's just a rock",
+	weight:2
+},
+{
+	displayName:"Stimpack",
+	id:"stim_basic",
+	description:"Restores a bit of health",
+	weight:1
+}
+]

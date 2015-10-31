@@ -98,7 +98,7 @@ public class CharacterFragment extends Fragment {
             }
 
             final String string = getItem(position);
-            holder.nameView.setText(string + " : " + mCharacter.getAttribute(string).getFinalValue());
+            holder.nameView.setText(string + " : " + mCharacter.getAttribute(string));
             return convertView;
         }
     }
