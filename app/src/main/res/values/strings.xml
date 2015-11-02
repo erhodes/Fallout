@@ -4,8 +4,16 @@
     <string name="character">Character</string>
     <string name="combat">Combat</string>
     <string name="perks">Perks</string>
+    <string name="equipment">Equipment</string>
     <string name="inventory">Inventory</string>
     <string name="loot">Loot</string>
+    <string name="actions">Actions</string>
+
+    <string name="equip">Equip</string>
+    <string name="drop">Drop</string>
+
+    <string name="armor">Armor</string>
+    <string name="quick_items">Quick Items</string>
 
     <!-- Attributes -->
     <string name="strength">Strength</string>

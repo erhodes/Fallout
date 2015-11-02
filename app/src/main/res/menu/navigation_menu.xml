@@ -6,12 +6,14 @@
             android:title="@string/character" />
         <item android:id="@+id/nav_perks" android:icon="@android:drawable/ic_menu_slideshow"
             android:title="@string/perks" />
+        <item android:id="@+id/nav_equipment" android:icon="@android:drawable/ic_btn_speak_now"
+            android:title="@string/equipment" />
         <item android:id="@+id/nav_inventory" android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/inventory" />
         <item android:id="@+id/nav_loot" android:icon="@android:drawable/ic_lock_idle_charging"
             android:title="@string/loot" />
-        <item android:id="@+id/nav_combat" android:icon="@android:drawable/ic_menu_camera"
-            android:title="@string/combat" />
+        <item android:id="@+id/nav_actions" android:icon="@android:drawable/ic_menu_camera"
+            android:title="@string/actions" />
     </group>
 
 </menu>

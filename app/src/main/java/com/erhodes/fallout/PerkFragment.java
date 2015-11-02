@@ -31,12 +31,10 @@ import java.util.ArrayList;
  * Use the {@link PerkFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PerkFragment extends Fragment implements AbsListView.OnItemClickListener{
+public class PerkFragment extends BaseFragment implements AbsListView.OnItemClickListener{
     ArrayList<Perk> mPerkList;
     ListView mPerkView;
     PerkAdapter mAdapter;
-    CharacterInterface mActivity;
-    Character mCharacter;
 
     public static PerkFragment newInstance() {
         PerkFragment fragment = new PerkFragment();
@@ -56,14 +54,12 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
             Reader reader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("perks.json")));
             Gson gson = new GsonBuilder().create();
             Perk[] perkArray = gson.fromJson(reader, Perk[].class);
-            Log.d("Eric","total perks read: " + perkArray.length);
             for (Perk p : perkArray) {
                 mPerkList.add(p);
             }
         } catch (IOException ex) {
             // well shit
         }
-        mCharacter = mActivity.getCharacter();
     }
 
     @Override
@@ -77,17 +73,6 @@ public class PerkFragment extends Fragment implements AbsListView.OnItemClickLis
         mPerkView.setAdapter(mAdapter);
         mPerkView.setOnItemClickListener(this);
         return view;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mActivity = (CharacterInterface)activity;
-        } catch (ClassCastException ex) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CharacterInterface");
-        }
     }
 
     @Override

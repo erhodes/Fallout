@@ -13,6 +13,7 @@ public class Character {
     private HashMap<String, Attribute> mAttributes;
     private HashSet<String> mAcquiredPerks;
     private ArrayList<Item> mInventory;
+    private Item mArmor;
     public int mCarriedWeight;
     public String name;
 
@@ -41,15 +42,24 @@ public class Character {
                 finalValue = mBase.getFinalValue() * 25 + modifier;
             }
         });
+
+        mAttributes.put(Attributes.TOUGHNESS, new DerivedAttribute("Toughness", Attributes.TOUGHNESS, mAttributes.get(Attributes.ENDURANCE)) {
+            @Override
+            public void calculateFinalValue() {
+                finalValue = mBase.getFinalValue() + modifier;
+            }
+        });
+
+        mArmor = ItemManager.getNoArmor();
         calculateAttributes();
     }
 
     public void calculateAttributes() {
         for (String s: Attributes.getPrimaryAttributes()) {
-            getAttribute(s);
+            mAttributes.get(s).calculateFinalValue();
         }
         for (String s: Attributes.getDerivedAttributes()) {
-            getAttribute(s);
+            mAttributes.get(s).calculateFinalValue();
         }
     }
     public void modifyAttribute(String attrKey, int mag) {
@@ -70,7 +80,6 @@ public class Character {
 
     // Perk Methods
     public boolean hasPerk(Perk p) {
-        Log.d("Eric", "contains perk name? " + mAcquiredPerks.contains(p.id));
         return mAcquiredPerks.contains(p.id);
     }
     public boolean applyPerk(Perk p){
@@ -112,5 +121,39 @@ public class Character {
 
     public ArrayList<Item> getInventory() {
         return mInventory;
+    }
+
+    public void removeItemFromInventory(Item i) {
+        mCarriedWeight -= i.weight;
+        mInventory.remove(i);
+    }
+
+    public boolean equipArmor(Item i) {
+        if (!i.type.equals(Item.TYPE_ARMOR)) {
+            return false;
+        }
+        unequipArmor();
+        removeItemFromInventory(i);
+        mArmor = i;
+        mCarriedWeight += i.weight;
+        for (Effect e : mArmor.effects) {
+            applyEffect(e);
+        }
+        return true;
+    }
+
+    public void unequipArmor() {
+        mCarriedWeight -= mArmor.weight;
+        // if the current armor isn't the default, then put it back into inventory
+        if (!mArmor.type.equals(Item.TYPE_DEFAULT))
+            acquireItem(mArmor);
+        for (Effect e : mArmor.effects) {
+            removeEffect(e);
+        }
+        mArmor = ItemManager.getNoArmor();
+    }
+
+    public Item getArmor() {
+        return mArmor;
     }
 }

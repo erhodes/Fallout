@@ -14,29 +14,15 @@ import android.widget.ListView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LootFragment extends Fragment {
+public class LootFragment extends BaseFragment {
     ListView mListView;
     ItemAdapter mAdapter;
-    Character mCharacter;
-    CharacterInterface mInterface;
 
     public static LootFragment newInstance() {
         return new LootFragment();
     }
 
     public LootFragment() {
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mInterface = (CharacterInterface)activity;
-            mCharacter = mInterface.getCharacter();
-        } catch (ClassCastException ex) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CharacterInterface");
-        }
     }
 
     @Override

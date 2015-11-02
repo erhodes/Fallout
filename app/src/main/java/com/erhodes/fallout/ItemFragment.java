@@ -4,9 +4,14 @@ package com.erhodes.fallout;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,9 +21,7 @@ import android.widget.TextView;
  * Use the {@link ItemFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ItemFragment extends Fragment {
-    private Character mCharacter;
-    private CharacterInterface mInterface;
+public class ItemFragment extends BaseFragment {
     ListView mListView;
     TextView mWeightView;
     ItemAdapter mAdapter;
@@ -37,18 +40,6 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mInterface = (CharacterInterface)activity;
-            mCharacter = mInterface.getCharacter();
-        } catch (ClassCastException ex) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CharacterInterface");
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -61,6 +52,7 @@ public class ItemFragment extends Fragment {
         mListView = (ListView)view.findViewById(R.id.inventoryListView);
         mListView.setAdapter(mAdapter);
 
+        registerForContextMenu(mListView);
         return view;
     }
 
@@ -68,5 +60,29 @@ public class ItemFragment extends Fragment {
         mWeightView.setText("Weight: " + mCharacter.mCarriedWeight + "/" + mCharacter.getAttribute(Attributes.WEIGHT_LIMIT));
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.item_inventory_menu, menu);
+    }
 
-}
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Item i = mAdapter.getItem(info.position);
+        switch (item.getItemId()) {
+            case R.id.action_equip:
+                Log.d("Eric","clicked on item " + i.displayName + " with " + i.effects.size() + " effects");
+                mCharacter.equipArmor(i);
+                return true;
+            case R.id.action_drop:
+                mCharacter.removeItemFromInventory(i);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    }

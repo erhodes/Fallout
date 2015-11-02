@@ -8,7 +8,22 @@
 {
 	displayName:"Stimpack",
 	id:"stim_basic",
+	type:"consumable",
 	description:"Restores a bit of health",
 	weight:1
+},
+{
+	displayName:"Leather Armor",
+	id:"leather_armor",
+	type:"armor",
+	description:"A suit of leather armor.",
+	weight:5,
+	effects:
+	[
+		{
+		key:"toughness",
+		magnitude:"2"
+		}
+	]
 }
 ]

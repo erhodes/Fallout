@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
 
         mCharacter = new Character("Johanson");
         if (savedInstanceState == null) {
-            startFragment(PerkFragment.newInstance());
+            startFragment(CharacterFragment.newInstance());
         }
     }
 
@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity
             startFragment(LootFragment.newInstance());
         } else if (id == R.id.nav_inventory) {
             startFragment(ItemFragment.newInstance());
+        } else if (id == R.id.nav_equipment) {
+            startFragment(new EquipmentFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

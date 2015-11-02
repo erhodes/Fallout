@@ -20,11 +20,9 @@ import java.util.ArrayList;
  * Use the {@link CharacterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CharacterFragment extends Fragment {
-    private Character mCharacter;
+public class CharacterFragment extends BaseFragment {
     private ListView mListView;
     private TextView mNameView;
-    private CharacterInterface mActivity;
     private AttributeAdapter mAdapter;
 
     public static CharacterFragment newInstance() {
@@ -37,8 +35,6 @@ public class CharacterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mCharacter = mActivity.getCharacter();
     }
 
     @Override
@@ -53,22 +49,6 @@ public class CharacterFragment extends Fragment {
         mAdapter = new AttributeAdapter(getActivity(), R.layout.list_attribute_summary, Attributes.getAllAttributes());
         mListView.setAdapter(mAdapter);
         return view;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mActivity = (CharacterInterface)activity;
-        } catch (ClassCastException ex) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CharacterInterface");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     public class AttributeAdapter extends ArrayAdapter<String> {

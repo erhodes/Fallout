@@ -27,7 +27,6 @@ public class ItemManager {
             Reader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("items.json")));
             Gson gson = new GsonBuilder().create();
             Item[] itemArray = gson.fromJson(reader, Item[].class);
-            Log.d("Eric", "total items read: " + itemArray.length);
             for (Item i : itemArray) {
                 mItems.add(i);
             }
@@ -38,5 +37,11 @@ public class ItemManager {
 
     public static ArrayList<Item> getAllItems() {
         return mItems;
+    }
+
+    public static Item getNoArmor() {
+        Item i = new Item("Nothing", "You aren't wearing anything");
+        i.type = Item.TYPE_DEFAULT;
+        return i;
     }
 }
