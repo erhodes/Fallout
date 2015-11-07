@@ -13,8 +13,9 @@ public class Character {
     private HashMap<String, Attribute> mAttributes;
     private HashSet<String> mAcquiredPerks;
     private ArrayList<Item> mInventory;
+    private ArrayList<Action> mActions;
     private Item mArmor;
-    public int mCarriedWeight;
+    public int mCarriedWeight, mHealth, mActionPoints;
     public String name;
 
 
@@ -23,9 +24,11 @@ public class Character {
         mAttributes = new HashMap<>();
         mAcquiredPerks = new HashSet<>();
         mInventory = new ArrayList<>();
+        mActions = new ArrayList<>();
 
         mAttributes.put(Attributes.STRENGTH, new Attribute("Strength",Attributes.STRENGTH,4));
         mAttributes.put(Attributes.ENDURANCE, new Attribute("Endurance",Attributes.ENDURANCE,4));
+        mAttributes.put(Attributes.AGILITY, new Attribute("Agility",Attributes.AGILITY, 4));
         mAttributes.put(Attributes.RESOLVE, new Attribute("Resolve",Attributes.RESOLVE, 4));
 
         //maybe derived attributes should each be their own class. Might be a better way to organize the logic
@@ -50,8 +53,29 @@ public class Character {
             }
         });
 
+        mAttributes.put(Attributes.MAX_HEALTH, new DerivedAttribute("Current Health",Attributes.MAX_HEALTH, mAttributes.get(Attributes.ENDURANCE)) {
+            @Override
+            public void calculateFinalValue() { finalValue = mBase.getFinalValue()*5 + modifier; }
+        });
+
+        mAttributes.put(Attributes.ACTION_POINTS, new DerivedAttribute("Action Points",Attributes.ACTION_POINTS, mAttributes.get(Attributes.AGILITY)) {
+            @Override
+            public void calculateFinalValue() {
+                finalValue = 5 + mBase.getFinalValue()/2 + modifier;
+            }
+        });
+
+        mAttributes.put(Attributes.DEFENCE, new DerivedAttribute("Defence", Attributes.DEFENCE, mAttributes.get(Attributes.AGILITY)) {
+            @Override
+            public void calculateFinalValue() {
+                finalValue = 10 + mBase.getFinalValue() + modifier;
+            }
+        });
+
         mArmor = ItemManager.getNoArmor();
         calculateAttributes();
+        addDefaultActions();
+        mActionPoints = getAttribute(Attributes.ACTION_POINTS);
     }
 
     public void calculateAttributes() {
@@ -98,6 +122,26 @@ public class Character {
         mAcquiredPerks.remove(p.id);
         for (Effect e: p.effects) {
             removeEffect(e);
+        }
+        return true;
+    }
+    // Action Methods
+    private void addDefaultActions() {
+        Action dodge = new Action("Dodge","Move out of the way",1);
+        dodge.effects.add(new Effect(Attributes.DEFENCE, 2));
+        mActions.add(dodge);
+    }
+
+    public ArrayList<Action> getActions() {
+        return mActions;
+    }
+    public boolean takeAction(Action a) {
+        if (mActionPoints < a.cost) {
+            return false;
+        }
+        mActionPoints -= a.cost;
+        for (Effect e : a.effects) {
+            applyEffect(e);
         }
         return true;
     }

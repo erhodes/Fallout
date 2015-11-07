@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity
             startFragment(ItemFragment.newInstance());
         } else if (id == R.id.nav_equipment) {
             startFragment(new EquipmentFragment());
+        } else if (id == R.id.nav_actions) {
+            startFragment(new ActionFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
