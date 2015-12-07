@@ -17,6 +17,8 @@ import java.util.List;
  * Created by Eric on 24/10/2015.
  */
 public class ItemManager {
+    public static String ITEM_POISON = "poison";
+
     private static ArrayList<Item> mItems;
     /**
      * Loads all item descriptions into memory
@@ -33,10 +35,25 @@ public class ItemManager {
         } catch (IOException ex) {
             // well shit
         }
+        // Poison
+        Item poison = new Item("Poison","Deals damage to you", "poison",Item.TYPE_CONSUMABLE, 1);
+        Action poisonAction = new ItemAction("Drink Poison","Drink the poison and take some damage", 2, poison);
+        poisonAction.effects.add(new Effect(Attributes.HEALTH, -10, 0));
+        poison.actions.add(poisonAction);
+        mItems.add(poison);
     }
 
     public static ArrayList<Item> getAllItems() {
         return mItems;
+    }
+
+    public static Item getItem(String c) {
+        for (Item i : mItems) {
+            if (i.id.equals(c)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     public static Item getNoArmor() {

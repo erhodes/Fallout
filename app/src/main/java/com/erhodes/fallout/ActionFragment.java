@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  */
 public class ActionFragment extends BaseFragment implements AbsListView.OnItemClickListener{
     ListView mListView;
-    TextView mAPView;
+    TextView mAPView, mHealthView;
     ActionAdapter mAdapter;
 
     public ActionFragment() {
@@ -38,12 +39,22 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
         View view =  inflater.inflate(R.layout.fragment_action, container, false);
 
         mAPView = (TextView)view.findViewById(R.id.apCountView);
+        mHealthView = (TextView)view.findViewById(R.id.healtView);
         mAdapter = new ActionAdapter(getActivity(), R.layout.list_action_summary, mCharacter.getActions());
         mListView = (ListView)view.findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
-        updateAP();
+        Button newRound = (Button)view.findViewById(R.id.button);
+        newRound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCharacter.newTurn();
+                update();
+            }
+        });
+
+        update();
         return view;
     }
 
@@ -54,11 +65,14 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
         if (!mCharacter.takeAction(action)) {
             Toast.makeText(getActivity(),"Not enough AP to perform that action",Toast.LENGTH_SHORT).show();
         }
-        updateAP();;
+        update();
+
+        mAdapter.notifyDataSetChanged();
     }
 
-    private void updateAP() {
+    private void update() {
         mAPView.setText("Action Points: " + mCharacter.mActionPoints + "/" + mCharacter.getAttribute(Attributes.ACTION_POINTS));
+        mHealthView.setText("Health: " + mCharacter.mHealth + "/" + mCharacter.getAttribute(Attributes.MAX_HEALTH));
     }
 
     public class ActionAdapter extends ArrayAdapter<Action> {

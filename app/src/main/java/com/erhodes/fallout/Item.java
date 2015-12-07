@@ -15,11 +15,33 @@ public class Item {
     String displayName, description, id, type = TYPE_MISC;
     int weight;
     ArrayList<Effect> effects;
+    ArrayList<Action> actions;
+
+    public Item() {}
 
     public Item(String name, String desc) {
         displayName = name;
         description = desc;
         weight = 0;
         effects = new ArrayList<>();
+        actions = new ArrayList<>();
+    }
+
+    public Item (String n, String desc, String i, String t, int w) {
+        displayName = n;
+        description = desc;
+        id = i;
+        type = t;
+        weight = w;
+        effects = new ArrayList<>();
+        actions = new ArrayList<>();
+    }
+
+    //half assed copy constructor. Not sure I need it
+    public Item(Item i) {
+        displayName = i.displayName;
+        description = i.description;
+        weight = i.weight;
+        effects = new ArrayList<>(i.effects);
     }
 }

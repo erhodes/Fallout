@@ -6,11 +6,30 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Action Points: 0/0"
+            android:id="@+id/apCountView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Health: 0/0"
+            android:id="@+id/healtView"
+            android:layout_gravity="right|top" />
+    </FrameLayout>
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Action Points: 0/0"
-        android:id="@+id/apCountView" />
+        android:text="New Round"
+        android:id="@+id/button" />
 
     <ListView
         android:layout_width="match_parent"

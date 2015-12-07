@@ -5,18 +5,25 @@ package com.erhodes.fallout;
  */
 public class Effect {
     String key;
-    int magnitude;
+    int magnitude, duration;
 
     public Effect() {}
 
-    public Effect(String k, int m) {
+    public Effect(String k, int m, int d) {
         key = k;
         magnitude = m;
+        duration = d;
+    }
+
+    public Effect(Effect original) {
+        key = original.key;
+        magnitude = original.magnitude;
+        duration = original.duration;
     }
 
     @Override
     public String toString() {
-        return "modify " + key + " by " + magnitude;
+        return "modify " + key + " by " + magnitude + " for " + duration;
     }
 
 }

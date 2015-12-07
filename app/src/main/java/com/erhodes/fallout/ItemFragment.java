@@ -75,7 +75,7 @@ public class ItemFragment extends BaseFragment {
         switch (item.getItemId()) {
             case R.id.action_equip:
                 Log.d("Eric","clicked on item " + i.displayName + " with " + i.effects.size() + " effects");
-                mCharacter.equipArmor(i);
+                mCharacter.equipItem(i);
                 return true;
             case R.id.action_drop:
                 mCharacter.removeItemFromInventory(i);
