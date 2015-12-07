@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,15 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
         mListView = (ListView)view.findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
+
+        Button newRound = (Button)view.findViewById(R.id.button);
+        newRound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCharacter.newTurn();
+                updateAP();
+            }
+        });
 
         updateAP();
         return view;

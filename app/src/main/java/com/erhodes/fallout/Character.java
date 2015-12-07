@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Created by Eric on 17/10/2015.
@@ -14,6 +15,7 @@ public class Character {
     private HashSet<String> mAcquiredPerks;
     private ArrayList<Item> mInventory;
     private ArrayList<Action> mActions;
+    private ArrayList<Effect> mActiveEffects;
     private Item mArmor;
     public int mCarriedWeight, mHealth, mActionPoints;
     public String name;
@@ -25,6 +27,7 @@ public class Character {
         mAcquiredPerks = new HashSet<>();
         mInventory = new ArrayList<>();
         mActions = new ArrayList<>();
+        mActiveEffects = new ArrayList<>();
 
         mAttributes.put(Attributes.STRENGTH, new Attribute("Strength",Attributes.STRENGTH,4));
         mAttributes.put(Attributes.ENDURANCE, new Attribute("Endurance",Attributes.ENDURANCE,4));
@@ -76,6 +79,7 @@ public class Character {
         calculateAttributes();
         addDefaultActions();
         mActionPoints = getAttribute(Attributes.ACTION_POINTS);
+        mHealth = getAttribute(Attributes.MAX_HEALTH);
     }
 
     public void calculateAttributes() {
@@ -95,11 +99,36 @@ public class Character {
         return mAttributes.get(attrKey).getFinalValue();
     }
     public void applyEffect(Effect e) {
-        modifyAttribute(e.key, e.magnitude);
+        if (e.key.equals(Attributes.HEALTH)) {
+            mHealth += e.magnitude;
+        } else {
+            modifyAttribute(e.key, e.magnitude);
+        }
+        if (e.duration > 0) {
+            Effect effect = new Effect(e);
+            mActiveEffects.add(effect);
+        }
     }
 
+    public void applyDamageEffect(Effect e) {
+
+    }
     public void removeEffect(Effect e) {
         modifyAttribute(e.key, -e.magnitude);
+    }
+
+    // called when this character begins a new turn
+    public void newTurn() {
+        mActionPoints = getAttribute(Attributes.ACTION_POINTS);
+        Iterator iterator = mActiveEffects.iterator();
+        while (iterator.hasNext()) {
+            Effect e = (Effect)iterator.next();
+            e.duration--;
+            if (e.duration <1) {
+                iterator.remove();
+                removeEffect(e);
+            }
+        }
     }
 
     // Perk Methods
@@ -128,7 +157,7 @@ public class Character {
     // Action Methods
     private void addDefaultActions() {
         Action dodge = new Action("Dodge","Move out of the way",1);
-        dodge.effects.add(new Effect(Attributes.DEFENCE, 2));
+        dodge.effects.add(new Effect(Attributes.DEFENCE, 2, 1));
         mActions.add(dodge);
     }
 

@@ -15,6 +15,7 @@ public class Item {
     String displayName, description, id, type = TYPE_MISC;
     int weight;
     ArrayList<Effect> effects;
+    ArrayList<Action> actions;
 
     public Item(String name, String desc) {
         displayName = name;

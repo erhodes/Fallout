@@ -11,7 +11,28 @@
 	type:"consumable",
 	description:"Restores a bit of health",
 	weight:1
+	effects:
+	[
+		{
+			key:"health",
+			magnitude:"20"
+		}
+	]
 },
+{
+	displayName:"Poison",
+	id:"poison",
+	type"consumable",
+	description"Deals damage to you",
+	weight:1,
+	effects:
+	[
+		{
+			key:"health",
+			magnitude:"-20"
+		}
+	]
+}
 {
 	displayName:"Leather Armor",
 	id:"leather_armor",
