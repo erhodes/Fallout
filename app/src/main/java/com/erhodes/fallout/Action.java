@@ -9,9 +9,10 @@ import java.util.ArrayList;
  * All the effects of an action should be temporary.
  */
 public class Action {
+    private static String TAG = "Action";
     String name, description;
     int cost;
-    ArrayList<Effect> effects;
+    ArrayList<Effect> performerEffects, mTargetEffects, mSecondaryTargetEffects;
 
     public Action() {}
 
@@ -19,12 +20,37 @@ public class Action {
         name = n;
         description = d;
         cost = c;
-        effects = new ArrayList<>();
+        performerEffects = new ArrayList<>();
+        mTargetEffects = new ArrayList<>();
     }
 
-    public void performAction(Character c) {
-        for (Effect e : effects) {
-            c.applyEffect(e);
+    public boolean requiresTarget() {
+        return mTargetEffects.size() > 0;
+    }
+    /**
+     * Performs the action on the given character. This will apply all of this action's effects
+     * to that character.
+     * @param performer
+     */
+    public void performAction(Character performer) {
+        if (requiresTarget()) {
+            Log.d(TAG, "This action requires a target to perform");
+            return;
+        }
+        performAction(performer, null);
+    }
+
+    /** Perform an action that requires a single target
+     *
+     * @param performer
+     * @param primaryTarget
+     */
+    public void performAction(Character performer, Character primaryTarget) {
+        for (Effect e : performerEffects) {
+            performer.applyEffect(e);
+        }
+        for (Effect e : mTargetEffects) {
+            primaryTarget.applyEffect(e);
         }
     }
 }

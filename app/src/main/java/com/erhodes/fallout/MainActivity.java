@@ -16,13 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 interface CharacterInterface {
-    public Character getCharacter();
+    public CharacterService getCharacterService();
 }
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CharacterInterface {
 
-    private Character mCharacter;
+    private CharacterService mCharacterService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ItemManager.loadItems(this);
-
-        mCharacter = new Character("Johanson");
+        mCharacterService = new CharacterService();
         if (savedInstanceState == null) {
             startFragment(CharacterFragment.newInstance());
         }
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public Character getCharacter() {
-        return mCharacter;
+    public CharacterService getCharacterService() {
+        return mCharacterService;
     }
 }

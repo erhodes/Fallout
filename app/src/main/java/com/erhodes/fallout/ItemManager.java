@@ -38,7 +38,7 @@ public class ItemManager {
         // Poison
         Item poison = new Item("Poison","Deals damage to you", "poison",Item.TYPE_CONSUMABLE, 1);
         Action poisonAction = new ItemAction("Drink Poison","Drink the poison and take some damage", 2, poison);
-        poisonAction.effects.add(new Effect(Attributes.HEALTH, -10, 0));
+        poisonAction.performerEffects.add(new Effect(Attributes.HEALTH, -10, 0));
         poison.actions.add(poisonAction);
         mItems.add(poison);
     }

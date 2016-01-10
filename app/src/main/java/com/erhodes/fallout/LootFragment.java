@@ -28,6 +28,7 @@ public class LootFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getCharacterService();
         View view = inflater.inflate(R.layout.fragment_loot, container, false);
 
         mAdapter = new ItemAdapter(getActivity(), R.layout.list_item_summary, ItemManager.getAllItems());

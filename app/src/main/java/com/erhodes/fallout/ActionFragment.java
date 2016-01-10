@@ -2,7 +2,9 @@ package com.erhodes.fallout;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -35,6 +37,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getCharacterService();
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_action, container, false);
 
@@ -60,14 +63,32 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Action action = (Action)parent.getItemAtPosition(position);
+        final Action action = (Action)parent.getItemAtPosition(position);
 
-        if (!mCharacter.takeAction(action)) {
-            Toast.makeText(getActivity(),"Not enough AP to perform that action",Toast.LENGTH_SHORT).show();
+        final Character target;
+        if (action.requiresTarget()) {
+            // need to launch a dialog to choose a target
+            final CharacterAdapter characterAdapter = new CharacterAdapter(getActivity(), R.layout.list_character_summary, mCharacterService.getNonActiveCharacters());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Select a target")
+                    .setAdapter(characterAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (!mCharacter.takeAction(action, (Character)characterAdapter.getItem(which))) {
+                                Toast.makeText(getActivity(),"Not enough AP to perform that action",Toast.LENGTH_SHORT).show();
+                            }
+                            update();
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+            builder.create().show();
+        } else {
+            if (!mCharacter.takeAction(action)) {
+                Toast.makeText(getActivity(), "Not enough AP to perform that action", Toast.LENGTH_SHORT).show();
+            }
+            update();
+            mAdapter.notifyDataSetChanged();
         }
-        update();
-
-        mAdapter.notifyDataSetChanged();
     }
 
     private void update() {
@@ -76,12 +97,10 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
     }
 
     public class ActionAdapter extends ArrayAdapter<Action> {
-        Context mContext;
         int mResourceId;
 
         public ActionAdapter(Activity activity, int resourceId, ArrayList<Action> actionList) {
             super(activity, resourceId, actionList);
-            mContext = activity;
             mResourceId = resourceId;
         }
 
@@ -110,7 +129,35 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
             holder.costView.setText(action.cost + " AP");
             return convertView;
         }
+    }
 
+    public class CharacterAdapter extends ArrayAdapter<Character> {
+        int mResourceId;
+        public CharacterAdapter(Activity activity, int resourceId, ArrayList<Character> characterList) {
+            super(activity, resourceId, characterList);
+            mResourceId = resourceId;
+        }
+        protected class ViewHolder {
+            TextView nameView, healthView;
+        }
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(mResourceId, null);
+                holder = new ViewHolder();
+                holder.nameView = (TextView) convertView.findViewById(R.id.nameView);
+                holder.healthView = (TextView) convertView.findViewById(R.id.healthView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            final Character character = getItem(position);
+            holder.nameView.setText(character.name);
+            holder.healthView.setText(character.mHealth + "/" + character.getAttribute(Attributes.MAX_HEALTH));
+            return convertView;
+        }
     }
 
 }

@@ -9,6 +9,10 @@ public class Effect {
 
     public Effect() {}
 
+    public Effect (String k, int m) {
+        key = k;
+        magnitude = m;
+    }
     public Effect(String k, int m, int d) {
         key = k;
         magnitude = m;

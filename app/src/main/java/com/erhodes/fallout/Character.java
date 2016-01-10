@@ -101,7 +101,6 @@ public class Character {
     public void applyEffect(Effect e) {
         if (e.key.equals(Attributes.HEALTH)) {
             mHealth += e.magnitude;
-            Log.d("Eric","modifying health by " + e.magnitude + ", health is now " + mHealth);
         } else {
             modifyAttribute(e.key, e.magnitude);
         }
@@ -155,19 +154,29 @@ public class Character {
     // Action Methods
     private void addDefaultActions() {
         Action dodge = new Action("Dodge","Move out of the way",1);
-        dodge.effects.add(new Effect(Attributes.DEFENCE, 2, 1));
+        dodge.performerEffects.add(new Effect(Attributes.DEFENCE, 2, 1));
         mActions.add(dodge);
+
+        //this is a test action, it will need to be removed later
+        Action heal = new Action("Heal","Healing magic for your allies",1);
+        heal.mTargetEffects.add(new Effect(Attributes.HEALTH, 5));
+        mActions.add(heal);
     }
 
     public ArrayList<Action> getActions() {
         return mActions;
     }
+
     public boolean takeAction(Action a) {
+        return takeAction(a, null);
+    }
+
+    public boolean takeAction(Action a, Character target) {
         if (mActionPoints < a.cost) {
             return false;
         }
         mActionPoints -= a.cost;
-        a.performAction(this);
+        a.performAction(this, target);
         return true;
     }
 

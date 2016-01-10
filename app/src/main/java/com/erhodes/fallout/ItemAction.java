@@ -19,12 +19,12 @@ public class ItemAction extends Action {
     }
 
     @Override
-    public void performAction(Character c) {
-        super.performAction(c);
+    public void performAction(Character performer, Character primaryTarget) {
+        super.performAction(performer, primaryTarget);
 
         if (mItem.type.equals(Item.TYPE_CONSUMABLE)) {
-            c.unequipConsumable(mItem);
-            c.removeItemFromInventory(mItem);
+            performer.unequipConsumable(mItem);
+            performer.removeItemFromInventory(mItem);
         }
     }
 }

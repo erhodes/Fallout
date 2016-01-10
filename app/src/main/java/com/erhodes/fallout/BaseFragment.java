@@ -14,19 +14,19 @@ import android.widget.TextView;
  */
 public abstract class BaseFragment extends Fragment {
     protected Character mCharacter;
+    protected CharacterService mCharacterService;
     protected CharacterInterface mInterface;
 
     public BaseFragment() {
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    protected void getCharacterService() {
         try {
-            mInterface = (CharacterInterface)activity;
-            mCharacter = mInterface.getCharacter();
+            mInterface = (CharacterInterface)getActivity();
+            mCharacterService = mInterface.getCharacterService();
+            mCharacter = mCharacterService.getActiveCharacter();
         } catch (ClassCastException ex) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(getActivity().toString()
                     + " must implement CharacterInterface");
         }
     }
