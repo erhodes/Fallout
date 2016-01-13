@@ -34,6 +34,7 @@ public class Character {
         mAttributes.put(Attributes.AGILITY, new Attribute("Agility",Attributes.AGILITY, 4));
         mAttributes.put(Attributes.RESOLVE, new Attribute("Resolve",Attributes.RESOLVE, 4));
 
+        //    *** DERIVED ATTRIBUTES ***
         //maybe derived attributes should each be their own class. Might be a better way to organize the logic
         mAttributes.put(Attributes.MORALE, new DerivedAttribute("Morale",Attributes.MORALE,mAttributes.get(Attributes.RESOLVE)) {
             @Override
@@ -75,6 +76,10 @@ public class Character {
             }
         });
 
+        //  *** SKILLS! ***
+        mAttributes.put(Skills.GUNS, new Skill("Guns",Skills.GUNS,mAttributes.get(Attributes.AGILITY)));
+        mAttributes.put(Skills.MELEE, new Skill("Melee",Skills.MELEE,mAttributes.get(Attributes.STRENGTH)));
+
         mArmor = ItemManager.getNoArmor();
         calculateAttributes();
         addDefaultActions();
@@ -87,6 +92,9 @@ public class Character {
             mAttributes.get(s).calculateFinalValue();
         }
         for (String s: Attributes.getDerivedAttributes()) {
+            mAttributes.get(s).calculateFinalValue();
+        }
+        for (String s: Skills.getAllSkills()) {
             mAttributes.get(s).calculateFinalValue();
         }
     }

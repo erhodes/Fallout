@@ -41,10 +41,12 @@ public abstract class Attributes {
         return attributes;
     }
 
+    // should skills be in here?
     public static ArrayList<String> getAllAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.addAll(getPrimaryAttributes());
         attributes.addAll(getDerivedAttributes());
+        attributes.addAll(Skills.getAllSkills());
         return attributes;
     }
 }
