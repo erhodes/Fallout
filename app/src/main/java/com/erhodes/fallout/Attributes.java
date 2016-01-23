@@ -11,6 +11,7 @@ public abstract class Attributes {
     public static final String ENDURANCE = "endurance";
     public static final String AGILITY = "agility";
     public static final String RESOLVE = "resolve";
+    public static final String INTELLIGENCE = "intelligence";
 
     // derived attributes
     public static final String ACTION_POINTS = "action_points";
@@ -27,6 +28,7 @@ public abstract class Attributes {
         attributes.add(ENDURANCE);
         attributes.add(AGILITY);
         attributes.add(RESOLVE);
+        attributes.add(INTELLIGENCE);
         return attributes;
     }
 

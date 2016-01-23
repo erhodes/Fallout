@@ -9,10 +9,22 @@ public class Effect {
 
     public Effect() {}
 
+    /**
+     *
+     * @param k Attribute key
+     * @param m Magnitude of the effect
+     */
     public Effect (String k, int m) {
         key = k;
         magnitude = m;
     }
+
+    /**
+     *
+     * @param k Attribute key
+     * @param m Magnitude of the effect
+     * @param d Duration of the effect.
+     */
     public Effect(String k, int m, int d) {
         key = k;
         magnitude = m;

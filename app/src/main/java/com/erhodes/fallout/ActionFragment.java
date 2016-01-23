@@ -74,7 +74,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
                     .setAdapter(characterAdapter, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (!mCharacter.takeAction(action, (Character)characterAdapter.getItem(which))) {
+                            if (mCharacter.takeAction(action, (Character)characterAdapter.getItem(which)) == (Action.RESULT_INSUFFICIENT_AP)) {
                                 Toast.makeText(getActivity(),"Not enough AP to perform that action",Toast.LENGTH_SHORT).show();
                             }
                             update();
@@ -83,7 +83,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
                     });
             builder.create().show();
         } else {
-            if (!mCharacter.takeAction(action)) {
+            if (mCharacter.takeAction(action) == Action.RESULT_INSUFFICIENT_AP) {
                 Toast.makeText(getActivity(), "Not enough AP to perform that action", Toast.LENGTH_SHORT).show();
             }
             update();

@@ -10,8 +10,15 @@ import java.util.ArrayList;
  */
 public class Action {
     private static String TAG = "Action";
+
+    public static final int RESULT_PASSED  = 0;
+    public static final int RESULT_INSUFFICIENT_AP = 1;
+    public static final int RESULT_FAILED_CHECK = 2;
+    public static final int RESULT_MISSING_TARGETS = 3;
+
     String name, description;
     int cost;
+    SkillCheck skillCheck = null;
     ArrayList<Effect> performerEffects, mTargetEffects, mSecondaryTargetEffects;
 
     public Action() {}
@@ -25,19 +32,20 @@ public class Action {
     }
 
     public boolean requiresTarget() {
-        return mTargetEffects.size() > 0;
+        boolean skillRequiresTarget = skillCheck != null && skillCheck.requiresTarget();
+        return mTargetEffects.size() > 0 || skillRequiresTarget;
     }
     /**
      * Performs the action on the given character. This will apply all of this action's effects
      * to that character.
      * @param performer
      */
-    public void performAction(Character performer) {
+    public int  performAction(Character performer) {
         if (requiresTarget()) {
             Log.d(TAG, "This action requires a target to perform");
-            return;
+            return RESULT_MISSING_TARGETS;
         }
-        performAction(performer, null);
+        return performAction(performer, null);
     }
 
     /** Perform an action that requires a single target
@@ -45,12 +53,23 @@ public class Action {
      * @param performer
      * @param primaryTarget
      */
-    public void performAction(Character performer, Character primaryTarget) {
+    public int performAction(Character performer, Character primaryTarget) {
+        if (performer.mActionPoints < cost) {
+            return RESULT_INSUFFICIENT_AP;
+        }
+        performer.mActionPoints -= cost;
+
         for (Effect e : performerEffects) {
             performer.applyEffect(e);
         }
         for (Effect e : mTargetEffects) {
             primaryTarget.applyEffect(e);
         }
+
+        if (skillCheck != null) {
+            return skillCheck.makeCheck(performer, primaryTarget);
+        }
+
+        return RESULT_PASSED;
     }
 }

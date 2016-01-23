@@ -7,11 +7,13 @@ import java.util.ArrayList;
  */
 public class Skills {
     public static final String GUNS = "guns";
+    public static final String MEDICINE = "medicine";
     public static final String MELEE = "melee";
 
     public static ArrayList<String> getAllSkills() {
         ArrayList<String> result = new ArrayList<>();
         result.add(GUNS);
+        result.add(MEDICINE);
         result.add(MELEE);
         return result;
     }

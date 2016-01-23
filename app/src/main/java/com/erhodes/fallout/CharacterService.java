@@ -24,6 +24,9 @@ public class CharacterService {
     private void addTestChars() {
         Character mainChar = new Character("Johanson");
         mainChar.acquireItem(ItemManager.getItem(ItemManager.ITEM_POISON));
+        Item poisonGun = ItemManager.getItem(ItemManager.ITEM_POISON_GUN);
+        mainChar.acquireItem(poisonGun);
+        mainChar.equipItem(poisonGun);
         setActiveCharacter(mainChar);
 
         mCharacters.add(new Character("Raider 1"));

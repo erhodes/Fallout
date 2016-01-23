@@ -27,8 +27,8 @@ public class Item {
         actions = new ArrayList<>();
     }
 
-    public Item (String n, String desc, String i, String t, int w) {
-        displayName = n;
+    public Item (String name, String desc, String i, String t, int w) {
+        displayName = name;
         description = desc;
         id = i;
         type = t;

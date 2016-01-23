@@ -16,7 +16,7 @@ public class Character {
     private ArrayList<Item> mInventory;
     private ArrayList<Action> mActions;
     private ArrayList<Effect> mActiveEffects;
-    private Item mArmor;
+    private Item mArmor, mWeapon;
     public int mCarriedWeight, mHealth, mActionPoints;
     public String name;
 
@@ -33,6 +33,7 @@ public class Character {
         mAttributes.put(Attributes.ENDURANCE, new Attribute("Endurance",Attributes.ENDURANCE,4));
         mAttributes.put(Attributes.AGILITY, new Attribute("Agility",Attributes.AGILITY, 4));
         mAttributes.put(Attributes.RESOLVE, new Attribute("Resolve",Attributes.RESOLVE, 4));
+        mAttributes.put(Attributes.INTELLIGENCE, new Attribute("Intelligence",Attributes.INTELLIGENCE, 4));
 
         //    *** DERIVED ATTRIBUTES ***
         //maybe derived attributes should each be their own class. Might be a better way to organize the logic
@@ -77,8 +78,9 @@ public class Character {
         });
 
         //  *** SKILLS! ***
-        mAttributes.put(Skills.GUNS, new Skill("Guns",Skills.GUNS,mAttributes.get(Attributes.AGILITY)));
-        mAttributes.put(Skills.MELEE, new Skill("Melee",Skills.MELEE,mAttributes.get(Attributes.STRENGTH)));
+        mAttributes.put(Skills.GUNS, new Skill("Guns",Skills.GUNS, mAttributes.get(Attributes.AGILITY)));
+        mAttributes.put(Skills.MEDICINE, new Skill("Medicine",Skills.MEDICINE, mAttributes.get(Attributes.INTELLIGENCE)));
+        mAttributes.put(Skills.MELEE, new Skill("Melee",Skills.MELEE, mAttributes.get(Attributes.STRENGTH)));
 
         mArmor = ItemManager.getNoArmor();
         calculateAttributes();
@@ -109,6 +111,11 @@ public class Character {
     public void applyEffect(Effect e) {
         if (e.key.equals(Attributes.HEALTH)) {
             mHealth += e.magnitude;
+            if (mHealth > getAttribute(Attributes.MAX_HEALTH)) {
+                mHealth = getAttribute(Attributes.MAX_HEALTH);
+            } else if (mHealth <= 0) {
+                // this character is dead. Eventually that will mean something.
+            }
         } else {
             modifyAttribute(e.key, e.magnitude);
         }
@@ -165,27 +172,34 @@ public class Character {
         dodge.performerEffects.add(new Effect(Attributes.DEFENCE, 2, 1));
         mActions.add(dodge);
 
-        //this is a test action, it will need to be removed later
+        // these are test actions and will need to be removed later
         Action heal = new Action("Heal","Healing magic for your allies",1);
         heal.mTargetEffects.add(new Effect(Attributes.HEALTH, 5));
         mActions.add(heal);
+
+        Action selfHeal = new Action("Self Heal", "Attempt to heal yourself",1);
+        SkillCheck medCheck = new SkillCheck(Skills.MEDICINE, 10);
+        medCheck.mPassResults.add(new EffectResult(new Effect(Attributes.HEALTH, 5), null));
+        selfHeal.skillCheck = medCheck;
+        mActions.add(selfHeal);
+
+        Action firebolt = new Action("Fire Bolt", "Deal fire damage to an enemy",2);
+        SkillCheck fireCheck = new SkillCheck(Skills.GUNS, 10);
+        fireCheck.mPassResults.add(new EffectResult(null, new Effect(Attributes.HEALTH, -6)));
+        firebolt.skillCheck = fireCheck;
+        mActions.add(firebolt);
     }
 
     public ArrayList<Action> getActions() {
         return mActions;
     }
 
-    public boolean takeAction(Action a) {
-        return takeAction(a, null);
+    public int takeAction(Action a) {
+        return a.performAction(this);
     }
 
-    public boolean takeAction(Action a, Character target) {
-        if (mActionPoints < a.cost) {
-            return false;
-        }
-        mActionPoints -= a.cost;
-        a.performAction(this, target);
-        return true;
+    public int takeAction(Action a, Character target) {
+        return a.performAction(this, target);
     }
 
     // Inventory Methods
@@ -219,6 +233,8 @@ public class Character {
             return equipArmor(i);
         } else if (i.type.equals(Item.TYPE_CONSUMABLE)) {
             return equipConsumable(i);
+        } else if (i.type.equals(Item.TYPE_WEAPON)) {
+            return equipWeapon(i);
         }
         return false;
     }
@@ -230,6 +246,17 @@ public class Character {
 
     public void unequipConsumable(Item i) {
         mActions.removeAll(i.actions);
+    }
+
+    //TODO: Actually write this method instead of half assing it
+    public boolean equipWeapon(Item i) {
+        mWeapon = i;
+        mActions.addAll(i.actions);
+        return true;
+    }
+
+    public void unequipWeapon() {
+        mWeapon = null;
     }
 
     public boolean equipArmor(Item i) {
