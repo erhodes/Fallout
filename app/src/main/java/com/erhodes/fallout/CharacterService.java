@@ -27,6 +27,7 @@ public class CharacterService {
         Item poisonGun = ItemManager.getItem(ItemManager.ITEM_POISON_GUN);
         mainChar.acquireItem(poisonGun);
         mainChar.equipItem(poisonGun);
+        mainChar.acquireItem(ItemManager.getItem(ItemManager.ITEM_LEATHER_ARMOR));
         setActiveCharacter(mainChar);
 
         mCharacters.add(new Character("Raider 1"));

@@ -1,7 +1,6 @@
 package com.erhodes.fallout;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -47,7 +46,7 @@ public class CharacterFragment extends BaseFragment {
         mNameView = (TextView)view.findViewById(R.id.charNameView);
         mNameView.setText(mCharacter.name);
         mListView = (ListView)view.findViewById(R.id.attributeListView);
-        mAdapter = new AttributeAdapter(getActivity(), R.layout.list_attribute_summary, Attributes.getAllAttributes());
+        mAdapter = new AttributeAdapter(getActivity(), R.layout.list_attribute_summary, Attributes.getAllCharacterAttributes());
         mListView.setAdapter(mAdapter);
         return view;
     }

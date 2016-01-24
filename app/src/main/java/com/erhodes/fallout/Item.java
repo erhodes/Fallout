@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Eric on 24/10/2015.
  */
-public class Item {
+public class Item extends GameObject {
     public static final String TYPE_ARMOR = "armor";
     public static final String TYPE_WEAPON = "weapon";
     public static final String TYPE_CONSUMABLE = "consumable";
@@ -20,14 +20,11 @@ public class Item {
     public Item() {}
 
     public Item(String name, String desc) {
-        displayName = name;
-        description = desc;
-        weight = 0;
-        effects = new ArrayList<>();
-        actions = new ArrayList<>();
+        this(name, desc, "temp", TYPE_DEFAULT, 0);
     }
 
     public Item (String name, String desc, String i, String t, int w) {
+        super();
         displayName = name;
         description = desc;
         id = i;
@@ -43,5 +40,12 @@ public class Item {
         description = i.description;
         weight = i.weight;
         effects = new ArrayList<>(i.effects);
+    }
+
+    public boolean isValidAttribute(String attrKey) {
+        return Attributes.getAllItemAttributes().contains(attrKey);
+    }
+    public void applyEffect(Effect e) {
+        modifyAttribute(e.key, e.magnitude);
     }
 }

@@ -10,8 +10,7 @@ import java.util.Iterator;
 /**
  * Created by Eric on 17/10/2015.
  */
-public class Character {
-    private HashMap<String, Attribute> mAttributes;
+public class Character extends GameObject {
     private HashSet<String> mAcquiredPerks;
     private ArrayList<Item> mInventory;
     private ArrayList<Action> mActions;
@@ -22,8 +21,8 @@ public class Character {
 
 
     Character(String n) {
+        super();
         name = n;
-        mAttributes = new HashMap<>();
         mAcquiredPerks = new HashSet<>();
         mInventory = new ArrayList<>();
         mActions = new ArrayList<>();
@@ -83,6 +82,7 @@ public class Character {
         mAttributes.put(Skills.MELEE, new Skill("Melee",Skills.MELEE, mAttributes.get(Attributes.STRENGTH)));
 
         mArmor = ItemManager.getNoArmor();
+        mWeapon = ItemManager.getFists();
         calculateAttributes();
         addDefaultActions();
         mActionPoints = getAttribute(Attributes.ACTION_POINTS);
@@ -100,14 +100,18 @@ public class Character {
             mAttributes.get(s).calculateFinalValue();
         }
     }
+
+    @Override
     public void modifyAttribute(String attrKey, int mag) {
-        mAttributes.get(attrKey).addModifier(mag);
+        super.modifyAttribute(attrKey, mag);
         calculateAttributes();
     }
 
-    public int getAttribute(String attrKey) {
-        return mAttributes.get(attrKey).getFinalValue();
+    public boolean isValidAttribute(String attributeKey) {
+        return Attributes.getAllCharacterAttributes().contains(attributeKey);
     }
+
+    @Override
     public void applyEffect(Effect e) {
         if (e.key.equals(Attributes.HEALTH)) {
             mHealth += e.magnitude;
@@ -123,10 +127,6 @@ public class Character {
             Effect effect = new Effect(e);
             mActiveEffects.add(effect);
         }
-    }
-
-    public void removeEffect(Effect e) {
-        modifyAttribute(e.key, -e.magnitude);
     }
 
     // called when this character begins a new turn
@@ -239,6 +239,16 @@ public class Character {
         return false;
     }
 
+    public void unequipItem(Item i) {
+        if (i.type.equals(Item.TYPE_ARMOR)) {
+            unequipArmor();
+        } else if (i.type.equals(Item.TYPE_CONSUMABLE)) {
+            unequipConsumable(i);
+        } else if (i.type.equals(Item.TYPE_WEAPON)) {
+            unequipWeapon();
+        }
+    }
+
     private boolean equipConsumable(Item i) {
         mActions.addAll(i.actions);
         return true;
@@ -248,17 +258,31 @@ public class Character {
         mActions.removeAll(i.actions);
     }
 
-    //TODO: Actually write this method instead of half assing it
     public boolean equipWeapon(Item i) {
+        if (!i.type.equals(Item.TYPE_WEAPON)) {
+            return false;
+        }
+        unequipWeapon();
+        removeItemFromInventory(i);
         mWeapon = i;
+        mCarriedWeight += i.weight;
         mActions.addAll(i.actions);
         return true;
     }
 
     public void unequipWeapon() {
-        mWeapon = null;
+        if (mWeapon.id.equals(ItemManager.ITEM_DEFAULT_UNARMED)) {
+            return;
+        }
+        mCarriedWeight -= mWeapon.weight;
+        mActions.removeAll(mWeapon.actions);
+        acquireItem(mWeapon);
+        mWeapon = ItemManager.getFists();
     }
 
+    public Item getWeapon() {
+        return mWeapon;
+    }
     public boolean equipArmor(Item i) {
         if (!i.type.equals(Item.TYPE_ARMOR)) {
             return false;

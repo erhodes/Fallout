@@ -22,6 +22,10 @@ public abstract class Attributes {
     public static final String TOUGHNESS = "toughness";
     public static final String WEIGHT_LIMIT = "weight_limit";
 
+    // item attributes
+    public static final String AMMUNITION_MAX = "ammunition_max";
+    public static final String AMMUNITION_CURRENT = "ammunition_current";
+
     public static ArrayList<String> getPrimaryAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.add(STRENGTH);
@@ -44,11 +48,18 @@ public abstract class Attributes {
     }
 
     // should skills be in here?
-    public static ArrayList<String> getAllAttributes() {
+    public static ArrayList<String> getAllCharacterAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.addAll(getPrimaryAttributes());
         attributes.addAll(getDerivedAttributes());
         attributes.addAll(Skills.getAllSkills());
+        return attributes;
+    }
+
+    public static ArrayList<String> getAllItemAttributes() {
+        ArrayList<String> attributes = new ArrayList<>();
+        attributes.add(AMMUNITION_CURRENT);
+        attributes.add(AMMUNITION_MAX);
         return attributes;
     }
 }

@@ -17,8 +17,10 @@ import java.util.List;
  * Created by Eric on 24/10/2015.
  */
 public class ItemManager {
+    public static String ITEM_LEATHER_ARMOR = "leather_armor";
     public static String ITEM_POISON = "poison";
     public static String ITEM_POISON_GUN = "poison_gun";
+    public static String ITEM_DEFAULT_UNARMED = "default_unarmed";
 
     private static ArrayList<Item> mItems;
     /**
@@ -72,6 +74,14 @@ public class ItemManager {
         return null;
     }
 
+    /**
+     * Fists are the default equipped weapon.
+     * @return
+     */
+    public static Item getFists() {
+        Item i = new Item("Fists","You aren't holding anything",ITEM_DEFAULT_UNARMED, Item.TYPE_WEAPON, 0);
+        return i;
+    }
     public static Item getNoArmor() {
         Item i = new Item("Nothing", "You aren't wearing anything");
         i.type = Item.TYPE_DEFAULT;
