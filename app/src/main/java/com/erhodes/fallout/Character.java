@@ -1,9 +1,6 @@
 package com.erhodes.fallout;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -16,7 +13,7 @@ public class Character extends GameObject {
     private ArrayList<Action> mActions;
     private ArrayList<Effect> mActiveEffects;
     private Item mArmor, mWeapon;
-    public int mCarriedWeight, mHealth, mActionPoints;
+    public int mCarriedWeight, mActionPoints;
     public String name;
 
 
@@ -35,46 +32,13 @@ public class Character extends GameObject {
         mAttributes.put(Attributes.INTELLIGENCE, new Attribute("Intelligence",Attributes.INTELLIGENCE, 4));
 
         //    *** DERIVED ATTRIBUTES ***
-        //maybe derived attributes should each be their own class. Might be a better way to organize the logic
-        mAttributes.put(Attributes.MORALE, new DerivedAttribute("Morale",Attributes.MORALE,mAttributes.get(Attributes.RESOLVE)) {
-            @Override
-            public void calculateFinalValue() {
-                finalValue = mBase.getFinalValue() * 3 + modifier;
-            }
-        });
-
-        mAttributes.put(Attributes.WEIGHT_LIMIT, new DerivedAttribute("Weight Limit", Attributes.WEIGHT_LIMIT, mAttributes.get(Attributes.STRENGTH)) {
-            @Override
-            public void calculateFinalValue() {
-                finalValue = mBase.getFinalValue() * 25 + modifier;
-            }
-        });
-
-        mAttributes.put(Attributes.TOUGHNESS, new DerivedAttribute("Toughness", Attributes.TOUGHNESS, mAttributes.get(Attributes.ENDURANCE)) {
-            @Override
-            public void calculateFinalValue() {
-                finalValue = mBase.getFinalValue() + modifier;
-            }
-        });
-
-        mAttributes.put(Attributes.MAX_HEALTH, new DerivedAttribute("Current Health",Attributes.MAX_HEALTH, mAttributes.get(Attributes.ENDURANCE)) {
-            @Override
-            public void calculateFinalValue() { finalValue = mBase.getFinalValue()*5 + modifier; }
-        });
-
-        mAttributes.put(Attributes.ACTION_POINTS, new DerivedAttribute("Action Points",Attributes.ACTION_POINTS, mAttributes.get(Attributes.AGILITY)) {
-            @Override
-            public void calculateFinalValue() {
-                finalValue = 5 + mBase.getFinalValue()/2 + modifier;
-            }
-        });
-
-        mAttributes.put(Attributes.DEFENCE, new DerivedAttribute("Defence", Attributes.DEFENCE, mAttributes.get(Attributes.AGILITY)) {
-            @Override
-            public void calculateFinalValue() {
-                finalValue = 10 + mBase.getFinalValue() + modifier;
-            }
-        });
+        mAttributes.put(Attributes.MORALE, new DerivedAttribute("Morale",Attributes.MORALE,mAttributes.get(Attributes.RESOLVE), 3, 0));
+        mAttributes.put(Attributes.WEIGHT_LIMIT, new DerivedAttribute("Weight Limit", Attributes.WEIGHT_LIMIT, mAttributes.get(Attributes.STRENGTH), 25, 0));
+        mAttributes.put(Attributes.TOUGHNESS, new DerivedAttribute("Toughness", Attributes.TOUGHNESS, mAttributes.get(Attributes.ENDURANCE), 1, 0));
+        mAttributes.put(Attributes.MAX_HEALTH, new DerivedAttribute("Maximum Health",Attributes.MAX_HEALTH, mAttributes.get(Attributes.ENDURANCE), 5, 0));
+        mAttributes.put(Attributes.HEALTH, new CapacityAttribute("Current Health", mAttributes.get(Attributes.MAX_HEALTH)));
+        mAttributes.put(Attributes.ACTION_POINTS, new DerivedAttribute("Action Points",Attributes.ACTION_POINTS, mAttributes.get(Attributes.AGILITY), 0.5f, 5));
+        mAttributes.put(Attributes.DEFENCE, new DerivedAttribute("Defence", Attributes.DEFENCE, mAttributes.get(Attributes.AGILITY), 1, 10));
 
         //  *** SKILLS! ***
         mAttributes.put(Skills.GUNS, new Skill("Guns",Skills.GUNS, mAttributes.get(Attributes.AGILITY)));
@@ -86,7 +50,6 @@ public class Character extends GameObject {
         calculateAttributes();
         addDefaultActions();
         mActionPoints = getAttribute(Attributes.ACTION_POINTS);
-        mHealth = getAttribute(Attributes.MAX_HEALTH);
     }
 
     public void calculateAttributes() {
@@ -113,16 +76,8 @@ public class Character extends GameObject {
 
     @Override
     public void applyEffect(Effect e) {
-        if (e.key.equals(Attributes.HEALTH)) {
-            mHealth += e.magnitude;
-            if (mHealth > getAttribute(Attributes.MAX_HEALTH)) {
-                mHealth = getAttribute(Attributes.MAX_HEALTH);
-            } else if (mHealth <= 0) {
-                // this character is dead. Eventually that will mean something.
-            }
-        } else {
-            modifyAttribute(e.key, e.magnitude);
-        }
+        modifyAttribute(e.key, e.magnitude);
+
         if (e.duration > 0) {
             Effect effect = new Effect(e);
             mActiveEffects.add(effect);
@@ -178,13 +133,13 @@ public class Character extends GameObject {
         mActions.add(heal);
 
         Action selfHeal = new Action("Self Heal", "Attempt to heal yourself",1);
-        SkillCheck medCheck = new SkillCheck(Skills.MEDICINE, 10);
+        SkillCheck medCheck = new StaticSkillCheck(Skills.MEDICINE, 10);
         medCheck.mPassResults.add(new EffectResult(new Effect(Attributes.HEALTH, 5), null));
         selfHeal.skillCheck = medCheck;
         mActions.add(selfHeal);
 
         Action firebolt = new Action("Fire Bolt", "Deal fire damage to an enemy",2);
-        SkillCheck fireCheck = new SkillCheck(Skills.GUNS, 10);
+        SkillCheck fireCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE);
         fireCheck.mPassResults.add(new EffectResult(null, new Effect(Attributes.HEALTH, -6)));
         firebolt.skillCheck = fireCheck;
         mActions.add(firebolt);

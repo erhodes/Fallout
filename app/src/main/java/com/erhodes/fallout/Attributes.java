@@ -25,6 +25,7 @@ public abstract class Attributes {
     // item attributes
     public static final String AMMUNITION_MAX = "ammunition_max";
     public static final String AMMUNITION_CURRENT = "ammunition_current";
+    public static final String DAMAGE = "damage";
 
     public static ArrayList<String> getPrimaryAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
@@ -47,17 +48,30 @@ public abstract class Attributes {
         return attributes;
     }
 
+    public static ArrayList<String> getCapacityAttributes() {
+        ArrayList<String> attributes = new ArrayList<String>();
+        attributes.add(HEALTH);
+        return attributes;
+    }
+
     // should skills be in here?
     public static ArrayList<String> getAllCharacterAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.addAll(getPrimaryAttributes());
         attributes.addAll(getDerivedAttributes());
         attributes.addAll(Skills.getAllSkills());
+        attributes.addAll(getCapacityAttributes());
         return attributes;
     }
 
     public static ArrayList<String> getAllItemAttributes() {
         ArrayList<String> attributes = new ArrayList<>();
+        return attributes;
+    }
+
+    public static ArrayList<String> getWeaponAttributes() {
+        ArrayList<String> attributes = new ArrayList<>();
+        attributes.addAll(getAllItemAttributes());
         attributes.add(AMMUNITION_CURRENT);
         attributes.add(AMMUNITION_MAX);
         return attributes;

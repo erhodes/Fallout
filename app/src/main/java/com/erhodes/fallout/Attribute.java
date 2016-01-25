@@ -1,11 +1,13 @@
 package com.erhodes.fallout;
 
+import android.util.Log;
+
 /**
  * Created by Eric on 20/10/2015.
  */
 public class Attribute {
     String name, key;
-    int mBaseValue, modifier, finalValue;
+    protected int mBaseValue, modifier, finalValue;
 
     Attribute(){}
 
@@ -13,6 +15,7 @@ public class Attribute {
         name = n;
         key = k;
         mBaseValue = b;
+        calculateFinalValue();
     }
 
     public void addModifier(int m) {

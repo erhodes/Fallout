@@ -6,21 +6,18 @@ package com.erhodes.fallout;
  * at twice the normal rate.
  */
 public class Skill extends DerivedAttribute {
-    int mRanks;
     boolean mSpecialized = false;
 
     Skill(String n, String k, Attribute bse) {
-        super(n, k, bse);
-        mRanks = 0;
-    }
-
-    @Override
-    public void calculateFinalValue() {
-        finalValue = mBase.getFinalValue()/2 + mRanks + modifier;
+        super(n, k, bse, 0.5f, 0);
     }
 
     public void addRank() {
         int increase =  mSpecialized? 2 : 1;
-        mRanks += increase;
+        mBaseValue += increase;
+    }
+
+    public int getRanks() {
+        return mBaseValue;
     }
 }

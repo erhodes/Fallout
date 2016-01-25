@@ -1,18 +1,31 @@
 package com.erhodes.fallout;
 
 /**
- * Created by Eric on 20/10/2015.
+ * The value of a Derived Attribute is based on another Attribute.
  */
-public abstract class DerivedAttribute extends Attribute {
+public class DerivedAttribute extends Attribute {
+    Attribute mBaseAttribute;
+    protected float mAttributeMultiplier;
 
-    Attribute mBase;
-
-    DerivedAttribute(String n, String k, Attribute bse) {
+    /**
+     *
+     * @param n
+     * @param k
+     * @param baseAttribute
+     * @param attributeMultiplier
+     * @param baseValue
+     */
+    DerivedAttribute(String n, String k, Attribute baseAttribute, float attributeMultiplier, int baseValue) {
         name = n;
         key = k;
-        mBase = bse;
+        mBaseAttribute = baseAttribute;
+        mAttributeMultiplier = attributeMultiplier;
+        mBaseValue = baseValue;
+        calculateFinalValue();
     }
 
     @Override
-    public abstract void calculateFinalValue();
+    public void calculateFinalValue() {
+        finalValue = mBaseValue + Math.round(mBaseAttribute.getFinalValue() * mAttributeMultiplier) + modifier;
+    }
 }

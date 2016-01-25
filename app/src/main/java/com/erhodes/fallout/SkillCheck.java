@@ -8,16 +8,16 @@ import java.util.Random;
 /**
  * This class isn't very well named, since you could do attribute checks as well. Doesn't sound right though.
  */
-public class SkillCheck {
-    int mDifficulty;
+public abstract class SkillCheck {
     String mSkillKey;
+    protected Random mRandom;
     ArrayList<CheckResult> mPassResults, mFailResults;
 
-    public SkillCheck(String skill, int difficulty) {
+    public SkillCheck(String skill) {
         mSkillKey = skill;
-        mDifficulty = difficulty;
         mPassResults = new ArrayList<>();
         mFailResults = new ArrayList<>();
+        mRandom = new Random();
     }
 
     /**
@@ -39,25 +39,27 @@ public class SkillCheck {
         return false;
     }
 
-    public int makeCheck(Character performer, Character target) {
-        Random random = new Random();
-        int skillValue = performer.getAttribute(mSkillKey);
-        int roll = random.nextInt(20) + 1 + skillValue;
-        Log.d("Eric",performer.name + " rolled a " + roll + "(" + (roll-skillValue) + "+" + skillValue + ") against difficulty " + mDifficulty);
-        if (roll >= mDifficulty) {
-            // yay, you passed!
+    public int roll(int bonus) {
+        return mRandom.nextInt(20) + 1 + bonus;
+    }
 
-            // apply the results of passing a skill check
-            for (CheckResult checkResult : mPassResults) {
-                checkResult.applyResult(performer, target);
-            }
-            return Action.RESULT_PASSED;
-        } else {
-            // boo, failed
-            for (CheckResult checkResult : mFailResults) {
-                checkResult.applyResult(performer, target);
-            }
-            return Action.RESULT_FAILED_CHECK;
+    public abstract int makeCheck(Character performer, Character target);
+
+    protected int resolvePass(Character performer, Character target) {
+        // yay, you passed!
+
+        // apply the results of passing a skill check
+        for (CheckResult checkResult : mPassResults) {
+            checkResult.applyResult(performer, target);
         }
+        return Action.RESULT_PASSED;
+    }
+
+    protected int resolveFail(Character performer, Character target) {
+        // boo, failed
+        for (CheckResult checkResult : mFailResults) {
+            checkResult.applyResult(performer, target);
+        }
+        return Action.RESULT_FAILED_CHECK;
     }
 }
