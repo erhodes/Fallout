@@ -20,6 +20,7 @@ public class ItemManager {
     public static String ITEM_LEATHER_ARMOR = "leather_armor";
     public static String ITEM_POISON = "poison";
     public static String ITEM_POISON_GUN = "poison_gun";
+    public static String ITEM_POISON_DART = "poison_dart";
     public static String ITEM_DEFAULT_UNARMED = "default_unarmed";
 
     private static ArrayList<Item> mItems;
@@ -59,6 +60,9 @@ public class ItemManager {
         poisonGunAction.skillCheck = skillCheck;
         poisonGun.actions.add(poisonGunAction);
         mItems.add(poisonGun);
+
+        Item poisonDart = new Item("Poison Dart", "Ammo for the poison dart gun", ITEM_POISON_DART, Item.TYPE_MISC, 1);
+        mItems.add(poisonDart);
     }
 
     public static ArrayList<Item> getAllItems() {

@@ -183,6 +183,39 @@ public class Character extends GameObject {
         mInventory.remove(i);
     }
 
+    /**
+     * Returns how many of a given item this character has in his inventory. Doesn't look at equipped weapon/armor.
+     * @param itemId
+     * @return
+     */
+    public int hasItem(String itemId) {
+        int quantity = 0;
+        for (Item item : mInventory) {
+            if (item.id.equals(itemId)) {
+                quantity++;
+            }
+        }
+        return quantity;
+    }
+
+    /**
+     * Removes a number of items with the given ID. Returns the number that could not be removed.
+     * @param itemId
+     * @param quantity
+     * @return
+     */
+    public int removeItems(String itemId, int quantity) {
+        Iterator<Item> itemIterator = mInventory.iterator();
+        while(itemIterator.hasNext() && quantity > 0) {
+            Item i = itemIterator.next();
+            if (i.id.equals(itemId)) {
+                itemIterator.remove();
+                quantity--;
+            }
+        }
+        return quantity;
+    }
+
     public boolean equipItem(Item i) {
         if (i.type.equals(Item.TYPE_ARMOR)) {
             return equipArmor(i);
