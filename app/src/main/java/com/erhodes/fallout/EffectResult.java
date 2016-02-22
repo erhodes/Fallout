@@ -6,46 +6,44 @@ import java.util.ArrayList;
  * The result of a SkillCheck. Applies a number of effects to a group of targets.
  */
 public class EffectResult extends CheckResult {
-    ArrayList<Effect> mPerformerEffects, mTargetEffects;  // what happens to that character?
+    ArrayList<Effect> mTargetEffects;
+    boolean mAffectsPerformer;
 
-    /**
-     * Useful for when only a single effect is applied to the target and/or performer.
-     * Either effect can be null, indicating no effect on that character.
-     * @param performerEffect
-     * @param targetEffect
-     */
-    EffectResult(Effect performerEffect, Effect targetEffect) {
-        mPerformerEffects = new ArrayList<>();
+    EffectResult(String attributeKey, int magnitude) {
+        this(new Effect(attributeKey, magnitude), false);
+    }
+    EffectResult(String attributeKey, int magnitude, boolean affectsPerformer) {
+        this(new Effect(attributeKey, magnitude), affectsPerformer);
+    }
+    EffectResult(Effect effect, boolean affectsPerformer) {
+        super();
+        mAffectsPerformer = affectsPerformer;
         mTargetEffects = new ArrayList<>();
-
-        if (performerEffect != null) {
-            mPerformerEffects.add(performerEffect);
-        }
-        if (targetEffect != null) {
-            mTargetEffects.add(targetEffect);
-        }
+        mTargetEffects.add(effect);
     }
 
-    EffectResult(ArrayList<Effect> performerEffects, ArrayList<Effect> targetEffects) {
-        mPerformerEffects = performerEffects;
+    EffectResult(ArrayList<Effect> targetEffects) {
+        super();
         mTargetEffects = targetEffects;
     }
 
     @Override
-    public void applyResult(Character performer, Character target) {
-        for (Effect e : mPerformerEffects) {
-            performer.applyEffect(e);
+    public void applyResult(Character performer, ArrayList<TargetGroup> mTargetGroups) {
+        if (mAffectsPerformer) {
+            for (Effect e : mTargetEffects) {
+                performer.applyEffect(e);
+            }
         }
-        for (Effect e : mTargetEffects) {
-            target.applyEffect(e);
+        for (int i = 0; i < mAffectedTargetGroups.size(); i++) {
+            applyEffects(mTargetGroups.get(mAffectedTargetGroups.get(i)));
         }
     }
 
-    @Override
-    public boolean requiresTarget() {
-        if (mTargetEffects.size() > 0) {
-            return true;
+    private void applyEffects(TargetGroup targetGroup) {
+        for (GameObject gameObject : targetGroup.mTargets) {
+            for (Effect e: mTargetEffects) {
+                gameObject.applyEffect(e);
+            }
         }
-        return false;
     }
 }

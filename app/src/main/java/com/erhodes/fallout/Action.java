@@ -31,9 +31,12 @@ public class Action {
         mTargetEffects = new ArrayList<>();
     }
 
-    public boolean requiresTarget() {
-        boolean skillRequiresTarget = skillCheck != null && skillCheck.requiresTarget();
-        return mTargetEffects.size() > 0 || skillRequiresTarget;
+    public int requiredTargets() {
+        if (skillCheck == null) {
+            return 0;
+        } else {
+            return skillCheck.requiredTargets();
+        }
     }
     /**
      * Performs the action on the given character. This will apply all of this action's effects
@@ -41,7 +44,7 @@ public class Action {
      * @param performer
      */
     public int  performAction(Character performer) {
-        if (requiresTarget()) {
+        if (requiredTargets() > 0) {
             Log.d(TAG, "This action requires a target to perform");
             return RESULT_MISSING_TARGETS;
         }
@@ -69,7 +72,6 @@ public class Action {
         if (skillCheck != null) {
             return skillCheck.makeCheck(performer, primaryTarget);
         }
-
         return RESULT_PASSED;
     }
 }

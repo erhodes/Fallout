@@ -134,13 +134,17 @@ public class Character extends GameObject {
 
         Action selfHeal = new Action("Self Heal", "Attempt to heal yourself",1);
         SkillCheck medCheck = new StaticSkillCheck(Skills.MEDICINE, 10);
-        medCheck.mPassResults.add(new EffectResult(new Effect(Attributes.HEALTH, 5), null));
+        EffectResult selfHealResult = new EffectResult(Attributes.HEALTH, 5, true);
+        medCheck.mPassResults.add(selfHealResult);
         selfHeal.skillCheck = medCheck;
         mActions.add(selfHeal);
 
         Action firebolt = new Action("Fire Bolt", "Deal fire damage to an enemy",2);
-        SkillCheck fireCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE);
-        fireCheck.mPassResults.add(new EffectResult(null, new Effect(Attributes.HEALTH, -6)));
+        TargetGroup enemyGroup = new TargetGroup();
+        SkillCheck fireCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, enemyGroup);
+        EffectResult damageResult = new EffectResult(Attributes.HEALTH, -6);
+        damageResult.mAffectedTargetGroups.put(0,0);
+        fireCheck.mPassResults.add(damageResult);
         firebolt.skillCheck = fireCheck;
         mActions.add(firebolt);
     }

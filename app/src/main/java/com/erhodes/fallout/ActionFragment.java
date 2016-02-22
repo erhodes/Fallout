@@ -66,7 +66,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
         final Action action = (Action)parent.getItemAtPosition(position);
 
         final Character target;
-        if (action.requiresTarget()) {
+        if (action.requiredTargets() > 0) {
             // need to launch a dialog to choose a target
             final CharacterAdapter characterAdapter = new CharacterAdapter(getActivity(), R.layout.list_character_summary, mCharacterService.getNonActiveCharacters());
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -74,21 +74,34 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
                     .setAdapter(characterAdapter, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (mCharacter.takeAction(action, (Character)characterAdapter.getItem(which)) == (Action.RESULT_INSUFFICIENT_AP)) {
-                                Toast.makeText(getActivity(),"Not enough AP to perform that action",Toast.LENGTH_SHORT).show();
-                            }
-                            update();
-                            mAdapter.notifyDataSetChanged();
+                            Log.d("Eric","performing an action!");
+                            actionPerformed(action.performAction(mCharacter, (Character) characterAdapter.getItem(which)));
                         }
                     });
             builder.create().show();
         } else {
-            if (mCharacter.takeAction(action) == Action.RESULT_INSUFFICIENT_AP) {
-                Toast.makeText(getActivity(), "Not enough AP to perform that action", Toast.LENGTH_SHORT).show();
-            }
-            update();
-            mAdapter.notifyDataSetChanged();
+            actionPerformed(action.performAction(mCharacter));
+
         }
+    }
+
+    private void actionPerformed(int result) {
+        switch (result) {
+            case Action.RESULT_INSUFFICIENT_AP:
+                Toast.makeText(getActivity(), "Not enough AP to perform that action", Toast.LENGTH_SHORT).show();
+                break;
+            case Action.RESULT_MISSING_TARGETS:
+                Toast.makeText(getActivity(), "Wrong number of targets", Toast.LENGTH_SHORT).show();
+                break;
+            case Action.RESULT_PASSED:
+                Toast.makeText(getActivity(), "Passed the check", Toast.LENGTH_SHORT).show();
+                break;
+            case Action.RESULT_FAILED_CHECK:
+                Toast.makeText(getActivity(), "Failed the check", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        update();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void update() {

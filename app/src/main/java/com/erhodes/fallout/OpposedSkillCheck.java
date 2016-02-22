@@ -5,31 +5,29 @@ package com.erhodes.fallout;
  */
 public class OpposedSkillCheck extends SkillCheck {
     private String mOpposedSkillKey;
-    OpposedSkillCheck(String skill, String opposedSkill) {
+    OpposedSkillCheck(String skill, String opposedSkill, TargetGroup targets) {
         super(skill);
-    }
-
-    @Override
-    public boolean requiresTarget() {
-        return true;
+        mOpposedSkillKey = opposedSkill;
+        mTargetGroups.add(targets);
     }
 
     //TODO: this results in a system where ties are handled inconsistently. Maybe this and unopposed skill checks should both inherit from a superclass?
     @Override
-    public int makeCheck(Character performer, Character target) {
+    public int roll(Character performer) {
         int skillValue = performer.getAttribute(mSkillKey);
-        int opponentSkillValue = target.getAttribute(mOpposedSkillKey);
-        int rollResult = 0;
-            if (rollOff(skillValue, opponentSkillValue)) {
-                return resolvePass(performer, target);
+        for (GameObject target : mTargetGroups.get(0).mTargets) {
+            if (rollOff(skillValue, target.getAttribute(mOpposedSkillKey))) {
+                resolvePass(performer);
             } else {
-                return resolveFail(performer, target);
+                resolveFail(performer);
             }
+        }
+        return Action.RESULT_PASSED;
     }
 
     private boolean rollOff(int performerSkillValue, int targetSkillValue) {
-        int a = roll(performerSkillValue);
-        int b = roll(targetSkillValue);
+        int a = rollDice(performerSkillValue);
+        int b = rollDice(targetSkillValue);
         if (a == b) {
             return rollOff(performerSkillValue, targetSkillValue);
         } else if (a > b) {

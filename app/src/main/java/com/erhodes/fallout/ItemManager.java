@@ -49,15 +49,18 @@ public class ItemManager {
         // Poison Gun
         Item poisonGun = new Item("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, Item.TYPE_WEAPON, 1);
         Action poisonGunAction = new ItemAction("Poison Gun Attack","Shoot a poison dart a target", 2, poisonGun);
-        SkillCheck skillCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE);
+        SkillCheck poisonGunAttackCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE);
 
         SkillCheck poisonCheck = new StaticSkillCheck(Attributes.ENDURANCE, 30);
-        poisonCheck.mFailResults.add(new EffectResult(new Effect(Attributes.HEALTH,-6), null));
+        poisonCheck.mFailResults.add(new EffectResult(Attributes.HEALTH, -6, true));
 
-        skillCheck.mPassResults.add(new EffectResult(null, new Effect(Attributes.HEALTH,-5)));
-        skillCheck.mPassResults.add(new InflictedCheckResult(poisonCheck));
+        EffectResult poisonGunInitialDamage = new EffectResult(Attributes.HEALTH, -5);
+        poisonGunInitialDamage.mAffectedTargetGroups.put(0, 0);
+        InflictedCheckResult poisonGunPoison = new InflictedCheckResult(poisonCheck);
+        poisonGunAttackCheck.mPassResults.add(poisonGunInitialDamage);
+        poisonGunAttackCheck.mPassResults.add(poisonGunPoison);
 
-        poisonGunAction.skillCheck = skillCheck;
+        poisonGunAction.skillCheck = poisonGunAttackCheck;
         poisonGun.actions.add(poisonGunAction);
         mItems.add(poisonGun);
 

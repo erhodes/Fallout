@@ -17,14 +17,14 @@ public class StaticSkillCheck extends SkillCheck {
     }
 
     @Override
-    public int makeCheck(Character performer, Character target) {
+    public int roll(Character performer) {
         int skillValue = performer.getAttribute(mSkillKey);
-        int roll = roll(skillValue);
+        int roll = rollDice(skillValue);
         Log.d("Eric", performer.name + " rolled a " + roll + "(" + (roll - skillValue) + "+" + skillValue + ") against difficulty " + mDifficulty);
         if (roll >= mDifficulty) {
-            return resolvePass(performer, target);
+            return resolvePass(performer);
         } else {
-            return resolveFail(performer, target);
+            return resolveFail(performer);
         }
     }
 }
