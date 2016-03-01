@@ -2,6 +2,7 @@ package com.erhodes.fallout;
 
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ public class Action {
     String name, description;
     int cost;
     SkillCheck skillCheck = null;
-    ArrayList<Effect> performerEffects, mTargetEffects, mSecondaryTargetEffects;
+    ArrayList<Effect> performerEffects, mTargetEffects;
 
     public Action() {}
 
@@ -38,25 +39,20 @@ public class Action {
             return skillCheck.requiredTargets();
         }
     }
-    /**
-     * Performs the action on the given character. This will apply all of this action's effects
-     * to that character.
-     * @param performer
-     */
-    public int  performAction(Character performer) {
-        if (requiredTargets() > 0) {
-            Log.d(TAG, "This action requires a target to perform");
-            return RESULT_MISSING_TARGETS;
+
+    public ArrayList<TargetGroup> getEmptyTargetGroups() {
+        if (skillCheck != null) {
+            return skillCheck.getEmptyTargetGroups();
+        } else {
+            return new ArrayList<>();
         }
-        return performAction(performer, null);
     }
 
     /** Perform an action that requires a single target
      *
      * @param performer
-     * @param primaryTarget
      */
-    public int performAction(Character performer, Character primaryTarget) {
+    public int performAction(Character performer) {
         if (performer.mActionPoints < cost) {
             return RESULT_INSUFFICIENT_AP;
         }
@@ -65,12 +61,9 @@ public class Action {
         for (Effect e : performerEffects) {
             performer.applyEffect(e);
         }
-        for (Effect e : mTargetEffects) {
-            primaryTarget.applyEffect(e);
-        }
 
         if (skillCheck != null) {
-            return skillCheck.makeCheck(performer, primaryTarget);
+            return skillCheck.makeCheck(performer);
         }
         return RESULT_PASSED;
     }

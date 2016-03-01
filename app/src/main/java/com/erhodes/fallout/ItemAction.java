@@ -19,8 +19,8 @@ public class ItemAction extends Action {
     }
 
     @Override
-    public int performAction(Character performer, Character primaryTarget) {
-        int result = super.performAction(performer, primaryTarget);
+    public int performAction(Character performer) {
+        int result = super.performAction(performer);
 
         if (mItem.type.equals(Item.TYPE_CONSUMABLE)) {
             performer.unequipConsumable(mItem);

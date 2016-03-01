@@ -37,19 +37,31 @@ public abstract class SkillCheck {
         return result;
     }
 
+    // get all target groups that are going to need to have targets assigned to them
+    public ArrayList<TargetGroup> getEmptyTargetGroups() {
+        ArrayList<TargetGroup> result = new ArrayList<>();
+        for (TargetGroup targetGroup : mTargetGroups) {
+            if (targetGroup.requiresTarget())
+                result.add(targetGroup);
+        }
+        return result;
+    }
+
+    public void addTargetGroup(TargetGroup targetGroup) {
+        mTargetGroups.add(targetGroup);
+    }
+
     public int rollDice(int bonus) {
         return mRandom.nextInt(20) + 1 + bonus;
     }
 
-    public int makeCheck(Character performer, GameObject target) {
-        TargetGroup targetGroup = new TargetGroup();
-        targetGroup.mTargets.add(target);
+    public int makeCheck(Character performer) {
         ArrayList<TargetGroup> result = new ArrayList<>();
-        result.add(targetGroup);
         return makeCheck(performer, result);
     }
     public int makeCheck(Character performer, ArrayList<TargetGroup> targetGroups) {
-        if (targetGroups.size() < requiredTargets()) {
+        Log.d("Eric","given targets " + targetGroups + "; missing targets: " + getEmptyTargetGroups().size());
+        if (targetGroups.size() < getEmptyTargetGroups().size()) {
             return Action.RESULT_MISSING_TARGETS;
         }
         int i = 0;

@@ -140,7 +140,7 @@ public class Character extends GameObject {
         mActions.add(selfHeal);
 
         Action firebolt = new Action("Fire Bolt", "Deal fire damage to an enemy",2);
-        TargetGroup enemyGroup = new TargetGroup();
+        TargetGroup enemyGroup = new TargetGroup("Primary Targets", 1, 1);
         SkillCheck fireCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, enemyGroup);
         EffectResult damageResult = new EffectResult(Attributes.HEALTH, -6);
         damageResult.mAffectedTargetGroups.put(0,0);
@@ -155,10 +155,6 @@ public class Character extends GameObject {
 
     public int takeAction(Action a) {
         return a.performAction(this);
-    }
-
-    public int takeAction(Action a, Character target) {
-        return a.performAction(this, target);
     }
 
     // Inventory Methods
