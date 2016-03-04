@@ -1,5 +1,7 @@
 package com.erhodes.fallout;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -13,11 +15,14 @@ public class ReloadResult extends CheckResult {
     @Override
     public void applyResult(Character performer, ArrayList<TargetGroup> mTargetGroups) {
         Weapon weapon = (Weapon)mTargetGroups.get(0).mTargets.get(0);
+        Log.d("Eric", "reloading " + weapon.mDisplayName);
         String ammoType = weapon.getAmmoType();
-        int missingAmmo = weapon.getAttribute(Attributes.AMMUNITION_MAX) - weapon.getAttribute(Attributes.AMMUNITION_CURRENT);
+        Log.d("Eric","current ammo is " + weapon.getAttribute(Attributes.AMMUNITION_CURRENT) + " and max is " + weapon.getAttribute(Attributes.AMMUNITION_MAX));
+        int missingAmmo = -(weapon.getAttribute(Attributes.AMMUNITION_CURRENT) - weapon.getAttribute(Attributes.AMMUNITION_MAX));
         int spareAmmo = performer.hasItem(ammoType);
         int reloadAmount = spareAmmo < missingAmmo ? spareAmmo : missingAmmo;
         performer.removeItems(ammoType, reloadAmount);
+        Log.d("Eric","character has " + spareAmmo + " ammo, and weapon is missing " + missingAmmo + "; final reload amount is " + reloadAmount);
         weapon.modifyAttribute(Attributes.AMMUNITION_CURRENT, reloadAmount);
     }
 }

@@ -14,6 +14,7 @@ public class AutopassSkillCheck extends SkillCheck {
 
     @Override
     protected int roll(Character performer) {
+        resolvePass(performer);
         return Action.RESULT_PASSED;
     }
 }

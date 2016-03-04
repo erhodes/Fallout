@@ -12,8 +12,8 @@ public class Item extends GameObject {
     public static final String TYPE_DEFAULT = "default";
     public static final String TYPE_MISC = "misc";
 
-    String displayName, description, id, type = TYPE_MISC;
-    int weight;
+    String mDisplayName, mDescription, mId, type = TYPE_MISC;
+    int mWeight;
     ArrayList<Effect> effects;
     ArrayList<Action> actions;
 
@@ -23,25 +23,28 @@ public class Item extends GameObject {
         this(name, desc, "temp", TYPE_DEFAULT, 0);
     }
 
-    public Item (String name, String desc, String i, String t, int w) {
+    public Item (String name, String description, String id, String type, int weight) {
         super();
-        displayName = name;
-        description = desc;
-        id = i;
-        type = t;
-        weight = w;
+        mDisplayName = name;
+        mDescription = description;
+        mId = id;
+        this.type = type;
+        mWeight = weight;
         effects = new ArrayList<>();
         actions = new ArrayList<>();
     }
 
     //half assed copy constructor. Not sure I need it
     public Item(Item i) {
-        displayName = i.displayName;
-        description = i.description;
-        weight = i.weight;
+        mDisplayName = i.mDisplayName;
+        mDescription = i.mDescription;
+        mWeight = i.mWeight;
         effects = new ArrayList<>(i.effects);
     }
 
+    public String getName() {
+        return mDisplayName;
+    }
     public boolean isValidAttribute(String attrKey) {
         return Attributes.getAllItemAttributes().contains(attrKey);
     }

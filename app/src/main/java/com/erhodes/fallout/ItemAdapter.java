@@ -1,7 +1,6 @@
 package com.erhodes.fallout;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +40,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         }
 
         final Item item = getItem(position);
-        holder.nameView.setText(item.displayName);
-        holder.descriptionView.setText(item.description);
+        holder.nameView.setText(item.mDisplayName);
+        holder.descriptionView.setText(item.mDescription);
         holder.quantityView.setText("1");
         return convertView;
     }

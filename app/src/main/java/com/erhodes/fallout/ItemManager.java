@@ -21,6 +21,8 @@ public class ItemManager {
     public static String ITEM_POISON = "poison";
     public static String ITEM_POISON_GUN = "poison_gun";
     public static String ITEM_POISON_DART = "poison_dart";
+    public static String ITEM_REVOLVER = "revolver";
+    public static String ITEM_38_ROUND = ".38_round";
     public static String ITEM_DEFAULT_UNARMED = "default_unarmed";
 
     private static ArrayList<Item> mItems;
@@ -29,6 +31,7 @@ public class ItemManager {
      */
     public static void loadItems(Context context) {
         mItems = new ArrayList<>();
+        /*
         try {
             Reader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("items.json")));
             Gson gson = new GsonBuilder().create();
@@ -39,6 +42,7 @@ public class ItemManager {
         } catch (IOException ex) {
             // well shit
         }
+        */
         // Poison
         Item poison = new Item("Poison","Deals damage to you", ITEM_POISON, Item.TYPE_CONSUMABLE, 1);
         Action poisonAction = new ItemAction("Drink Poison","Drink the poison and take some damage", 2, poison);
@@ -46,8 +50,15 @@ public class ItemManager {
         poison.actions.add(poisonAction);
         mItems.add(poison);
 
+        // Revolver
+        Item revolver = new Weapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
+        mItems.add(revolver);
+
+        Item revolverAmmo = new Item(".38 Round", ".38 special ammunition", ITEM_38_ROUND, Item.TYPE_CONSUMABLE, 1);
+        mItems.add(revolverAmmo);
+
         // Poison Gun
-        Item poisonGun = new Item("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, Item.TYPE_WEAPON, 1);
+        Item poisonGun = new Weapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
         Action poisonGunAction = new ItemAction("Poison Gun Attack","Shoot a poison dart a target", 2, poisonGun);
         SkillCheck poisonGunAttackCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE);
 
@@ -74,7 +85,7 @@ public class ItemManager {
 
     public static Item getItem(String c) {
         for (Item i : mItems) {
-            if (i.id.equals(c)) {
+            if (i.mId.equals(c)) {
                 return i;
             }
         }

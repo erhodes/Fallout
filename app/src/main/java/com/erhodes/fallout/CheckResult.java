@@ -17,6 +17,10 @@ public abstract class CheckResult {
     // pass in the targets of the skill in question
     public abstract void applyResult(Character performer, ArrayList<TargetGroup> mTargetGroups);
 
+    public void addAffectedTargetGroup(int groupPosition) {
+        mAffectedTargetGroups.put(mAffectedTargetGroups.size(), groupPosition);
+    }
+
     // in theory, I could just say that the highest target group is always last in the array, but this is safer
     public int requiredTargets() {
         int highestTarget = 0;

@@ -2,7 +2,6 @@ package com.erhodes.fallout;
 
 import android.util.Log;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,6 +12,7 @@ public abstract class SkillCheck {
     String mSkillKey;
     protected Random mRandom;
     ArrayList<TargetGroup> mTargetGroups; //the first target group is always the character making the check?
+    ArrayList<Cost> mCosts;
     ArrayList<CheckResult> mPassResults;
     ArrayList<CheckResult> mFailResults;
 
@@ -21,6 +21,7 @@ public abstract class SkillCheck {
         mTargetGroups = new ArrayList<>();
         mPassResults = new ArrayList<>();
         mFailResults = new ArrayList<>();
+        mCosts = new ArrayList<>();
         mRandom = new Random();
     }
 
@@ -60,7 +61,7 @@ public abstract class SkillCheck {
         return makeCheck(performer, result);
     }
     public int makeCheck(Character performer, ArrayList<TargetGroup> targetGroups) {
-        Log.d("Eric","given targets " + targetGroups + "; missing targets: " + getEmptyTargetGroups().size());
+        Log.d("Eric","given targets: " + targetGroups.size() + "; missing targets: " + getEmptyTargetGroups().size());
         if (targetGroups.size() < getEmptyTargetGroups().size()) {
             return Action.RESULT_MISSING_TARGETS;
         }
@@ -71,6 +72,18 @@ public abstract class SkillCheck {
                 targetGroup.mTargets = targetGroups.get(i).mTargets;
             }
         }
+
+        // check the costs for this skill check
+        boolean allCanPay = true;
+        for (Cost cost : mCosts) {
+            if (!cost.canPayCost(performer, mTargetGroups)) {
+                resetTargets();
+                return Action.RESULT_UNABLE_TO_PAY_COSTS;
+            }
+        }
+        for (Cost cost : mCosts) {
+            cost.payCost(performer, mTargetGroups);
+        }
         int result = roll(performer);
 
         return result;
@@ -78,15 +91,19 @@ public abstract class SkillCheck {
 
     protected abstract int roll(Character performer);
 
+    protected void resetTargets() {
+        for (TargetGroup targetGroup : mTargetGroups) {
+            targetGroup.resetTargets();
+        }
+    }
+
     protected int resolvePass(Character performer) {
         // yay, you passed!
         Log.d("Eric","pass, applying results");
         for (CheckResult checkResult : mPassResults) {
             checkResult.applyResult(performer, mTargetGroups);
         }
-        for (TargetGroup targetGroup : mTargetGroups) {
-            targetGroup.resetTargets();
-        }
+        resetTargets();
         return Action.RESULT_PASSED;
     }
 
@@ -96,9 +113,7 @@ public abstract class SkillCheck {
         for (CheckResult checkResult : mFailResults) {
             checkResult.applyResult(performer, mTargetGroups);
         }
-        for (TargetGroup targetGroup : mTargetGroups) {
-            targetGroup.resetTargets();
-        }
+        resetTargets();
         return Action.RESULT_FAILED_CHECK;
     }
 }

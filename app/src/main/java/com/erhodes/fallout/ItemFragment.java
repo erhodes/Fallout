@@ -1,7 +1,6 @@
 package com.erhodes.fallout;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -75,7 +74,7 @@ public class ItemFragment extends BaseFragment {
         Item i = mAdapter.getItem(info.position);
         switch (item.getItemId()) {
             case R.id.action_equip:
-                Log.d("Eric","clicked on item " + i.displayName + " with " + i.effects.size() + " effects");
+                Log.d("Eric","clicked on item " + i.mDisplayName + " with " + i.effects.size() + " effects");
                 mCharacter.equipItem(i);
                 mAdapter.notifyDataSetChanged();
                 return true;

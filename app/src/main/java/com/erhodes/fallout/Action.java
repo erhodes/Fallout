@@ -16,6 +16,7 @@ public class Action {
     public static final int RESULT_INSUFFICIENT_AP = 1;
     public static final int RESULT_FAILED_CHECK = 2;
     public static final int RESULT_MISSING_TARGETS = 3;
+    public static final int RESULT_UNABLE_TO_PAY_COSTS = 4;
 
     String name, description;
     int cost;

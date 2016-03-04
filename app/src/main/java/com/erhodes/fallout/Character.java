@@ -52,6 +52,10 @@ public class Character extends GameObject {
         mActionPoints = getAttribute(Attributes.ACTION_POINTS);
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void calculateAttributes() {
         for (String s: Attributes.getPrimaryAttributes()) {
             mAttributes.get(s).calculateFinalValue();
@@ -166,10 +170,10 @@ public class Character extends GameObject {
      * @return
      */
     public boolean acquireItem(Item i) {
-        if (i.weight + mCarriedWeight > getAttribute(Attributes.WEIGHT_LIMIT)) {
+        if (i.mWeight + mCarriedWeight > getAttribute(Attributes.WEIGHT_LIMIT)) {
             return false;
         }
-        mCarriedWeight += i.weight;
+        mCarriedWeight += i.mWeight;
         mInventory.add(i);
         return true;
     }
@@ -179,7 +183,7 @@ public class Character extends GameObject {
     }
 
     public void removeItemFromInventory(Item i) {
-        mCarriedWeight -= i.weight;
+        mCarriedWeight -= i.mWeight;
         mInventory.remove(i);
     }
 
@@ -191,7 +195,7 @@ public class Character extends GameObject {
     public int hasItem(String itemId) {
         int quantity = 0;
         for (Item item : mInventory) {
-            if (item.id.equals(itemId)) {
+            if (item.mId.equals(itemId)) {
                 quantity++;
             }
         }
@@ -208,7 +212,7 @@ public class Character extends GameObject {
         Iterator<Item> itemIterator = mInventory.iterator();
         while(itemIterator.hasNext() && quantity > 0) {
             Item i = itemIterator.next();
-            if (i.id.equals(itemId)) {
+            if (i.mId.equals(itemId)) {
                 itemIterator.remove();
                 quantity--;
             }
@@ -253,16 +257,16 @@ public class Character extends GameObject {
         unequipWeapon();
         removeItemFromInventory(i);
         mWeapon = i;
-        mCarriedWeight += i.weight;
+        mCarriedWeight += i.mWeight;
         mActions.addAll(i.actions);
         return true;
     }
 
     public void unequipWeapon() {
-        if (mWeapon.id.equals(ItemManager.ITEM_DEFAULT_UNARMED)) {
+        if (mWeapon.mId.equals(ItemManager.ITEM_DEFAULT_UNARMED)) {
             return;
         }
-        mCarriedWeight -= mWeapon.weight;
+        mCarriedWeight -= mWeapon.mWeight;
         mActions.removeAll(mWeapon.actions);
         acquireItem(mWeapon);
         mWeapon = ItemManager.getFists();
@@ -278,7 +282,7 @@ public class Character extends GameObject {
         unequipArmor();
         removeItemFromInventory(i);
         mArmor = i;
-        mCarriedWeight += i.weight;
+        mCarriedWeight += i.mWeight;
         for (Effect e : mArmor.effects) {
             applyEffect(e);
         }
@@ -286,7 +290,7 @@ public class Character extends GameObject {
     }
 
     public void unequipArmor() {
-        mCarriedWeight -= mArmor.weight;
+        mCarriedWeight -= mArmor.mWeight;
         // if the current armor isn't the default, then put it back into inventory
         if (!mArmor.type.equals(Item.TYPE_DEFAULT))
             acquireItem(mArmor);

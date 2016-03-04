@@ -13,6 +13,8 @@ public abstract class GameObject {
     }
     public abstract void applyEffect(Effect e);
 
+    public abstract String getName();
+
     public void removeEffect(Effect e) {
         modifyAttribute(e.key, -e.magnitude);
     }

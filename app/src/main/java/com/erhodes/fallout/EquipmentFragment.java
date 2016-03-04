@@ -55,12 +55,12 @@ public class EquipmentFragment extends BaseFragment {
     }
 
     private void updateItems() {
-        mArmorDesc.setText(mCharacter.getArmor().description);
-        mArmorName.setText(mCharacter.getArmor().displayName);
+        mArmorDesc.setText(mCharacter.getArmor().mDescription);
+        mArmorName.setText(mCharacter.getArmor().mDisplayName);
 
         Item weapon = mCharacter.getWeapon();
-        mWeaponName.setText(weapon.displayName);
-        mWeaponDesc.setText(weapon.description);// + ". Ammo:" + weapon.getAttribute(Attributes.AMMUNITION_CURRENT) + "/" + weapon.getAttribute(Attributes.AMMUNITION_MAX));
+        mWeaponName.setText(weapon.mDisplayName);
+        mWeaponDesc.setText(weapon.mDescription);// + ". Ammo:" + weapon.getAttribute(Attributes.AMMUNITION_CURRENT) + "/" + weapon.getAttribute(Attributes.AMMUNITION_MAX));
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
@@ -78,7 +78,7 @@ public class EquipmentFragment extends BaseFragment {
     //TODO: is there a better way to figure out which view triggred this?
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Log.d("Eric","clicked on item " + mTargetItem.displayName + " with " + mTargetItem.effects.size() + " effects");
+        Log.d("Eric","clicked on item " + mTargetItem.mDisplayName + " with " + mTargetItem.effects.size() + " effects");
         switch (item.getItemId()) {
             case R.id.action_unequip:
                 mCharacter.unequipItem(mTargetItem);

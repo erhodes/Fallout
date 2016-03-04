@@ -103,6 +103,9 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
             case Action.RESULT_FAILED_CHECK:
                 Toast.makeText(getActivity(), "Failed the check", Toast.LENGTH_SHORT).show();
                 break;
+            case Action.RESULT_UNABLE_TO_PAY_COSTS:
+                Toast.makeText(getActivity(), "Unable to pay all costs", Toast.LENGTH_SHORT).show();
+                break;
         }
         update();
         mAdapter.notifyDataSetChanged();
