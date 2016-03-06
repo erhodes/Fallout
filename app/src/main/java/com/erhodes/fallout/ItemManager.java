@@ -51,27 +51,25 @@ public class ItemManager {
         mItems.add(poison);
 
         // Revolver
-        Item revolver = new Weapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
+        Weapon revolver = new Weapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
+        revolver.actions.add(revolver.buildStandardAttackAction(2));
         mItems.add(revolver);
 
         Item revolverAmmo = new Item(".38 Round", ".38 special ammunition", ITEM_38_ROUND, Item.TYPE_CONSUMABLE, 1);
         mItems.add(revolverAmmo);
 
         // Poison Gun
-        Item poisonGun = new Weapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
-        Action poisonGunAction = new ItemAction("Poison Gun Attack","Shoot a poison dart a target", 2, poisonGun);
-        SkillCheck poisonGunAttackCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE);
+        Weapon poisonGun = new Weapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
+        Action poisonGunAction = poisonGun.buildStandardAttackAction(2); //new ItemAction("Poison Gun Attack","Shoot a poison dart a target", 2, poisonGun);
+        SkillCheck poisonGunAttackCheck = poisonGunAction.skillCheck;
 
         SkillCheck poisonCheck = new StaticSkillCheck(Attributes.ENDURANCE, 30);
         poisonCheck.mFailResults.add(new EffectResult(Attributes.HEALTH, -6, true));
 
-        EffectResult poisonGunInitialDamage = new EffectResult(Attributes.HEALTH, -5);
-        poisonGunInitialDamage.mAffectedTargetGroups.put(0, 0);
         InflictedCheckResult poisonGunPoison = new InflictedCheckResult(poisonCheck);
-        poisonGunAttackCheck.mPassResults.add(poisonGunInitialDamage);
+        poisonGunPoison.addAffectedTargetGroup(0);
         poisonGunAttackCheck.mPassResults.add(poisonGunPoison);
 
-        poisonGunAction.skillCheck = poisonGunAttackCheck;
         poisonGun.actions.add(poisonGunAction);
         mItems.add(poisonGun);
 

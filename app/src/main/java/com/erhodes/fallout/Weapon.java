@@ -27,17 +27,6 @@ public class Weapon extends Item {
         check.mPassResults.add(result);
         reloadAction.skillCheck = check;
         actions.add(reloadAction);
-
-        Action attackAction = new Action("Fire " + name, "Fire a single shot with your " + name, 2);
-        SkillCheck attackCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, new TargetGroup("Attack Target", 1, 1));
-        attackCheck.addTargetGroup(thisGroup);
-        EffectResult damageResult = new EffectResult(Attributes.HEALTH, -mDamage);
-        damageResult.addAffectedTargetGroup(0);
-        attackCheck.mPassResults.add(damageResult);
-        Cost ammoCost = new Cost(Attributes.AMMUNITION_CURRENT, 1, 1);
-        attackCheck.mCosts.add(ammoCost);
-        attackAction.skillCheck = attackCheck;
-        actions.add(attackAction);
     }
 
     @Override
@@ -49,5 +38,19 @@ public class Weapon extends Item {
 
     public void addAttack(Action attackAction) {
         actions.add(attackAction);
+    }
+
+    public Action buildStandardAttackAction(int apCost) {
+        Action attackAction = new Action("Fire " + mDisplayName, "Fire a single shot with your " + mDisplayName, 2);
+        SkillCheck attackCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, new TargetGroup("Attack Target", 1, 1));
+        TargetGroup thisGroup = new TargetGroup(this);
+        attackCheck.addTargetGroup(thisGroup);
+        EffectResult damageResult = new EffectResult(Attributes.HEALTH, -mDamage);
+        damageResult.addAffectedTargetGroup(0);
+        attackCheck.mPassResults.add(damageResult);
+        Cost ammoCost = new Cost(Attributes.AMMUNITION_CURRENT, 1, 1);
+        attackCheck.mCosts.add(ammoCost);
+        attackAction.skillCheck = attackCheck;
+        return attackAction;
     }
 }
