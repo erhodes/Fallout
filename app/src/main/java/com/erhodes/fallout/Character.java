@@ -208,12 +208,13 @@ public class Character extends GameObject {
      * @param quantity
      * @return
      */
-    public int removeItems(String itemId, int quantity) {
+    public int removeItemsFromInventory(String itemId, int quantity) {
         Iterator<Item> itemIterator = mInventory.iterator();
         while(itemIterator.hasNext() && quantity > 0) {
             Item i = itemIterator.next();
             if (i.mId.equals(itemId)) {
                 itemIterator.remove();
+                mCarriedWeight -= i.mWeight;
                 quantity--;
             }
         }

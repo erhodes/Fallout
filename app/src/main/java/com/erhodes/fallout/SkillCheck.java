@@ -52,6 +52,14 @@ public abstract class SkillCheck {
         mTargetGroups.add(targetGroup);
     }
 
+    public void addPassResult(CheckResult checkResult) {
+        mPassResults.add(checkResult);
+    }
+
+    public void addFailResult(CheckResult checkResult) {
+        mFailResults.add(checkResult);
+    }
+
     public int rollDice(int bonus) {
         return mRandom.nextInt(20) + 1 + bonus;
     }

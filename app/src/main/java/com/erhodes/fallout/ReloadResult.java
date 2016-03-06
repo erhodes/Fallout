@@ -21,7 +21,7 @@ public class ReloadResult extends CheckResult {
         int missingAmmo = -(weapon.getAttribute(Attributes.AMMUNITION_CURRENT) - weapon.getAttribute(Attributes.AMMUNITION_MAX));
         int spareAmmo = performer.hasItem(ammoType);
         int reloadAmount = spareAmmo < missingAmmo ? spareAmmo : missingAmmo;
-        performer.removeItems(ammoType, reloadAmount);
+        performer.removeItemsFromInventory(ammoType, reloadAmount);
         Log.d("Eric","character has " + spareAmmo + " ammo, and weapon is missing " + missingAmmo + "; final reload amount is " + reloadAmount);
         weapon.modifyAttribute(Attributes.AMMUNITION_CURRENT, reloadAmount);
     }

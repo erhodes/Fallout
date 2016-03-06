@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity
 
         ItemManager.loadItems(this);
         mCharacterService = new CharacterService();
+        mCharacterService.addTestChars();
         if (savedInstanceState == null) {
             startFragment(CharacterFragment.newInstance());
         }

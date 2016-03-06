@@ -20,6 +20,7 @@ public class Attribute {
 
     public void addModifier(int m) {
         modifier += m;
+        calculateFinalValue();
     }
     public void calculateFinalValue() {
         finalValue = mBaseValue + modifier;

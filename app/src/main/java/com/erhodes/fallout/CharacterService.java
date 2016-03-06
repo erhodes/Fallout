@@ -18,10 +18,10 @@ public class CharacterService {
         mCharacters = new ArrayList<>();
         mActiveCharacter = null;
 
-        addTestChars();
+
     }
 
-    private void addTestChars() {
+    public void addTestChars() {
         Character mainChar = new Character("Johanson");
         Item poison = ItemManager.getItem(ItemManager.ITEM_POISON);
         mainChar.acquireItem(poison);
