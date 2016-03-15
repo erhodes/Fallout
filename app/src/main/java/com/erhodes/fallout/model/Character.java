@@ -1,4 +1,10 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
+
+import com.erhodes.fallout.ItemManager;
+import com.erhodes.fallout.model.skillcheck.EffectResult;
+import com.erhodes.fallout.model.skillcheck.OpposedStaticSkillCheck;
+import com.erhodes.fallout.model.skillcheck.SkillCheck;
+import com.erhodes.fallout.model.skillcheck.StaticSkillCheck;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +23,7 @@ public class Character extends GameObject {
     public String name;
 
 
-    Character(String n) {
+    public Character(String n) {
         super();
         name = n;
         mAcquiredPerks = new HashSet<>();
@@ -139,7 +145,7 @@ public class Character extends GameObject {
         Action selfHeal = new Action("Self Heal", "Attempt to heal yourself",1);
         SkillCheck medCheck = new StaticSkillCheck(Skills.MEDICINE, 10);
         EffectResult selfHealResult = new EffectResult(Attributes.HEALTH, 5, true);
-        medCheck.mPassResults.add(selfHealResult);
+        medCheck.addPassResult(selfHealResult);
         selfHeal.skillCheck = medCheck;
         mActions.add(selfHeal);
 
@@ -147,8 +153,8 @@ public class Character extends GameObject {
         TargetGroup enemyGroup = new TargetGroup("Primary Targets", 1, 1);
         SkillCheck fireCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, enemyGroup);
         EffectResult damageResult = new EffectResult(Attributes.HEALTH, -6);
-        damageResult.mAffectedTargetGroups.put(0,0);
-        fireCheck.mPassResults.add(damageResult);
+        damageResult.addAffectedTargetGroup(0);
+        fireCheck.addPassResult(damageResult);
         firebolt.skillCheck = fireCheck;
         mActions.add(firebolt);
     }

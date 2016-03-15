@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Perk {
     public String name, description, id;
-    ArrayList<Effect> effects;
+    public ArrayList<Effect> effects;
 
     Perk(String d) {
         description = d;

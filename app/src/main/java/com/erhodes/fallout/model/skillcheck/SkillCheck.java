@@ -1,7 +1,10 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
 import android.util.Log;
 
+import com.erhodes.fallout.model.*;
+
+import java.lang.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,7 +15,7 @@ public abstract class SkillCheck {
     String mSkillKey;
     protected Random mRandom;
     ArrayList<TargetGroup> mTargetGroups; //the first target group is always the character making the check?
-    ArrayList<Cost> mCosts;
+    public ArrayList<Cost> mCosts;
     ArrayList<CheckResult> mPassResults;
     ArrayList<CheckResult> mFailResults;
 
@@ -64,11 +67,11 @@ public abstract class SkillCheck {
         return mRandom.nextInt(20) + 1 + bonus;
     }
 
-    public int makeCheck(Character performer) {
+    public int makeCheck(com.erhodes.fallout.model.Character performer) {
         ArrayList<TargetGroup> result = new ArrayList<>();
         return makeCheck(performer, result);
     }
-    public int makeCheck(Character performer, ArrayList<TargetGroup> targetGroups) {
+    public int makeCheck(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> targetGroups) {
         Log.d("Eric","given targets: " + targetGroups.size() + "; missing targets: " + getEmptyTargetGroups().size());
         if (targetGroups.size() < getEmptyTargetGroups().size()) {
             return Action.RESULT_MISSING_TARGETS;
@@ -97,7 +100,7 @@ public abstract class SkillCheck {
         return result;
     }
 
-    protected abstract int roll(Character performer);
+    protected abstract int roll(com.erhodes.fallout.model.Character performer);
 
     protected void resetTargets() {
         for (TargetGroup targetGroup : mTargetGroups) {
@@ -105,7 +108,7 @@ public abstract class SkillCheck {
         }
     }
 
-    protected int resolvePass(Character performer) {
+    protected int resolvePass(com.erhodes.fallout.model.Character performer) {
         // yay, you passed!
         Log.d("Eric","pass, applying results");
         for (CheckResult checkResult : mPassResults) {
@@ -115,7 +118,7 @@ public abstract class SkillCheck {
         return Action.RESULT_PASSED;
     }
 
-    protected int resolveFail(Character performer) {
+    protected int resolveFail(com.erhodes.fallout.model.Character performer) {
         // boo, failed
         Log.d("Eric","failed the check");
         for (CheckResult checkResult : mFailResults) {

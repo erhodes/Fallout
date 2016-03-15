@@ -1,17 +1,18 @@
 package com.erhodes.fallout;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.erhodes.fallout.model.Action;
+import com.erhodes.fallout.model.Attributes;
+import com.erhodes.fallout.model.Effect;
+import com.erhodes.fallout.model.skillcheck.EffectResult;
+import com.erhodes.fallout.model.skillcheck.InflictedCheckResult;
+import com.erhodes.fallout.model.Item;
+import com.erhodes.fallout.model.skillcheck.SkillCheck;
+import com.erhodes.fallout.model.skillcheck.StaticSkillCheck;
+import com.erhodes.fallout.model.Weapon;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Eric on 24/10/2015.
@@ -64,11 +65,11 @@ public class ItemManager {
         SkillCheck poisonGunAttackCheck = poisonGunAction.skillCheck;
 
         SkillCheck poisonCheck = new StaticSkillCheck(Attributes.ENDURANCE, 30);
-        poisonCheck.mFailResults.add(new EffectResult(Attributes.HEALTH, -6, true));
+        poisonCheck.addFailResult(new EffectResult(Attributes.HEALTH, -6, true));
 
         InflictedCheckResult poisonGunPoison = new InflictedCheckResult(poisonCheck);
         poisonGunPoison.addAffectedTargetGroup(0);
-        poisonGunAttackCheck.mPassResults.add(poisonGunPoison);
+        poisonGunAttackCheck.addPassResult(poisonGunPoison);
 
         poisonGun.actions.add(poisonGunAction);
         mItems.add(poisonGun);

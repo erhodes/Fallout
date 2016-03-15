@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 import java.util.ArrayList;
 
@@ -10,26 +10,26 @@ import java.util.ArrayList;
 public class TargetGroup {
     private String mName;
     int mMinTargets, mMaxTargets;
-    ArrayList<GameObject> mTargets;
+    public ArrayList<GameObject> mTargets;
     private boolean mStaticTargets = false;
 
-    TargetGroup() {
+    public TargetGroup() {
         this("Default Group", -1, -1);
     }
-    TargetGroup(String name, int min, int max) {
+    public TargetGroup(String name, int min, int max) {
         mName = name;
         mMinTargets = min;
         mMaxTargets = max;
         mTargets = new ArrayList<>();
     }
 
-    TargetGroup(GameObject target) {
+    public TargetGroup(GameObject target) {
         mTargets = new ArrayList<>();
         mTargets.add(target);
         setupStatic();
     }
     // this is for when the targets will always be the same.
-    TargetGroup(ArrayList<GameObject> targets) {
+    public TargetGroup(ArrayList<GameObject> targets) {
         mTargets = targets;
         setupStatic();
     }

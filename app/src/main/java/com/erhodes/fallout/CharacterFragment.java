@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.erhodes.fallout.model.Attributes;
+
 import java.util.ArrayList;
 
 

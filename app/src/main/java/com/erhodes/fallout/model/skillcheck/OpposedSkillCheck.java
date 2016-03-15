@@ -1,4 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
+
+import com.erhodes.fallout.model.*;
+
+import java.lang.*;
 
 /**
  * Created by Eric on 24/01/2016.
@@ -13,7 +17,7 @@ public class OpposedSkillCheck extends SkillCheck {
 
     //TODO: this results in a system where ties are handled inconsistently. Maybe this and unopposed skill checks should both inherit from a superclass?
     @Override
-    public int roll(Character performer) {
+    public int roll(com.erhodes.fallout.model.Character performer) {
         int skillValue = performer.getAttribute(mSkillKey);
         for (GameObject target : mTargetGroups.get(0).mTargets) {
             if (rollOff(skillValue, target.getAttribute(mOpposedSkillKey))) {

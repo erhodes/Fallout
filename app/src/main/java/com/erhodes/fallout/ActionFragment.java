@@ -3,7 +3,6 @@ package com.erhodes.fallout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -18,6 +17,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.util.ArrayList;
 
@@ -65,7 +67,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final Action action = (Action)parent.getItemAtPosition(position);
 
-        final Character target;
+        final com.erhodes.fallout.model.Character target;
 
         ArrayList<TargetGroup> targetGroups = action.getEmptyTargetGroups();
         if (targetGroups.size() > 0) {

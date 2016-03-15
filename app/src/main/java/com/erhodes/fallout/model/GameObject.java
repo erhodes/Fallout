@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 import java.util.HashMap;
 

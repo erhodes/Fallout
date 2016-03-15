@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 /**
  * Skills are what most checks are made against. Skills have ranks, which represents the amount

@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 import android.util.Log;
 
@@ -9,9 +9,9 @@ public class Attribute {
     String name, key;
     protected int mBaseValue, modifier, finalValue;
 
-    Attribute(){}
+    public Attribute(){}
 
-    Attribute(String n, String k, int b) {
+    public Attribute(String n, String k, int b) {
         name = n;
         key = k;
         mBaseValue = b;

@@ -1,8 +1,7 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
-import android.util.Log;
+import com.erhodes.fallout.model.skillcheck.SkillCheck;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -18,10 +17,10 @@ public class Action {
     public static final int RESULT_MISSING_TARGETS = 3;
     public static final int RESULT_UNABLE_TO_PAY_COSTS = 4;
 
-    String name, description;
-    int cost;
-    SkillCheck skillCheck = null;
-    ArrayList<Effect> performerEffects, mTargetEffects;
+    public String name, description;
+    public int cost;
+    public SkillCheck skillCheck = null;
+    public ArrayList<Effect> performerEffects, mTargetEffects;
 
     public Action() {}
 

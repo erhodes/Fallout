@@ -1,5 +1,11 @@
 package com.erhodes.fallout;
 
+import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
+import com.erhodes.fallout.model.skillcheck.EffectResult;
+import com.erhodes.fallout.model.skillcheck.SkillCheck;
+import com.erhodes.fallout.model.skillcheck.StaticSkillCheck;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +15,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Assert;
-
 /**
  * Created by Eric on 05/03/2016.
  */
@@ -19,7 +23,7 @@ public class CharacterTests {
     private static final String TEST_CHAR_NAME = "Test Char";
     private static final String TEST_ITEM = "test_item";
 
-    Character mCharacter;
+    com.erhodes.fallout.model.Character mCharacter;
 
     @Before
     public void setup() {

@@ -1,5 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
+import com.erhodes.fallout.model.*;
+
+import java.lang.*;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +17,7 @@ public class FurtherCheckResult extends CheckResult {
     }
 
     @Override
-    public void applyResult(Character performer, ArrayList<TargetGroup> mTargetGroups) {
+    public void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups) {
         mNextCheck.makeCheck(performer, mTargetGroups);
     }
 }

@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 import java.util.ArrayList;
 
@@ -12,10 +12,10 @@ public class Item extends GameObject {
     public static final String TYPE_DEFAULT = "default";
     public static final String TYPE_MISC = "misc";
 
-    String mDisplayName, mDescription, mId, type = TYPE_MISC;
+    public String mDisplayName, mDescription, mId, type = TYPE_MISC;
     int mWeight;
-    ArrayList<Effect> effects;
-    ArrayList<Action> actions;
+    public ArrayList<Effect> effects;
+    public ArrayList<Action> actions;
 
     public Item() {}
 

@@ -1,7 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
 import android.util.Log;
 
+import java.lang.*;
 import java.util.ArrayList;
 
 /**

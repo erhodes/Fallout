@@ -1,6 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
 import android.util.SparseIntArray;
+
+import com.erhodes.fallout.model.*;
 
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ public abstract class CheckResult {
     }
 
     // pass in the targets of the skill in question
-    public abstract void applyResult(Character performer, ArrayList<TargetGroup> mTargetGroups);
+    public abstract void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups);
 
     public void addAffectedTargetGroup(int groupPosition) {
         mAffectedTargetGroups.put(mAffectedTargetGroups.size(), groupPosition);

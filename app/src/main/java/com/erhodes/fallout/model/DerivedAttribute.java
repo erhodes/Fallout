@@ -1,4 +1,6 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
+
+import com.erhodes.fallout.model.Attribute;
 
 /**
  * The value of a Derived Attribute is based on another Attribute.
@@ -15,7 +17,7 @@ public class DerivedAttribute extends Attribute {
      * @param attributeMultiplier
      * @param baseValue
      */
-    DerivedAttribute(String n, String k, Attribute baseAttribute, float attributeMultiplier, int baseValue) {
+    public DerivedAttribute(String n, String k, Attribute baseAttribute, float attributeMultiplier, int baseValue) {
         name = n;
         key = k;
         mBaseAttribute = baseAttribute;

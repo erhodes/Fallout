@@ -1,5 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
+import com.erhodes.fallout.model.*;
+
+import java.lang.*;
 import java.util.ArrayList;
 
 /**
@@ -9,10 +12,10 @@ public class EffectResult extends CheckResult {
     ArrayList<Effect> mTargetEffects;
     boolean mAffectsPerformer;
 
-    EffectResult(String attributeKey, int magnitude) {
+    public EffectResult(String attributeKey, int magnitude) {
         this(new Effect(attributeKey, magnitude), false);
     }
-    EffectResult(String attributeKey, int magnitude, boolean affectsPerformer) {
+    public EffectResult(String attributeKey, int magnitude, boolean affectsPerformer) {
         this(new Effect(attributeKey, magnitude), affectsPerformer);
     }
     EffectResult(Effect effect, boolean affectsPerformer) {
@@ -28,7 +31,7 @@ public class EffectResult extends CheckResult {
     }
 
     @Override
-    public void applyResult(Character performer, ArrayList<TargetGroup> mTargetGroups) {
+    public void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups) {
         if (mAffectsPerformer) {
             for (Effect e : mTargetEffects) {
                 performer.applyEffect(e);

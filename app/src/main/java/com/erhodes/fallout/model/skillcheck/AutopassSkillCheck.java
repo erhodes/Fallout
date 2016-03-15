@@ -1,6 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
-import java.util.ArrayList;
+import com.erhodes.fallout.model.*;
+
+import java.lang.*;
 
 /**
  * A SkillCheck that can't be failed.
@@ -13,7 +15,7 @@ public class AutopassSkillCheck extends SkillCheck {
     }
 
     @Override
-    protected int roll(Character performer) {
+    protected int roll(com.erhodes.fallout.model.Character performer) {
         resolvePass(performer);
         return Action.RESULT_PASSED;
     }

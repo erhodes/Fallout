@@ -1,15 +1,14 @@
 package com.erhodes.fallout;
 
-import org.junit.Before;
+import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
+
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Assert;
 /**
  * Created by Eric on 06/03/2016.
  */
@@ -25,7 +24,7 @@ public class ItemTests {
         testWeapon.actions.add(testAttackAction);
 
         Item testAmmo = new Item(TEST_AMMO, TEST_AMMO, TEST_AMMO, Item.TYPE_DEFAULT, 1);
-        Character character = new Character("test_char");
+        com.erhodes.fallout.model.Character character = new Character("test_char");
         Character testTarget = new Character("target_char");
 
         int startingAmmo = testWeapon.getAttribute(Attributes.AMMUNITION_CURRENT);

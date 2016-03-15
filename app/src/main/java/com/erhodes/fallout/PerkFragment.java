@@ -1,7 +1,6 @@
 package com.erhodes.fallout;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -16,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.erhodes.fallout.model.Effect;
+import com.erhodes.fallout.model.Perk;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

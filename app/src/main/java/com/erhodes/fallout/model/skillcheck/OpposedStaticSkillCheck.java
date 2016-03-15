@@ -1,6 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
-import android.util.Log;
+import com.erhodes.fallout.model.*;
+
+import java.lang.*;
 
 /**
  * A SkillCheck made against a target's attribute.
@@ -8,7 +10,7 @@ import android.util.Log;
 public class OpposedStaticSkillCheck extends SkillCheck {
     private String mOpposedSkillKey;
 
-    OpposedStaticSkillCheck(String skill, String opposedSkill) {
+    public OpposedStaticSkillCheck(String skill, String opposedSkill) {
         this(skill, opposedSkill, new TargetGroup());
     }
 
@@ -18,14 +20,14 @@ public class OpposedStaticSkillCheck extends SkillCheck {
      * @param opposedSkill
      * @param targets
      */
-    OpposedStaticSkillCheck(String skill, String opposedSkill, TargetGroup targets) {
+    public OpposedStaticSkillCheck(String skill, String opposedSkill, TargetGroup targets) {
         super(skill);
         mOpposedSkillKey = opposedSkill;
         mTargetGroups.add(targets);
     }
 
     @Override
-    public int roll(Character performer) {
+    public int roll(com.erhodes.fallout.model.Character performer) {
         int skillValue = performer.getAttribute(mSkillKey);
         int roll;
         for (GameObject target : mTargetGroups.get(0).mTargets) {

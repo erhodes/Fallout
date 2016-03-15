@@ -1,6 +1,10 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model;
 
-import java.util.ArrayList;
+import com.erhodes.fallout.model.skillcheck.AutopassSkillCheck;
+import com.erhodes.fallout.model.skillcheck.EffectResult;
+import com.erhodes.fallout.model.skillcheck.OpposedStaticSkillCheck;
+import com.erhodes.fallout.model.skillcheck.ReloadResult;
+import com.erhodes.fallout.model.skillcheck.SkillCheck;
 
 /**
  * Created by Eric on 24/01/2016.
@@ -10,7 +14,7 @@ public class Weapon extends Item {
     int mDamage;
 
 
-    Weapon(String name, String description, String id, int weight, int damage, String ammoType, int maxAmmo) {
+    public Weapon(String name, String description, String id, int weight, int damage, String ammoType, int maxAmmo) {
         super(name, description, id, TYPE_WEAPON, weight);
         mDamage = damage;
         mAmmoType = ammoType;
@@ -24,7 +28,7 @@ public class Weapon extends Item {
         ReloadResult result = new ReloadResult();
         TargetGroup thisGroup = new TargetGroup(this);
         check.addTargetGroup(thisGroup);
-        check.mPassResults.add(result);
+        check.addPassResult(result);
         reloadAction.skillCheck = check;
         actions.add(reloadAction);
     }
@@ -47,7 +51,7 @@ public class Weapon extends Item {
         attackCheck.addTargetGroup(thisGroup);
         EffectResult damageResult = new EffectResult(Attributes.HEALTH, -mDamage);
         damageResult.addAffectedTargetGroup(0);
-        attackCheck.mPassResults.add(damageResult);
+        attackCheck.addPassResult(damageResult);
         Cost ammoCost = new Cost(Attributes.AMMUNITION_CURRENT, 1, 1);
         attackCheck.mCosts.add(ammoCost);
         attackAction.skillCheck = attackCheck;

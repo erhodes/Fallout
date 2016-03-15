@@ -1,6 +1,6 @@
 package com.erhodes.fallout;
 
-import android.util.Log;
+import com.erhodes.fallout.model.*;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class ItemAction extends Action {
     }
 
     @Override
-    public int performAction(Character performer) {
+    public int performAction(com.erhodes.fallout.model.Character performer) {
         int result = super.performAction(performer);
 
         if (mItem.type.equals(Item.TYPE_CONSUMABLE)) {

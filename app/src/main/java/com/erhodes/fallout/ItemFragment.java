@@ -14,6 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.erhodes.fallout.model.Attributes;
+import com.erhodes.fallout.model.Item;
+
 
 /**
  * A simple {@link Fragment} subclass.

@@ -1,9 +1,7 @@
 package com.erhodes.fallout;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.util.ArrayList;
 
@@ -11,7 +9,7 @@ import java.util.ArrayList;
  * Created by Eric on 19/12/2015.
  */
 public class CharacterService {
-    private ArrayList<Character> mCharacters;
+    private ArrayList<com.erhodes.fallout.model.Character> mCharacters;
     private Character mActiveCharacter;
 
     public CharacterService() {

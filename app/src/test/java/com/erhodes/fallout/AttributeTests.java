@@ -1,12 +1,14 @@
 package com.erhodes.fallout;
 
+import com.erhodes.fallout.model.Attribute;
+import com.erhodes.fallout.model.CapacityAttribute;
+import com.erhodes.fallout.model.DerivedAttribute;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Assert;
 
 /**
  * Created by Eric on 05/03/2016.

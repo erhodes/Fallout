@@ -1,9 +1,8 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.model.skillcheck;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.lang.*;
 
 /**
  * Created by Eric on 25/01/2016.
@@ -17,7 +16,7 @@ public class StaticSkillCheck extends SkillCheck {
     }
 
     @Override
-    public int roll(Character performer) {
+    public int roll(com.erhodes.fallout.model.Character performer) {
         int skillValue = performer.getAttribute(mSkillKey);
         int roll = rollDice(skillValue);
         Log.d("Eric", performer.name + " rolled a " + roll + "(" + (roll - skillValue) + "+" + skillValue + ") against difficulty " + mDifficulty);
