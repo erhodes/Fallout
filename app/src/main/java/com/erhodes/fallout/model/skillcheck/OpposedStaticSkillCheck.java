@@ -28,11 +28,11 @@ public class OpposedStaticSkillCheck extends SkillCheck {
 
     @Override
     public int roll(com.erhodes.fallout.model.Character performer) {
-        int skillValue = performer.getAttribute(mSkillKey);
+        int skillValue = performer.getAttributeValue(mSkillKey);
         int roll;
         for (GameObject target : mTargetGroups.get(0).mTargets) {
             roll = rollDice(skillValue);
-            if (roll >= target.getAttribute(mOpposedSkillKey)) {
+            if (roll >= target.getAttributeValue(mOpposedSkillKey)) {
                 resolvePass(performer);
             } else {
                 resolveFail(performer);

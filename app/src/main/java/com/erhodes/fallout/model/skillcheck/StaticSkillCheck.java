@@ -17,7 +17,7 @@ public class StaticSkillCheck extends SkillCheck {
 
     @Override
     public int roll(com.erhodes.fallout.model.Character performer) {
-        int skillValue = performer.getAttribute(mSkillKey);
+        int skillValue = performer.getAttributeValue(mSkillKey);
         int roll = rollDice(skillValue);
         Log.d("Eric", performer.name + " rolled a " + roll + "(" + (roll - skillValue) + "+" + skillValue + ") against difficulty " + mDifficulty);
         if (roll >= mDifficulty) {

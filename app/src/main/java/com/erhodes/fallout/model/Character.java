@@ -9,6 +9,7 @@ import com.erhodes.fallout.model.skillcheck.StaticSkillCheck;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Eric on 17/10/2015.
@@ -55,7 +56,7 @@ public class Character extends GameObject {
         mWeapon = ItemManager.getFists();
         calculateAttributes();
         addDefaultActions();
-        mActionPoints = getAttribute(Attributes.ACTION_POINTS);
+        mActionPoints = getAttributeValue(Attributes.ACTION_POINTS);
     }
 
     public String getName() {
@@ -84,6 +85,24 @@ public class Character extends GameObject {
         return Attributes.getAllCharacterAttributes().contains(attributeKey);
     }
 
+    public ArrayList<Attribute> getPrimaryAttributes() {
+        ArrayList<Attribute> result = new ArrayList<>();
+        for (String attributeKey : Attributes.getPrimaryAttributes()) {
+            result.add(getAttribute(attributeKey));
+        }
+        return result;
+    }
+
+    public ArrayList<Skill> getSkills() {
+        ArrayList<Skill> result = new ArrayList<>();
+        for (String attributeKey : Skills.getAllSkills()) {
+            Attribute attribute = getAttribute(attributeKey);
+            if (attribute instanceof Skill)
+                result.add((Skill)getAttribute(attributeKey));
+        }
+        return result;
+    }
+
     @Override
     public void applyEffect(Effect e) {
         modifyAttribute(e.key, e.magnitude);
@@ -96,7 +115,7 @@ public class Character extends GameObject {
 
     // called when this character begins a new turn
     public void newTurn() {
-        mActionPoints = getAttribute(Attributes.ACTION_POINTS);
+        mActionPoints = getAttributeValue(Attributes.ACTION_POINTS);
         Iterator iterator = mActiveEffects.iterator();
         while (iterator.hasNext()) {
             Effect e = (Effect)iterator.next();
@@ -131,6 +150,11 @@ public class Character extends GameObject {
         }
         return true;
     }
+
+    public List<Perk> getPerks() {
+        return PerkManager.getInstance().getPerks(mAcquiredPerks);
+    }
+
     // Action Methods
     private void addDefaultActions() {
         Action dodge = new Action("Dodge","Move out of the way",1);
@@ -176,7 +200,7 @@ public class Character extends GameObject {
      * @return
      */
     public boolean acquireItem(Item i) {
-        if (i.mWeight + mCarriedWeight > getAttribute(Attributes.WEIGHT_LIMIT)) {
+        if (i.mWeight + mCarriedWeight > getAttributeValue(Attributes.WEIGHT_LIMIT)) {
             return false;
         }
         mCarriedWeight += i.mWeight;

@@ -22,6 +22,13 @@ public class Attribute {
         modifier += m;
         calculateFinalValue();
     }
+
+    public String getName() {
+        return name;
+    }
+    public String getKey() {
+        return key;
+    }
     public void calculateFinalValue() {
         finalValue = mBaseValue + modifier;
     }

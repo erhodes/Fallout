@@ -21,10 +21,21 @@ public abstract class GameObject {
 
     public abstract boolean isValidAttribute(String attributeKey);
 
-    public int getAttribute(String attrKey) {
+    /**
+     * Return the final value of a given attribute
+     * @param attrKey
+     * @return
+     */
+    public int getAttributeValue(String attrKey) {
         if (isValidAttribute(attrKey))
             return mAttributes.get(attrKey).getFinalValue();
         return 0;
+    }
+
+    public Attribute getAttribute(String attrKey) {
+        if (isValidAttribute(attrKey))
+            return mAttributes.get(attrKey);
+        return null;
     }
 
     public void modifyAttribute(String attrKey, int mag) {

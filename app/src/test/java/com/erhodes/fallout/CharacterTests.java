@@ -39,9 +39,9 @@ public class CharacterTests {
     public void testModifyAttributes() {
         int startingValue = 0;
         for (String attribute : Attributes.getAllCharacterAttributes()) {
-            startingValue = mCharacter.getAttribute(attribute);
+            startingValue = mCharacter.getAttributeValue(attribute);
             mCharacter.modifyAttribute(attribute, 3);
-            assertEquals(mCharacter.getAttribute(attribute), startingValue+3);
+            assertEquals(mCharacter.getAttributeValue(attribute), startingValue+3);
         }
     }
 
@@ -74,14 +74,14 @@ public class CharacterTests {
         itemAction.skillCheck = skillCheck;
         item.actions.add(itemAction);
 
-        int startingStrength = mCharacter.getAttribute(Attributes.STRENGTH);
+        int startingStrength = mCharacter.getAttributeValue(Attributes.STRENGTH);
 
         assertFalse(mCharacter.getActions().contains(itemAction));
         mCharacter.acquireItem(item);
         mCharacter.equipItem(item);
         assertTrue(mCharacter.getActions().contains(itemAction));
         mCharacter.takeAction(itemAction);
-        assertEquals(mCharacter.getAttribute(Attributes.STRENGTH), startingStrength+2);
+        assertEquals(mCharacter.getAttributeValue(Attributes.STRENGTH), startingStrength+2);
     }
 
 }

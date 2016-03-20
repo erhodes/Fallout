@@ -33,8 +33,8 @@ public class Cost {
         boolean allCanPay = true;
         ArrayList<GameObject> payingTargets = buildPayingTargets(performer, mTargets);
         for (GameObject gameObject : payingTargets) {
-            Log.d("Eric", "object " + gameObject.getName() + " needs to pay " + mCost + " " + mAttributeKey + " and has " + gameObject.getAttribute(mAttributeKey));
-            if (gameObject.getAttribute(mAttributeKey) < mCost) {
+            Log.d("Eric", "object " + gameObject.getName() + " needs to pay " + mCost + " " + mAttributeKey + " and has " + gameObject.getAttributeValue(mAttributeKey));
+            if (gameObject.getAttributeValue(mAttributeKey) < mCost) {
                 return false;
             }
         }

@@ -20,8 +20,8 @@ public class ReloadResult extends CheckResult {
         Weapon weapon = (Weapon)mTargetGroups.get(0).mTargets.get(0);
         Log.d("Eric", "reloading " + weapon.mDisplayName);
         String ammoType = weapon.getAmmoType();
-        Log.d("Eric","current ammo is " + weapon.getAttribute(Attributes.AMMUNITION_CURRENT) + " and max is " + weapon.getAttribute(Attributes.AMMUNITION_MAX));
-        int missingAmmo = -(weapon.getAttribute(Attributes.AMMUNITION_CURRENT) - weapon.getAttribute(Attributes.AMMUNITION_MAX));
+        Log.d("Eric","current ammo is " + weapon.getAttributeValue(Attributes.AMMUNITION_CURRENT) + " and max is " + weapon.getAttributeValue(Attributes.AMMUNITION_MAX));
+        int missingAmmo = -(weapon.getAttributeValue(Attributes.AMMUNITION_CURRENT) - weapon.getAttributeValue(Attributes.AMMUNITION_MAX));
         int spareAmmo = performer.hasItem(ammoType);
         int reloadAmount = spareAmmo < missingAmmo ? spareAmmo : missingAmmo;
         performer.removeItemsFromInventory(ammoType, reloadAmount);

@@ -18,9 +18,9 @@ public class OpposedSkillCheck extends SkillCheck {
     //TODO: this results in a system where ties are handled inconsistently. Maybe this and unopposed skill checks should both inherit from a superclass?
     @Override
     public int roll(com.erhodes.fallout.model.Character performer) {
-        int skillValue = performer.getAttribute(mSkillKey);
+        int skillValue = performer.getAttributeValue(mSkillKey);
         for (GameObject target : mTargetGroups.get(0).mTargets) {
-            if (rollOff(skillValue, target.getAttribute(mOpposedSkillKey))) {
+            if (rollOff(skillValue, target.getAttributeValue(mOpposedSkillKey))) {
                 resolvePass(performer);
             } else {
                 resolveFail(performer);

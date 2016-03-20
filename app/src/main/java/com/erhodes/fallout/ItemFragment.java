@@ -60,7 +60,7 @@ public class ItemFragment extends BaseFragment {
     }
 
     private void updateWeightView() {
-        mWeightView.setText("Weight: " + mCharacter.mCarriedWeight + "/" + mCharacter.getAttribute(Attributes.WEIGHT_LIMIT));
+        mWeightView.setText("Weight: " + mCharacter.mCarriedWeight + "/" + mCharacter.getAttributeValue(Attributes.WEIGHT_LIMIT));
     }
 
     @Override

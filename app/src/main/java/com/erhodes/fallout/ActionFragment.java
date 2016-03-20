@@ -114,8 +114,8 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
     }
 
     private void update() {
-        mAPView.setText("Action Points: " + mCharacter.mActionPoints + "/" + mCharacter.getAttribute(Attributes.ACTION_POINTS));
-        mHealthView.setText("Health: " + mCharacter.getAttribute(Attributes.HEALTH) + "/" + mCharacter.getAttribute(Attributes.MAX_HEALTH));
+        mAPView.setText("Action Points: " + mCharacter.mActionPoints + "/" + mCharacter.getAttributeValue(Attributes.ACTION_POINTS));
+        mHealthView.setText("Health: " + mCharacter.getAttributeValue(Attributes.HEALTH) + "/" + mCharacter.getAttributeValue(Attributes.MAX_HEALTH));
     }
 
     public class ActionAdapter extends ArrayAdapter<Action> {
@@ -177,7 +177,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
             }
             final Character character = getItem(position);
             holder.nameView.setText(character.name);
-            holder.healthView.setText(character.getAttribute(Attributes.HEALTH) + "/" + character.getAttribute(Attributes.MAX_HEALTH));
+            holder.healthView.setText(character.getAttributeValue(Attributes.HEALTH) + "/" + character.getAttributeValue(Attributes.MAX_HEALTH));
             return convertView;
         }
     }

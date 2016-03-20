@@ -62,7 +62,7 @@ public class EquipmentFragment extends BaseFragment {
 
         Item weapon = mCharacter.getWeapon();
         mWeaponName.setText(weapon.mDisplayName);
-        mWeaponDesc.setText(weapon.mDescription);// + ". Ammo:" + weapon.getAttribute(Attributes.AMMUNITION_CURRENT) + "/" + weapon.getAttribute(Attributes.AMMUNITION_MAX));
+        mWeaponDesc.setText(weapon.mDescription);
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,

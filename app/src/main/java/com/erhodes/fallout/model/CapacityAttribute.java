@@ -11,7 +11,7 @@ import android.util.Log;
 public class CapacityAttribute extends Attribute {
     Attribute mMaxAttribute;
 
-    CapacityAttribute(String n, Attribute maxAttribute) {
+    public CapacityAttribute(String n, Attribute maxAttribute) {
         name = n;
         mMaxAttribute = maxAttribute;
         mMaxAttribute.calculateFinalValue();
