@@ -1,4 +1,4 @@
-package com.erhodes.fallout;
+package com.erhodes.fallout.view;
 
 
 import android.os.Bundle;
@@ -14,26 +14,29 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.erhodes.fallout.BaseFragment;
+import com.erhodes.fallout.ItemAdapter;
+import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Item;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ItemFragment#newInstance} factory method to
+ * Use the {@link InventoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ItemFragment extends BaseFragment {
+public class InventoryFragment extends BaseFragment {
     ListView mListView;
     TextView mWeightView;
     ItemAdapter mAdapter;
 
-    public static ItemFragment newInstance() {
-        ItemFragment fragment = new ItemFragment();
+    public static InventoryFragment newInstance() {
+        InventoryFragment fragment = new InventoryFragment();
         return fragment;
     }
 
-    public ItemFragment() {
+    public InventoryFragment() {
     }
 
     @Override

@@ -18,7 +18,7 @@ public class ItemTests {
 
     @Test
     public void testReload() {
-        Weapon testWeapon = new Weapon(TEST_WEAPON, TEST_WEAPON, TEST_WEAPON, 2, 5, TEST_AMMO, 1);
+        AmmoWeapon testWeapon = new AmmoWeapon(TEST_WEAPON, TEST_WEAPON, TEST_WEAPON, 2, 5, TEST_AMMO, 1);
         Action testAttackAction = testWeapon.buildStandardAttackAction(2);
         Action reloadAction = testWeapon.actions.get(0);
         testWeapon.actions.add(testAttackAction);

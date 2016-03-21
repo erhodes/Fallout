@@ -108,9 +108,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_loot) {
             startFragment(LootFragment.newInstance());
         } else if (id == R.id.nav_inventory) {
-            startFragment(ItemFragment.newInstance());
-        } else if (id == R.id.nav_equipment) {
-            startFragment(new EquipmentFragment());
+            startFragment(com.erhodes.fallout.view.ItemFragment.newInstance());
         } else if (id == R.id.nav_actions) {
             startFragment(new ActionFragment());
         }

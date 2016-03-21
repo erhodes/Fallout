@@ -3,6 +3,7 @@ package com.erhodes.fallout;
 import android.content.Context;
 
 import com.erhodes.fallout.model.Action;
+import com.erhodes.fallout.model.AmmoWeapon;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Effect;
 import com.erhodes.fallout.model.skillcheck.EffectResult;
@@ -52,7 +53,7 @@ public class ItemManager {
         mItems.add(poison);
 
         // Revolver
-        Weapon revolver = new Weapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
+        Weapon revolver = new AmmoWeapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
         revolver.actions.add(revolver.buildStandardAttackAction(2));
         mItems.add(revolver);
 
@@ -60,7 +61,7 @@ public class ItemManager {
         mItems.add(revolverAmmo);
 
         // Poison Gun
-        Weapon poisonGun = new Weapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
+        Weapon poisonGun = new AmmoWeapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
         Action poisonGunAction = poisonGun.buildStandardAttackAction(2); //new ItemAction("Poison Gun Attack","Shoot a poison dart a target", 2, poisonGun);
         SkillCheck poisonGunAttackCheck = poisonGunAction.skillCheck;
 
@@ -95,9 +96,9 @@ public class ItemManager {
      * Fists are the default equipped weapon.
      * @return
      */
-    public static Item getFists() {
-        Item i = new Item("Fists","You aren't holding anything",ITEM_DEFAULT_UNARMED, Item.TYPE_WEAPON, 0);
-        return i;
+    public static Weapon getFists() {
+        Weapon weapon = new Weapon("Fists","You aren't holding anything",ITEM_DEFAULT_UNARMED, 0, 1);
+        return weapon;
     }
     public static Item getNoArmor() {
         Item i = new Item("Nothing", "You aren't wearing anything");

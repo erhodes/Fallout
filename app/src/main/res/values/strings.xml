@@ -18,6 +18,7 @@
 
     <string name="armor">Armor</string>
     <string name="weapon">Weapon</string>
+    <string name="weapons">Weapons</string>
     <string name="quick_items">Quick Items</string>
 
     <!-- Attributes -->
@@ -29,6 +30,8 @@
     <string name="primary_attributes">Primary Attributes</string>
     <string name="secondary_attributes">Secondary Attributes</string>
     <string name="capacity_attributes">Capacity Attributes</string>
+
+    <string name="equipped_items">Equipped Items</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

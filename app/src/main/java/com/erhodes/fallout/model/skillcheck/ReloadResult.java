@@ -17,7 +17,7 @@ public class ReloadResult extends CheckResult {
     }
     @Override
     public void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups) {
-        Weapon weapon = (Weapon)mTargetGroups.get(0).mTargets.get(0);
+        AmmoWeapon weapon = (AmmoWeapon)mTargetGroups.get(0).mTargets.get(0);
         Log.d("Eric", "reloading " + weapon.mDisplayName);
         String ammoType = weapon.getAmmoType();
         Log.d("Eric","current ammo is " + weapon.getAttributeValue(Attributes.AMMUNITION_CURRENT) + " and max is " + weapon.getAttributeValue(Attributes.AMMUNITION_MAX));

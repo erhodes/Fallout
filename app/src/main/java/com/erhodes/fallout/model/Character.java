@@ -16,10 +16,11 @@ import java.util.List;
  */
 public class Character extends GameObject {
     private HashSet<String> mAcquiredPerks;
-    private ArrayList<Item> mInventory;
+    private ArrayList<Item> mInventory, mQuickItems;
     private ArrayList<Action> mActions;
     private ArrayList<Effect> mActiveEffects;
-    private Item mArmor, mWeapon;
+    private Item mArmor;
+    private Weapon mWeapon;
     public int mCarriedWeight, mActionPoints;
     public String name;
 
@@ -31,6 +32,7 @@ public class Character extends GameObject {
         mInventory = new ArrayList<>();
         mActions = new ArrayList<>();
         mActiveEffects = new ArrayList<>();
+        mQuickItems = new ArrayList<>();
 
         mAttributes.put(Attributes.STRENGTH, new Attribute("Strength",Attributes.STRENGTH,4));
         mAttributes.put(Attributes.ENDURANCE, new Attribute("Endurance",Attributes.ENDURANCE,4));
@@ -257,7 +259,7 @@ public class Character extends GameObject {
         } else if (i.type.equals(Item.TYPE_CONSUMABLE)) {
             return equipConsumable(i);
         } else if (i.type.equals(Item.TYPE_WEAPON)) {
-            return equipWeapon(i);
+            return equipWeapon((Weapon)i);
         }
         return false;
     }
@@ -274,22 +276,24 @@ public class Character extends GameObject {
 
     private boolean equipConsumable(Item i) {
         mActions.addAll(i.actions);
+        mQuickItems.add(i);
         return true;
     }
 
     public void unequipConsumable(Item i) {
         mActions.removeAll(i.actions);
+        mQuickItems.remove(i);
     }
 
-    public boolean equipWeapon(Item i) {
-        if (!i.type.equals(Item.TYPE_WEAPON)) {
-            return false;
-        }
+    public ArrayList<Item> getQuickItems() {
+        return mQuickItems;
+    }
+    public boolean equipWeapon(Weapon weapon) {
         unequipWeapon();
-        removeItemFromInventory(i);
-        mWeapon = i;
-        mCarriedWeight += i.mWeight;
-        mActions.addAll(i.actions);
+        removeItemFromInventory(weapon);
+        mWeapon = weapon;
+        mCarriedWeight += weapon.mWeight;
+        mActions.addAll(weapon.actions);
         return true;
     }
 
@@ -303,7 +307,7 @@ public class Character extends GameObject {
         mWeapon = ItemManager.getFists();
     }
 
-    public Item getWeapon() {
+    public Weapon getWeapon() {
         return mWeapon;
     }
     public boolean equipArmor(Item i) {
