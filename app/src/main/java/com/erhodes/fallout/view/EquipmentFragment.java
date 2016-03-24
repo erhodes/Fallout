@@ -10,24 +10,21 @@ import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
-import com.erhodes.fallout.model.Attribute;
+import com.erhodes.fallout.model.AmmoWeapon;
 import com.erhodes.fallout.model.Attributes;
-import com.erhodes.fallout.model.CapacityAttribute;
 import com.erhodes.fallout.model.Item;
 import com.erhodes.fallout.model.Weapon;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Eric on 20/03/2016.
  */
-public class EquippedItemFragment extends BaseFragment {
+public class EquipmentFragment extends BaseFragment {
 
-    public static EquippedItemFragment newInstance() {
-        return new EquippedItemFragment();
+    public static EquipmentFragment newInstance() {
+        return new EquipmentFragment();
     }
 
     @Override
@@ -38,9 +35,9 @@ public class EquippedItemFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_attributes, null);
+        View view = inflater.inflate(R.layout.fragment_expandable_list_view, null);
 
-        ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.primaryAttributeList);
+        ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.expandableList);
         ArrayList<Weapon> weapons = new ArrayList<>();
         weapons.add(mCharacter.getWeapon());
 
@@ -57,6 +54,9 @@ public class EquippedItemFragment extends BaseFragment {
     }
 
     public class ItemAdapter extends BaseExpandableListAdapter {
+        private final int GROUP_WEAPON = 0;
+        private final  int GROUP_ARMOR = 1;
+        private final int GROUP_QUICK = 2;
         ArrayList<String> mGroups;
         List<Weapon> mWeapons;
         List<Item> mArmors;
@@ -80,11 +80,11 @@ public class EquippedItemFragment extends BaseFragment {
         @Override
         public int getChildrenCount(int groupPosition) {
             switch (groupPosition) {
-                case 0:
+                case GROUP_WEAPON:
                     return mWeapons.size();
-                case 1:
+                case GROUP_ARMOR:
                     return mArmors.size();
-                case 2:
+                case GROUP_QUICK:
                     return mQuickItems.size();
             }
             return 0;
@@ -133,7 +133,7 @@ public class EquippedItemFragment extends BaseFragment {
         }
 
         class ViewHolder {
-            TextView nameView, valueView;
+            TextView nameView, descView;
         }
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
@@ -142,14 +142,24 @@ public class EquippedItemFragment extends BaseFragment {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_summary, null);
                 viewHolder = new ViewHolder();
                 viewHolder.nameView = (TextView)convertView.findViewById(R.id.nameView);
-                viewHolder.valueView = (TextView)convertView.findViewById(R.id.valueView);
+                viewHolder.descView = (TextView)convertView.findViewById(R.id.descView);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder)convertView.getTag();
             }
             Item item = getChild(groupPosition, childPosition);
             viewHolder.nameView.setText(item.getName());
-
+            String description;
+            if (groupPosition == GROUP_WEAPON) {
+                Weapon weapon = (Weapon)item;
+                description = "Damage: " + weapon.getDamage();
+                if (weapon instanceof AmmoWeapon) {
+                    description += ".   Ammo: " + weapon.getAttributeValue(Attributes.AMMUNITION_CURRENT) + "/" + weapon.getAttributeValue(Attributes.AMMUNITION_MAX);
+                }
+            } else {
+                description = item.getDescription();
+            }
+            viewHolder.descView.setText(description);
             return convertView;
         }
 

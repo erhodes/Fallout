@@ -32,7 +32,7 @@ public class ItemFragment extends Fragment {
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.viewpager);
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(EquippedItemFragment.newInstance(), getString(R.string.equipped_items));
+        adapter.addFragment(EquipmentFragment.newInstance(), getString(R.string.equipped_items));
         adapter.addFragment(InventoryFragment.newInstance(), getString(R.string.inventory));
         viewPager.setAdapter(adapter);
 

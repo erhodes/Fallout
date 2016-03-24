@@ -45,6 +45,7 @@ public class Item extends GameObject {
     public String getName() {
         return mDisplayName;
     }
+    public String getDescription() { return mDescription; }
     public boolean isValidAttribute(String attrKey) {
         return Attributes.getAllItemAttributes().contains(attrKey);
     }

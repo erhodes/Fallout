@@ -1,16 +1,11 @@
 package com.erhodes.fallout.view;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
@@ -37,9 +32,9 @@ public class AttributesFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_attributes, null);
+        View view = inflater.inflate(R.layout.fragment_expandable_list_view, null);
 
-        ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.primaryAttributeList);
+        ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.expandableList);
         AttributeAdapter adapter = new AttributeAdapter();
         adapter.addGroup(getResources().getString(R.string.primary_attributes), mCharacter.getPrimaryAttributes());
         ArrayList<Attribute> secondaryAttributes = new ArrayList<>();

@@ -22,7 +22,7 @@ public class Weapon extends Item {
         return Attributes.getWeaponAttributes().contains(attrKey);
     }
 
-
+    public int getDamage() { return mDamage; }
 
     public void addAttack(Action attackAction) {
         actions.add(attackAction);
