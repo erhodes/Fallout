@@ -1,6 +1,7 @@
 package com.erhodes.fallout.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Eric on 24/10/2015.
@@ -13,7 +14,7 @@ public class Item extends GameObject {
     public static final String TYPE_MISC = "misc";
 
     public String mDisplayName, mDescription, mId, type = TYPE_MISC;
-    int mWeight;
+    int mWeight, mQuantity = 1;
     public ArrayList<Effect> effects;
     public ArrayList<Action> actions;
 
@@ -34,18 +35,29 @@ public class Item extends GameObject {
         actions = new ArrayList<>();
     }
 
-    //half assed copy constructor. Not sure I need it
-    public Item(Item i) {
-        mDisplayName = i.mDisplayName;
-        mDescription = i.mDescription;
-        mWeight = i.mWeight;
-        effects = new ArrayList<>(i.effects);
+    /**
+     * Copy constructor
+     * @param item
+     */
+
+    public Item(Item item) {
+        mId = item.mId;
+        type = item.type;
+        mDisplayName = item.mDisplayName;
+        mDescription = item.mDescription;
+        mWeight = item.mWeight;
+        mQuantity = item.mQuantity;
+        effects = new ArrayList<>(item.effects);
+        mAttributes = new HashMap<>(item.mAttributes);
+        actions = item.actions;
     }
 
     public String getName() {
         return mDisplayName;
     }
     public String getDescription() { return mDescription; }
+    public int getQuantity() { return mQuantity; }
+
     public boolean isValidAttribute(String attrKey) {
         return Attributes.getAllItemAttributes().contains(attrKey);
     }

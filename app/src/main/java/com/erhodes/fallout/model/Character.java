@@ -1,5 +1,7 @@
 package com.erhodes.fallout.model;
 
+import android.util.Log;
+
 import com.erhodes.fallout.ItemManager;
 import com.erhodes.fallout.model.skillcheck.EffectResult;
 import com.erhodes.fallout.model.skillcheck.OpposedStaticSkillCheck;
@@ -7,6 +9,7 @@ import com.erhodes.fallout.model.skillcheck.SkillCheck;
 import com.erhodes.fallout.model.skillcheck.StaticSkillCheck;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +19,8 @@ import java.util.List;
  */
 public class Character extends GameObject {
     private HashSet<String> mAcquiredPerks;
-    private ArrayList<Item> mInventory, mQuickItems;
+    private ArrayList<Item> mQuickItems;
+    private HashMap<String, Item> mInventory;
     private ArrayList<Action> mActions;
     private ArrayList<Effect> mActiveEffects;
     private Item mArmor;
@@ -29,7 +33,7 @@ public class Character extends GameObject {
         super();
         name = n;
         mAcquiredPerks = new HashSet<>();
-        mInventory = new ArrayList<>();
+        mInventory = new HashMap<>();
         mActions = new ArrayList<>();
         mActiveEffects = new ArrayList<>();
         mQuickItems = new ArrayList<>();
@@ -193,30 +197,40 @@ public class Character extends GameObject {
         return a.performAction(this);
     }
 
-    // Inventory Methods
+    // *****************   Inventory Methods         ***************************
 
     /**
      * Add an item to the character's inventory. Returns true if successful, false if the character
      * cannot carry the additional weight.
-     * @param i
+     * @param item
      * @return
      */
-    public boolean acquireItem(Item i) {
-        if (i.mWeight + mCarriedWeight > getAttributeValue(Attributes.WEIGHT_LIMIT)) {
+    public boolean acquireItem(Item item) {
+        if (item.mWeight + mCarriedWeight > getAttributeValue(Attributes.WEIGHT_LIMIT)) {
             return false;
         }
-        mCarriedWeight += i.mWeight;
-        mInventory.add(i);
+        mCarriedWeight += item.mWeight;
+        if (mInventory.containsKey(item.mId)) {
+            mInventory.get(item.mId).mQuantity++;
+        } else {
+            mInventory.put(item.mId, new Item(item));
+        }
         return true;
     }
 
     public ArrayList<Item> getInventory() {
-        return mInventory;
+        return new ArrayList<>(mInventory.values());
     }
 
-    public void removeItemFromInventory(Item i) {
-        mCarriedWeight -= i.mWeight;
-        mInventory.remove(i);
+    public void removeItemFromInventory(Item item) {
+        if (!mInventory.containsKey(item.mId)) {
+            return;
+        }
+        mCarriedWeight -= item.mWeight;
+        mInventory.get(item.mId).mQuantity--;
+        if (mInventory.get(item.mId).mQuantity < 1) {
+            mInventory.remove(item.mId);
+        }
     }
 
     /**
@@ -225,13 +239,8 @@ public class Character extends GameObject {
      * @return
      */
     public int hasItem(String itemId) {
-        int quantity = 0;
-        for (Item item : mInventory) {
-            if (item.mId.equals(itemId)) {
-                quantity++;
-            }
-        }
-        return quantity;
+        Item item = mInventory.get(itemId);
+        return item == null ? 0 : item.mQuantity;
     }
 
     /**
@@ -241,16 +250,19 @@ public class Character extends GameObject {
      * @return
      */
     public int removeItemsFromInventory(String itemId, int quantity) {
-        Iterator<Item> itemIterator = mInventory.iterator();
-        while(itemIterator.hasNext() && quantity > 0) {
-            Item i = itemIterator.next();
-            if (i.mId.equals(itemId)) {
-                itemIterator.remove();
-                mCarriedWeight -= i.mWeight;
-                quantity--;
-            }
+        if (!mInventory.containsKey(itemId))
+            return quantity;
+        Item item = mInventory.get(itemId);
+
+        if (quantity >= item.mQuantity) {
+            mInventory.remove(item.mId);
+            mCarriedWeight -= item.mWeight * item.mQuantity;
+            return quantity - item.mQuantity;
+        } else {
+            item.mQuantity -= quantity;
+            mCarriedWeight -= item.mWeight * quantity;
+            return 0;
         }
-        return quantity;
     }
 
     public boolean equipItem(Item i) {

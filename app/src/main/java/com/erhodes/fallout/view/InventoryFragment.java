@@ -1,6 +1,7 @@
 package com.erhodes.fallout.view;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ import com.erhodes.fallout.ItemAdapter;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Item;
+
+import java.util.List;
 
 
 /**
@@ -54,7 +58,7 @@ public class InventoryFragment extends BaseFragment {
         mWeightView = (TextView)view.findViewById(R.id.weightView);
         updateWeightView();
 
-        mAdapter = new ItemAdapter(getActivity(), R.layout.list_item_summary, mCharacter.getInventory());
+        mAdapter = new ItemAdapter(mCharacter.getInventory());
         mListView = (ListView)view.findViewById(R.id.inventoryListView);
         mListView.setAdapter(mAdapter);
 
@@ -92,4 +96,51 @@ public class InventoryFragment extends BaseFragment {
         }
     }
 
+    public class ItemAdapter extends BaseAdapter {
+        List<Item> mItems;
+
+        public ItemAdapter(List<Item> items) {
+            mItems = items;
+        }
+        protected class ViewHolder {
+            TextView nameView, descriptionView, quantityView;
+        }
+
+        @Override
+        public int getCount() {
+            return mItems.size();
+        }
+
+        @Override
+        public Item getItem(int position) {
+            return mItems.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(R.layout.list_item_summary, null);
+                holder = new ViewHolder();
+                holder.nameView = (TextView) convertView.findViewById(R.id.nameView);
+                holder.descriptionView = (TextView) convertView.findViewById(R.id.descView);
+                holder.quantityView = (TextView) convertView.findViewById(R.id.itemQuanityView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            final Item item = getItem(position);
+            holder.nameView.setText(item.mDisplayName);
+            holder.descriptionView.setText(item.mDescription);
+            holder.quantityView.setText(String.format("%d",item.getQuantity()));
+            return convertView;
+        }
     }
+}

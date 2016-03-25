@@ -44,7 +44,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         final Item item = getItem(position);
         holder.nameView.setText(item.mDisplayName);
         holder.descriptionView.setText(item.mDescription);
-        holder.quantityView.setText("1");
+        holder.quantityView.setText(String.format("%d",item.getQuantity()));
         return convertView;
     }
 }
