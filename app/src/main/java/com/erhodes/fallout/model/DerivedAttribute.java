@@ -30,4 +30,8 @@ public class DerivedAttribute extends Attribute {
     public void calculateFinalValue() {
         finalValue = mBaseValue + Math.round(mBaseAttribute.getFinalValue() * mAttributeMultiplier) + modifier;
     }
+
+    public Attribute getBaseAttribute() {
+        return mBaseAttribute;
+    }
 }

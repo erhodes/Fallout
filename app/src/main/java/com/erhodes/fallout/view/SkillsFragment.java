@@ -1,14 +1,14 @@
 package com.erhodes.fallout.view;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
@@ -32,7 +32,7 @@ public class SkillsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_skills, null);
         ListView skillsList = (ListView)view.findViewById(R.id.listView);
-        SkillAdapter adapter = new SkillAdapter(mCharacter.getSkills());
+        SkillAdapter adapter = new SkillAdapter(getActivity(), mCharacter.getSkills());
         skillsList.setAdapter(adapter);
 
         return view;
@@ -40,8 +40,10 @@ public class SkillsFragment extends BaseFragment {
 
     public class SkillAdapter extends BaseAdapter {
         ArrayList<Skill> mSkills;
+        Activity mActivity;
 
-        public SkillAdapter(ArrayList<Skill> skills) {
+        public SkillAdapter(Activity activity, ArrayList<Skill> skills) {
+            mActivity = activity;
             mSkills = skills;
         }
 
@@ -61,24 +63,45 @@ public class SkillsFragment extends BaseFragment {
         }
 
         private class ViewHolder {
-            TextView nameView, valueView;
+            TextView nameView, valueView, detailsView;
+            LinearLayout secondaryView;
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = new ViewHolder();
             if (convertView == null) {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_skill, null);
+                convertView = mActivity.getLayoutInflater().inflate(R.layout.list_skill, null);
                 viewHolder.nameView = (TextView) convertView.findViewById(R.id.nameView);
                 viewHolder.valueView = (TextView) convertView.findViewById(R.id.valueView);
+                viewHolder.detailsView = (TextView) convertView.findViewById(R.id.detailsView);
+                viewHolder.secondaryView = (LinearLayout) convertView.findViewById(R.id.secondaryView);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder)convertView.getTag();
             }
             Skill skill = getItem(position);
             viewHolder.nameView.setText(skill.getName());
-            viewHolder.valueView.setText(String.format("%d",skill.getFinalValue()));
+            viewHolder.valueView.setText(String.format("%d", skill.getFinalValue()));
+            String detailsText = mActivity.getString(R.string.ranks) + ": " + skill.getRanks() + " + " + skill.getBaseAttribute().getName() + ": " + skill.getBaseAttribute().getFinalValue()/2;
+            viewHolder.detailsView.setText(detailsText);
+
+            final View secondaryView = viewHolder.secondaryView;
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleDetailsView(secondaryView);
+                }
+            });
 
             return convertView;
+        }
+
+        private void toggleDetailsView(View v) {
+            if (v.isShown()) {
+                v.setVisibility(View.GONE);
+            } else {
+                v.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
