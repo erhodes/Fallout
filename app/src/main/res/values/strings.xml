@@ -23,6 +23,8 @@
 
     <!-- Attributes -->
     <string name="strength">Strength</string>
+    <string name="endurance">Endurance</string>
+    <string name="agility">Agility</string>
     <string name="resolve">Resolve</string>
     <string name="intelligence">Intelligence</string>
     <string name="morale">Morale</string>
@@ -32,6 +34,8 @@
     <string name="capacity_attributes">Capacity Attributes</string>
 
     <string name="ranks">Ranks</string>
+
+    <string name="remaining_exp">Remaining Skill Points:</string>
 
     <string name="equipped_items">Equipped Items</string>
 

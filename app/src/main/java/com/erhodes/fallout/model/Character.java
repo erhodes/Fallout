@@ -25,7 +25,7 @@ public class Character extends GameObject {
     private ArrayList<Effect> mActiveEffects;
     private Item mArmor;
     private Weapon mWeapon;
-    public int mCarriedWeight, mActionPoints;
+    public int mCarriedWeight, mActionPoints, mCurrentExperience, mSpentExperience, mAvailablePerks;
     public String name;
 
 
@@ -133,6 +133,18 @@ public class Character extends GameObject {
         }
     }
 
+    public void addRank(String skillId) {
+        if (mCurrentExperience < 1)
+            return;
+        Skill skill = (Skill)getAttribute(skillId);
+        skill.addRank();
+        mCurrentExperience--;
+        mSpentExperience++;
+        if (mSpentExperience >= 5) {
+            mSpentExperience = 0;
+            mAvailablePerks++;
+        }
+    }
     // Perk Methods
     public boolean hasPerk(Perk p) {
         return mAcquiredPerks.contains(p.id);

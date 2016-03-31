@@ -14,28 +14,51 @@ import android.widget.TextView;
 import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Skill;
+import com.erhodes.fallout.presenter.SkillsContract;
+import com.erhodes.fallout.presenter.SkillsPresenter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 /**
  * Created by Eric on 14/03/2016.
  */
-public class SkillsFragment extends BaseFragment {
+public class SkillsFragment extends BaseFragment implements SkillsContract.View {
+    private SkillsContract.UserActionsListener mActionListener;
+    TextView mExpDisplayView;
+    SkillAdapter mAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getCharacterService();
+        mActionListener = new SkillsPresenter(mCharacterService, this);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_skills, null);
         ListView skillsList = (ListView)view.findViewById(R.id.listView);
-        SkillAdapter adapter = new SkillAdapter(getActivity(), mCharacter.getSkills());
-        skillsList.setAdapter(adapter);
+        mAdapter = new SkillAdapter(getActivity(), mCharacter.getSkills());
+        skillsList.setAdapter(mAdapter);
 
+        mExpDisplayView = (TextView)view.findViewById(R.id.expView);
+
+        update();
         return view;
+    }
+
+    @Override
+    public void update() {
+        String text = getString(R.string.remaining_exp) + " " + mCharacter.mCurrentExperience;
+        mExpDisplayView.setText(text);
+        mAdapter.notifyDataSetChanged();
     }
 
     public class SkillAdapter extends BaseAdapter {
@@ -63,7 +86,7 @@ public class SkillsFragment extends BaseFragment {
         }
 
         private class ViewHolder {
-            TextView nameView, valueView, detailsView;
+            TextView nameView, valueView, detailsView, addRankView;
             LinearLayout secondaryView;
         }
         @Override
@@ -75,14 +98,15 @@ public class SkillsFragment extends BaseFragment {
                 viewHolder.valueView = (TextView) convertView.findViewById(R.id.valueView);
                 viewHolder.detailsView = (TextView) convertView.findViewById(R.id.detailsView);
                 viewHolder.secondaryView = (LinearLayout) convertView.findViewById(R.id.secondaryView);
+                viewHolder.addRankView = (TextView) convertView.findViewById(R.id.addRankView);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder)convertView.getTag();
             }
-            Skill skill = getItem(position);
+            final Skill skill = getItem(position);
             viewHolder.nameView.setText(skill.getName());
             viewHolder.valueView.setText(String.format("%d", skill.getFinalValue()));
-            String detailsText = mActivity.getString(R.string.ranks) + ": " + skill.getRanks() + " + " + skill.getBaseAttribute().getName() + ": " + skill.getBaseAttribute().getFinalValue()/2;
+            String detailsText = mActivity.getString(R.string.ranks) + ": " + skill.getRanks() + " + " + skill.getBaseAttribute().getName() + ": " + Math.round(skill.getBaseAttribute().getFinalValue()/2);
             viewHolder.detailsView.setText(detailsText);
 
             final View secondaryView = viewHolder.secondaryView;
@@ -90,6 +114,12 @@ public class SkillsFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     toggleDetailsView(secondaryView);
+                }
+            });
+            viewHolder.addRankView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mActionListener.addRank(skill.getKey());
                 }
             });
 

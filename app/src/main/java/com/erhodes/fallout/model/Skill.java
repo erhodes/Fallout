@@ -15,6 +15,7 @@ public class Skill extends DerivedAttribute {
     public void addRank() {
         int increase =  mSpecialized? 2 : 1;
         mBaseValue += increase;
+        calculateFinalValue();
     }
 
     public int getRanks() {
