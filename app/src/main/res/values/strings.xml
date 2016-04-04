@@ -4,6 +4,7 @@
     <string name="character">Character</string>
     <string name="combat">Combat</string>
     <string name="perks">Perks</string>
+    <string name="remaining_perks">Other Perks</string>
     <string name="equipment">Equipment</string>
     <string name="inventory">Inventory</string>
     <string name="loot">Loot</string>

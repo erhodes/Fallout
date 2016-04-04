@@ -35,6 +35,7 @@ public class CharacterService {
         //mainChar.acquireItem(ItemManager.getItem(ItemManager.ITEM_LEATHER_ARMOR));
         mainChar.applyPerk(PerkManager.getInstance().getPerk(PerkManager.PERK_STRENGTH));
         mainChar.mCurrentExperience = 6;
+        mainChar.mAvailablePerks++;
         setActiveCharacter(mainChar);
 
         mCharacters.add(new Character("Raider 1"));

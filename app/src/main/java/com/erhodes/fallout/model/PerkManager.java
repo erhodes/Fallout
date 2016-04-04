@@ -57,6 +57,16 @@ public class PerkManager {
         return mPerks.get(id);
     }
 
+    public List<Perk> getUnacquiredPerks(Character character) {
+        ArrayList<Perk> result = new ArrayList<>();
+        for (Perk perk : mPerks.values()) {
+            if (!character.hasPerk(perk)) {
+                result.add(perk);
+            }
+        }
+        return result;
+    }
+
     public List<Perk> getPerks(Set<String> iDs) {
         ArrayList<Perk> result = new ArrayList<>();
         for (String perkId : iDs) {

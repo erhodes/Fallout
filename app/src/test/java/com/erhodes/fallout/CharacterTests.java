@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 public class CharacterTests {
     private static final String TEST_CHAR_NAME = "Test Char";
     private static final String TEST_ITEM = "test_item";
+    private static final String TEST_PERK = "test_perk";
 
     com.erhodes.fallout.model.Character mCharacter;
 
@@ -84,4 +85,14 @@ public class CharacterTests {
         assertEquals(mCharacter.getAttributeValue(Attributes.STRENGTH), startingStrength+2);
     }
 
+    @Test
+    public void testAcquirePerk() {
+        Perk perk = new Perk(TEST_PERK ,"this is a test perk");
+
+        assertEquals(0, mCharacter.mAvailablePerks);
+        assertFalse(mCharacter.acquirePerk(perk));
+        mCharacter.mAvailablePerks++;
+        assertTrue(mCharacter.acquirePerk(perk));
+        assertFalse(mCharacter.acquirePerk(perk));
+    }
 }

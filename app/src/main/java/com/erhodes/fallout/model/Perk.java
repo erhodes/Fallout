@@ -9,8 +9,14 @@ public class Perk {
     public String name, description, id;
     public ArrayList<Effect> effects;
 
-    Perk(String d) {
-        description = d;
+    public Perk(String desc) {
+        description = desc;
         id = "test";
+        effects = new ArrayList<>();
+    }
+    public Perk(String id, String desc) {
+        description = desc;
+        this.id = id;
+        effects = new ArrayList<>();
     }
 }

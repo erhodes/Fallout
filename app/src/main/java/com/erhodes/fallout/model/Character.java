@@ -149,6 +149,15 @@ public class Character extends GameObject {
     public boolean hasPerk(Perk p) {
         return mAcquiredPerks.contains(p.id);
     }
+
+    public boolean acquirePerk(Perk p) {
+        if (mAvailablePerks > 0 && applyPerk(p)) {
+            mAvailablePerks--;
+            return true;
+        }
+        return false;
+    }
+
     public boolean applyPerk(Perk p){
         if (hasPerk(p))
             return false;
