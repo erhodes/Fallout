@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by Eric on 19/03/2016.
  */
-public class PerkFragment extends BaseFragment implements PerkContract.View {
+public class PerkFragment extends BaseFragment implements PerkContract.View, FragmentLifecycle{
     PerkAdapter mAdapter;
     PerkContract.UserActionListener mListener;
     ExpandableListView mListView;
@@ -36,8 +36,7 @@ public class PerkFragment extends BaseFragment implements PerkContract.View {
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
+    public void onResumeFragment(){
         update();
     }
 

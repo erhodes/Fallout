@@ -40,10 +40,13 @@ public class AttributesFragment extends BaseFragment {
         ArrayList<Attribute> secondaryAttributes = new ArrayList<>();
         secondaryAttributes.add(mCharacter.getAttribute(Attributes.DEFENCE));
         secondaryAttributes.add(mCharacter.getAttribute(Attributes.TOUGHNESS));
+        secondaryAttributes.add(mCharacter.getAttribute(Attributes.ACTION_POINTS));
+        secondaryAttributes.add(mCharacter.getAttribute(Attributes.WEIGHT_LIMIT));
         adapter.addGroup(getResources().getString(R.string.secondary_attributes), secondaryAttributes);
 
         ArrayList<Attribute> capacityAttributes = new ArrayList<>();
         capacityAttributes.add(mCharacter.getAttribute(Attributes.HEALTH));
+        capacityAttributes.add(mCharacter.getAttribute(Attributes.MORALE));
         adapter.addGroup(getResources().getString(R.string.capacity_attributes), capacityAttributes);
 
         expandableListView.setAdapter(adapter);

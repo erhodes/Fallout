@@ -19,6 +19,7 @@ public abstract class Attributes {
     public static final String HEALTH = "health";
     public static final String MAX_HEALTH = "max_health";
     public static final String MORALE = "morale";
+    public static final String MAX_MORALE = "max_morale";
     public static final String TOUGHNESS = "toughness";
     public static final String WEIGHT_LIMIT = "weight_limit";
 
@@ -42,7 +43,7 @@ public abstract class Attributes {
         attributes.add(ACTION_POINTS);
         attributes.add(DEFENCE);
         attributes.add(MAX_HEALTH);
-        attributes.add(MORALE);
+        attributes.add(MAX_MORALE);
         attributes.add(TOUGHNESS);
         attributes.add(WEIGHT_LIMIT);
         return attributes;
@@ -51,6 +52,7 @@ public abstract class Attributes {
     public static ArrayList<String> getCapacityAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
         attributes.add(HEALTH);
+        attributes.add(MORALE);
         return attributes;
     }
 

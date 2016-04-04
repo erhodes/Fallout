@@ -45,12 +45,13 @@ public class Character extends GameObject {
         mAttributes.put(Attributes.INTELLIGENCE, new Attribute("Intelligence",Attributes.INTELLIGENCE, 4));
 
         //    *** DERIVED ATTRIBUTES ***
-        mAttributes.put(Attributes.MORALE, new DerivedAttribute("Morale",Attributes.MORALE,mAttributes.get(Attributes.RESOLVE), 3, 0));
+        mAttributes.put(Attributes.MAX_MORALE, new DerivedAttribute("Max Morale", Attributes.MAX_MORALE, mAttributes.get(Attributes.RESOLVE), 3, 0));
+        mAttributes.put(Attributes.MORALE, new CapacityAttribute("Morale", mAttributes.get(Attributes.MAX_MORALE)));
         mAttributes.put(Attributes.WEIGHT_LIMIT, new DerivedAttribute("Weight Limit", Attributes.WEIGHT_LIMIT, mAttributes.get(Attributes.STRENGTH), 25, 0));
         mAttributes.put(Attributes.TOUGHNESS, new DerivedAttribute("Toughness", Attributes.TOUGHNESS, mAttributes.get(Attributes.ENDURANCE), 1, 0));
         mAttributes.put(Attributes.MAX_HEALTH, new DerivedAttribute("Maximum Health",Attributes.MAX_HEALTH, mAttributes.get(Attributes.ENDURANCE), 5, 0));
         mAttributes.put(Attributes.HEALTH, new CapacityAttribute("Current Health", mAttributes.get(Attributes.MAX_HEALTH)));
-        mAttributes.put(Attributes.ACTION_POINTS, new DerivedAttribute("Action Points",Attributes.ACTION_POINTS, mAttributes.get(Attributes.AGILITY), 0.5f, 5));
+        mAttributes.put(Attributes.ACTION_POINTS, new DerivedAttribute("Max Action Points",Attributes.ACTION_POINTS, mAttributes.get(Attributes.AGILITY), 0.5f, 5));
         mAttributes.put(Attributes.DEFENCE, new DerivedAttribute("Defence", Attributes.DEFENCE, mAttributes.get(Attributes.AGILITY), 1, 10));
 
         //  *** SKILLS! ***
@@ -165,6 +166,7 @@ public class Character extends GameObject {
         for (Effect e: p.effects) {
             applyEffect(e);
         }
+        calculateAttributes();
         return true;
     }
 

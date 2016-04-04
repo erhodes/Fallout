@@ -18,7 +18,9 @@ import java.util.List;
 /**
  * Created by Eric on 14/03/2016.
  */
-public class CharacterFragment extends Fragment {
+public class CharacterFragment extends Fragment implements ViewPager.OnPageChangeListener {
+    private int mCurrentPosition;
+    private Adapter mAdapter;
 
     public static CharacterFragment newInstance() {
         return new CharacterFragment();
@@ -32,16 +34,36 @@ public class CharacterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_char, container, false);
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.viewpager);
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new AttributesFragment(), "Attributes");
-        adapter.addFragment(new SkillsFragment(), "Skills");
-        adapter.addFragment(new PerkFragment(), "Perks");
-        viewPager.setAdapter(adapter);
+        mAdapter = new Adapter(getChildFragmentManager());
+        mAdapter.addFragment(new AttributesFragment(), "Attributes");
+        mAdapter.addFragment(new SkillsFragment(), "Skills");
+        mAdapter.addFragment(new PerkFragment(), "Perks");
+        viewPager.setAdapter(mAdapter);
+        viewPager.addOnPageChangeListener(this);
 
         TabLayout tabs = (TabLayout)view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
         return view;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        FragmentLifecycle fragmentToShow = (FragmentLifecycle)mAdapter.getItem(position);
+        fragmentToShow.onResumeFragment();
+
+        FragmentLifecycle fragmentToHide = (FragmentLifecycle)mAdapter.getItem(mCurrentPosition);
+        fragmentToHide.onPauseFragment();
+
+        mCurrentPosition = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
     }
 
     static class Adapter extends FragmentPagerAdapter {
