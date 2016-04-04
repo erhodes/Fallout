@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -103,8 +102,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_character) {
             startFragment(mCharFragment);
-        } else if (id == R.id.nav_perks) {
-            startFragment(PerkFragment.newInstance());
         } else if (id == R.id.nav_loot) {
             startFragment(LootFragment.newInstance());
         } else if (id == R.id.nav_inventory) {

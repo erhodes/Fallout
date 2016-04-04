@@ -42,7 +42,7 @@
 	effects:
 	[
 		{
-		key:"morale",
+		key:"max_morale",
 		magnitude:"5"
 		}
 	]
