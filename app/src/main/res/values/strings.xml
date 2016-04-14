@@ -7,6 +7,7 @@
     <string name="remaining_perks">Other Perks</string>
     <string name="equipment">Equipment</string>
     <string name="inventory">Inventory</string>
+    <string name="encounter">Encounter</string>
     <string name="loot">Loot</string>
     <string name="actions">Actions</string>
 
@@ -39,6 +40,11 @@
     <string name="remaining_exp">Remaining Skill Points:</string>
 
     <string name="equipped_items">Equipped Items</string>
+
+    <string name="perform_action">Perform Action</string>
+    <string name="current_action">Current Action:</string>
+    <string name="remaining_ap">Remaining AP:</string>
+    <string name="end_turn">End Turn</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

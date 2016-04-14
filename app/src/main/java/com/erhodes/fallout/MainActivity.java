@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.erhodes.fallout.model.PerkManager;
 import com.erhodes.fallout.view.CharacterFragment;
+import com.erhodes.fallout.view.EncounterFragment;
 
 interface CharacterInterface {
     public CharacterService getCharacterService();
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         mCharacterService.addTestChars();
         mCharFragment = CharacterFragment.newInstance();
         if (savedInstanceState == null) {
-            startFragment(mCharFragment);
+            startFragment(new EncounterFragment());
         }
     }
 
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity
             startFragment(com.erhodes.fallout.view.ItemFragment.newInstance());
         } else if (id == R.id.nav_actions) {
             startFragment(new ActionFragment());
+        } else if (id == R.id.nav_encounter) {
+            startFragment(new EncounterFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

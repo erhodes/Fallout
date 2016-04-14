@@ -6,6 +6,8 @@
             android:title="@string/character" />
         <item android:id="@+id/nav_inventory" android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/inventory" />
+        <item android:id="@+id/nav_encounter" android:icon="@android:drawable/ic_menu_agenda"
+            android:title="@string/encounter" />
         <item android:id="@+id/nav_loot" android:icon="@android:drawable/ic_lock_idle_charging"
             android:title="@string/loot" />
         <item android:id="@+id/nav_actions" android:icon="@android:drawable/ic_menu_camera"

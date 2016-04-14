@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Eric on 19/12/2015.
  */
 public class CharacterService {
-    private ArrayList<com.erhodes.fallout.model.Character> mCharacters;
+    private ArrayList<Character> mCharacters;
     private Character mActiveCharacter;
 
     public CharacterService() {

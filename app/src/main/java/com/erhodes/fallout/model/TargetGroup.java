@@ -41,6 +41,13 @@ public class TargetGroup {
     }
 
     public String getName() { return mName; }
+    public int getMinTargets() { return mMinTargets; }
+    public int getMaxTargets() { return mMaxTargets; }
+
+    public int getCurrentTargetCount() {
+        return mTargets.size();
+    }
+
     //A TargetGroup needs a target if it is not static
     public boolean requiresTarget() {
         return mTargets.size() == 0;
@@ -53,6 +60,12 @@ public class TargetGroup {
         }
     }
 
+    public boolean removeTarget(GameObject target) {
+        return mTargets.remove(target);
+    }
+    public boolean contains(GameObject target) {
+        return mTargets.contains(target);
+    }
     public void resetTargets() {
         if (!mStaticTargets)
             mTargets = new ArrayList<>();
