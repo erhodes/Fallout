@@ -1,11 +1,14 @@
 package com.erhodes.fallout.model.skillcheck;
 
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Eric on 29/02/2016.
@@ -16,8 +19,8 @@ public class ReloadResult extends CheckResult {
         mAffectedTargetGroups.put(0,0);
     }
     @Override
-    public void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups) {
-        AmmoWeapon weapon = (AmmoWeapon)mTargetGroups.get(0).mTargets.get(0);
+    public void applyResult(Character performer, HashMap<Integer, TargetGroup> targetGroups) {
+        AmmoWeapon weapon = (AmmoWeapon)targetGroups.get(TargetGroup.TARGET_GRANTING_ITEM).mTargets.get(0);
         Log.d("Eric", "reloading " + weapon.mDisplayName);
         String ammoType = weapon.getAmmoType();
         Log.d("Eric","current ammo is " + weapon.getAttributeValue(Attributes.AMMUNITION_CURRENT) + " and max is " + weapon.getAttributeValue(Attributes.AMMUNITION_MAX));

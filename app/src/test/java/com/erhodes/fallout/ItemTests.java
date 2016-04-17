@@ -24,7 +24,7 @@ public class ItemTests {
         testWeapon.actions.add(testAttackAction);
 
         Item testAmmo = new Item(TEST_AMMO, TEST_AMMO, TEST_AMMO, Item.TYPE_DEFAULT, 1);
-        com.erhodes.fallout.model.Character character = new Character("test_char");
+        Character character = new Character("test_char");
         Character testTarget = new Character("target_char");
 
         int startingAmmo = testWeapon.getAttributeValue(Attributes.AMMUNITION_CURRENT);
@@ -32,7 +32,7 @@ public class ItemTests {
         character.acquireItem(testWeapon);
         character.acquireItem(testAmmo);
 
-        testAttackAction.getEmptyTargetGroups().get(0).addTarget(testTarget);
+        testAttackAction.getDynamicTargetGroups().get(0).addTarget(testTarget);
         testAttackAction.performAction(character);
 
         assertEquals(testWeapon.getAttributeValue(Attributes.AMMUNITION_CURRENT), startingAmmo - 1);

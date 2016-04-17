@@ -1,11 +1,15 @@
 package com.erhodes.fallout.model.skillcheck;
 
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -14,45 +18,44 @@ import java.util.Random;
 public abstract class SkillCheck {
     String mSkillKey;
     protected Random mRandom;
-    ArrayList<TargetGroup> mTargetGroups; //the first target group is always the character making the check?
+    HashMap<Integer, TargetGroup> mTargetGroups; //the first target group is always the character making the check?
     public ArrayList<Cost> mCosts;
     ArrayList<CheckResult> mPassResults;
     ArrayList<CheckResult> mFailResults;
 
     public SkillCheck(String skill) {
         mSkillKey = skill;
-        mTargetGroups = new ArrayList<>();
+        mTargetGroups = new HashMap<>();
         mPassResults = new ArrayList<>();
         mFailResults = new ArrayList<>();
         mCosts = new ArrayList<>();
         mRandom = new Random();
     }
 
-    /**
-     * How many targets does this SkillCheck require to properly resolve?
+    /** get all target groups that are going to need to have targets assigned to them
+     *
      * @return
      */
-    public int requiredTargets() {
-        int result = 0;
-        for (TargetGroup targetGroup : mTargetGroups) {
-            if (targetGroup.requiresTarget())
-                result++;
+    public ArrayList<TargetGroup> getDynamicTargetGroups() {
+        ArrayList<TargetGroup> result = new ArrayList<>();
+        for (TargetGroup targetGroup : mTargetGroups.values()) {
+            if (targetGroup.isDynamic())
+                result.add(targetGroup);
         }
         return result;
     }
 
-    // get all target groups that are going to need to have targets assigned to them
-    public ArrayList<TargetGroup> getEmptyTargetGroups() {
+    public ArrayList<TargetGroup> getUnfilledTargetGroups() {
         ArrayList<TargetGroup> result = new ArrayList<>();
-        for (TargetGroup targetGroup : mTargetGroups) {
+        for (TargetGroup targetGroup : mTargetGroups.values()) {
             if (targetGroup.requiresTarget())
                 result.add(targetGroup);
         }
         return result;
     }
 
-    public void addTargetGroup(TargetGroup targetGroup) {
-        mTargetGroups.add(targetGroup);
+    public void addTargetGroup(int targetType, TargetGroup targetGroup) {
+        mTargetGroups.put(targetType, targetGroup);
     }
 
     public void addPassResult(CheckResult checkResult) {
@@ -67,20 +70,19 @@ public abstract class SkillCheck {
         return mRandom.nextInt(20) + 1 + bonus;
     }
 
-    public int makeCheck(com.erhodes.fallout.model.Character performer) {
-        ArrayList<TargetGroup> result = new ArrayList<>();
+    public int makeCheck(Character performer) {
+        HashMap<Integer, TargetGroup> result = new HashMap<>();
         return makeCheck(performer, result);
     }
-    public int makeCheck(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> targetGroups) {
-        Log.d("Eric","given targets: " + targetGroups.size() + "; missing targets: " + getEmptyTargetGroups().size());
-        if (targetGroups.size() < getEmptyTargetGroups().size()) {
+    public int makeCheck(Character performer, HashMap<Integer, TargetGroup> targetGroups) {
+        Log.d("Eric","given targets: " + targetGroups.size() + "; missing targets: " + getUnfilledTargetGroups().size());
+        if (targetGroups.size() < getUnfilledTargetGroups().size()) {
             return Action.RESULT_MISSING_TARGETS;
         }
-        int i = 0;
-        int j = 0;
-        for (TargetGroup targetGroup : mTargetGroups) {
-            if (targetGroup.requiresTarget()) {
-                targetGroup.mTargets = targetGroups.get(i).mTargets;
+
+        for (Integer i : mTargetGroups.keySet()) {
+            if (mTargetGroups.get(i).requiresTarget()) {
+                mTargetGroups.get(i).mTargets = targetGroups.get(i).mTargets;
             }
         }
 
@@ -103,12 +105,12 @@ public abstract class SkillCheck {
     protected abstract int roll(com.erhodes.fallout.model.Character performer);
 
     protected void resetTargets() {
-        for (TargetGroup targetGroup : mTargetGroups) {
+        for (TargetGroup targetGroup : mTargetGroups.values()) {
             targetGroup.resetTargets();
         }
     }
 
-    protected int resolvePass(com.erhodes.fallout.model.Character performer) {
+    protected int resolvePass(Character performer) {
         // yay, you passed!
         Log.d("Eric","pass, applying results");
         for (CheckResult checkResult : mPassResults) {

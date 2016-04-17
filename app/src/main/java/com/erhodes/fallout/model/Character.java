@@ -3,6 +3,7 @@ package com.erhodes.fallout.model;
 import android.util.Log;
 
 import com.erhodes.fallout.ItemManager;
+import com.erhodes.fallout.model.skillcheck.AutopassSkillCheck;
 import com.erhodes.fallout.model.skillcheck.EffectResult;
 import com.erhodes.fallout.model.skillcheck.OpposedStaticSkillCheck;
 import com.erhodes.fallout.model.skillcheck.SkillCheck;
@@ -192,7 +193,12 @@ public class Character extends GameObject {
 
         // these are test actions and will need to be removed later
         Action heal = new Action("Heal","Healing magic for your allies",1);
-        heal.mTargetEffects.add(new Effect(Attributes.HEALTH, 5));
+        SkillCheck healCheck = new AutopassSkillCheck();
+        healCheck.addTargetGroup(TargetGroup.TARGET_PRIMARY, new TargetGroup("Primary Target", 1, 1));
+        EffectResult healResult = new EffectResult(Attributes.HEALTH, 5);
+        healResult.addAffectedTargetGroup(TargetGroup.TARGET_PRIMARY);
+        healCheck.addPassResult(healResult);
+        heal.skillCheck = healCheck;
         mActions.add(heal);
 
         Action selfHeal = new Action("Self Heal", "Attempt to heal yourself",1);
@@ -203,10 +209,10 @@ public class Character extends GameObject {
         mActions.add(selfHeal);
 
         Action firebolt = new Action("Fire Bolt", "Deal fire damage to an enemy",2);
-        TargetGroup enemyGroup = new TargetGroup("Primary Targets", 1, 1);
+        TargetGroup enemyGroup = new TargetGroup("Primary Target", 1, 1);
         SkillCheck fireCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, enemyGroup);
         EffectResult damageResult = new EffectResult(Attributes.HEALTH, -6);
-        damageResult.addAffectedTargetGroup(0);
+        damageResult.addAffectedTargetGroup(TargetGroup.TARGET_PRIMARY);
         fireCheck.addPassResult(damageResult);
         firebolt.skillCheck = fireCheck;
         mActions.add(firebolt);

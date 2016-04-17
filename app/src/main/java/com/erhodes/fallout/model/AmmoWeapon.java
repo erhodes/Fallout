@@ -24,7 +24,7 @@ public class AmmoWeapon extends Weapon {
         SkillCheck check = new AutopassSkillCheck();
         ReloadResult result = new ReloadResult();
         TargetGroup thisGroup = new TargetGroup(this);
-        check.addTargetGroup(thisGroup);
+        check.addTargetGroup(TargetGroup.TARGET_GRANTING_ITEM, thisGroup);
         check.addPassResult(result);
         reloadAction.skillCheck = check;
         actions.add(reloadAction);
@@ -34,7 +34,7 @@ public class AmmoWeapon extends Weapon {
 
     public Action buildStandardAttackAction(int apCost) {
         Action attackAction = super.buildStandardAttackAction(apCost);
-        Cost ammoCost = new Cost(Attributes.AMMUNITION_CURRENT, 1, 1);
+        Cost ammoCost = new Cost(Attributes.AMMUNITION_CURRENT, 1, TargetGroup.TARGET_GRANTING_ITEM);
         attackAction.skillCheck.mCosts.add(ammoCost);
         return attackAction;
     }

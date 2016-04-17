@@ -1,10 +1,13 @@
 package com.erhodes.fallout.model.skillcheck;
 
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class represents the result of passing (or failing) a skill check as part of an Action.
@@ -17,10 +20,10 @@ public abstract class CheckResult {
     }
 
     // pass in the targets of the skill in question
-    public abstract void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups);
+    public abstract void applyResult(Character performer, HashMap<Integer, TargetGroup> targetGroups);
 
-    public void addAffectedTargetGroup(int groupPosition) {
-        mAffectedTargetGroups.put(mAffectedTargetGroups.size(), groupPosition);
+    public void addAffectedTargetGroup(int groupId) {
+        mAffectedTargetGroups.put(mAffectedTargetGroups.size(), groupId);
     }
 
     // in theory, I could just say that the highest target group is always last in the array, but this is safer

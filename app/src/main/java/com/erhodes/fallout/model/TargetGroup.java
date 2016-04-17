@@ -8,6 +8,11 @@ import java.util.ArrayList;
  * Sometimes a target group has a predefined group of GameObjects it will affect. For example, a skill that affects the user, or a weapon reload action.
  */
 public class TargetGroup {
+    public static int TARGET_PERFORMER = -1;
+    public static int TARGET_PRIMARY = 1;
+    public static int TARGET_SECONDARY = 2;
+    public static int TARGET_GRANTING_ITEM = 3;
+
     private String mName;
     int mMinTargets, mMaxTargets;
     public ArrayList<GameObject> mTargets;
@@ -48,10 +53,13 @@ public class TargetGroup {
         return mTargets.size();
     }
 
-    //A TargetGroup needs a target if it is not static
     public boolean requiresTarget() {
-        return mTargets.size() == 0;
+        return mTargets.size() < mMinTargets;
         //return !mStaticTargets;
+    }
+
+    public boolean isDynamic() {
+        return !mStaticTargets;
     }
 
     public void addTarget(GameObject newTarget) {

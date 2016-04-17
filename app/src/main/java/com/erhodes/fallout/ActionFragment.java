@@ -69,7 +69,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
 
         final com.erhodes.fallout.model.Character target;
 
-        ArrayList<TargetGroup> targetGroups = action.getEmptyTargetGroups();
+        ArrayList<TargetGroup> targetGroups = action.getDynamicTargetGroups();
         if (targetGroups.size() > 0) {
             final TargetGroup mainTargetGroup = targetGroups.get(0);
             final CharacterAdapter characterAdapter = new CharacterAdapter(getActivity(), R.layout.list_character_summary, mCharacterService.getNonActiveCharacters());

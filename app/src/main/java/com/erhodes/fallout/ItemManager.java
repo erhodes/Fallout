@@ -6,6 +6,7 @@ import com.erhodes.fallout.model.Action;
 import com.erhodes.fallout.model.AmmoWeapon;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Effect;
+import com.erhodes.fallout.model.TargetGroup;
 import com.erhodes.fallout.model.skillcheck.EffectResult;
 import com.erhodes.fallout.model.skillcheck.InflictedCheckResult;
 import com.erhodes.fallout.model.Item;
@@ -69,7 +70,7 @@ public class ItemManager {
         poisonCheck.addFailResult(new EffectResult(Attributes.HEALTH, -6, true));
 
         InflictedCheckResult poisonGunPoison = new InflictedCheckResult(poisonCheck);
-        poisonGunPoison.addAffectedTargetGroup(0);
+        poisonGunPoison.addAffectedTargetGroup(TargetGroup.TARGET_PRIMARY);
         poisonGunAttackCheck.addPassResult(poisonGunPoison);
 
         poisonGun.actions.add(poisonGunAction);

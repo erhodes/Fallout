@@ -1,9 +1,14 @@
 package com.erhodes.fallout.model.skillcheck;
 
+import android.util.Log;
+import android.util.SparseArray;
+
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The result of a SkillCheck. Applies a number of effects to a group of targets.
@@ -31,14 +36,19 @@ public class EffectResult extends CheckResult {
     }
 
     @Override
-    public void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups) {
+    public void addAffectedTargetGroup(int groupid) {
+        super.addAffectedTargetGroup(groupid);
+    }
+
+    @Override
+    public void applyResult(Character performer, HashMap<Integer, TargetGroup> targetGroups) {
         if (mAffectsPerformer) {
             for (Effect e : mTargetEffects) {
                 performer.applyEffect(e);
             }
         }
         for (int i = 0; i < mAffectedTargetGroups.size(); i++) {
-            applyEffects(mTargetGroups.get(mAffectedTargetGroups.get(i)));
+            applyEffects(targetGroups.get(mAffectedTargetGroups.get(i)));
         }
     }
 

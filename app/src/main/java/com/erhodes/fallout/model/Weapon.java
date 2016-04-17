@@ -32,9 +32,9 @@ public class Weapon extends Item {
         Action attackAction = new Action("Fire " + mDisplayName, "Fire a single shot with your " + mDisplayName, 2);
         SkillCheck attackCheck = new OpposedStaticSkillCheck(Skills.GUNS, Attributes.DEFENCE, new TargetGroup("Attack Target", 1, 1));
         TargetGroup thisGroup = new TargetGroup(this);
-        attackCheck.addTargetGroup(thisGroup);
+        attackCheck.addTargetGroup(TargetGroup.TARGET_GRANTING_ITEM, thisGroup);
         EffectResult damageResult = new EffectResult(Attributes.HEALTH, -mDamage);
-        damageResult.addAffectedTargetGroup(0);
+        damageResult.addAffectedTargetGroup(TargetGroup.TARGET_PRIMARY);
         attackCheck.addPassResult(damageResult);
         attackAction.skillCheck = attackCheck;
         return attackAction;

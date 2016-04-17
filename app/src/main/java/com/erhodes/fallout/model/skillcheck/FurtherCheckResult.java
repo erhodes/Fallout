@@ -1,9 +1,13 @@
 package com.erhodes.fallout.model.skillcheck;
 
+import android.util.SparseArray;
+
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The result of a skill check. Forces a further skill check to occur.
@@ -17,7 +21,7 @@ public class FurtherCheckResult extends CheckResult {
     }
 
     @Override
-    public void applyResult(com.erhodes.fallout.model.Character performer, ArrayList<TargetGroup> mTargetGroups) {
-        mNextCheck.makeCheck(performer, mTargetGroups);
+    public void applyResult(Character performer, HashMap<Integer, TargetGroup> targetGroups) {
+        mNextCheck.makeCheck(performer, targetGroups);
     }
 }

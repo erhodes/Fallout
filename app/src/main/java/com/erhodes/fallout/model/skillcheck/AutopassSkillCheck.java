@@ -1,6 +1,7 @@
 package com.erhodes.fallout.model.skillcheck;
 
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.lang.*;
 
@@ -15,7 +16,7 @@ public class AutopassSkillCheck extends SkillCheck {
     }
 
     @Override
-    protected int roll(com.erhodes.fallout.model.Character performer) {
+    protected int roll(Character performer) {
         resolvePass(performer);
         return Action.RESULT_PASSED;
     }

@@ -2,7 +2,6 @@ package com.erhodes.fallout.presenter;
 
 import android.graphics.Color;
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 
 import com.erhodes.fallout.CharacterService;
 import com.erhodes.fallout.model.Action;
@@ -39,13 +38,13 @@ public class EncounterPresenter implements EncounterContract.UserActionListener 
     @Override
     public void onActionSelected(Action action) {
         if (mSelectedAction != null) {
-            for (TargetGroup targetGroup : mSelectedAction.getEmptyTargetGroups()) {
+            for (TargetGroup targetGroup : mSelectedAction.getDynamicTargetGroups()) {
                 targetGroup.resetTargets();
             }
         }
         mSelectedAction = action;
-        mTargetGroups = mSelectedAction.getEmptyTargetGroups();
-        Log.d("Eric","action has " + mTargetGroups.size() + " empty groups");
+        mTargetGroups = mSelectedAction.getDynamicTargetGroups();
+        Log.d("Eric","action has " + mTargetGroups.size() + " dynamic groups");
 
         List<String> result = new ArrayList<>();
         for (TargetGroup targetGroup : mTargetGroups) {

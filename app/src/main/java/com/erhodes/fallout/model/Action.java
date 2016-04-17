@@ -20,7 +20,7 @@ public class Action {
     public String name, description;
     public int cost;
     public SkillCheck skillCheck = null;
-    public ArrayList<Effect> performerEffects, mTargetEffects;
+    public ArrayList<Effect> performerEffects;
 
     public Action() {}
 
@@ -29,20 +29,11 @@ public class Action {
         description = d;
         cost = c;
         performerEffects = new ArrayList<>();
-        mTargetEffects = new ArrayList<>();
     }
 
-    public int requiredTargets() {
-        if (skillCheck == null) {
-            return 0;
-        } else {
-            return skillCheck.requiredTargets();
-        }
-    }
-
-    public ArrayList<TargetGroup> getEmptyTargetGroups() {
+    public ArrayList<TargetGroup> getDynamicTargetGroups() {
         if (skillCheck != null) {
-            return skillCheck.getEmptyTargetGroups();
+            return skillCheck.getDynamicTargetGroups();
         } else {
             return new ArrayList<>();
         }

@@ -1,6 +1,7 @@
 package com.erhodes.fallout.model.skillcheck;
 
 import com.erhodes.fallout.model.*;
+import com.erhodes.fallout.model.Character;
 
 import java.lang.*;
 
@@ -12,12 +13,12 @@ public class OpposedSkillCheck extends SkillCheck {
     OpposedSkillCheck(String skill, String opposedSkill, TargetGroup targets) {
         super(skill);
         mOpposedSkillKey = opposedSkill;
-        mTargetGroups.add(targets);
+        mTargetGroups.put(TargetGroup.TARGET_PRIMARY, targets);
     }
 
     //TODO: this results in a system where ties are handled inconsistently. Maybe this and unopposed skill checks should both inherit from a superclass?
     @Override
-    public int roll(com.erhodes.fallout.model.Character performer) {
+    public int roll(Character performer) {
         int skillValue = performer.getAttributeValue(mSkillKey);
         for (GameObject target : mTargetGroups.get(0).mTargets) {
             if (rollOff(skillValue, target.getAttributeValue(mOpposedSkillKey))) {
