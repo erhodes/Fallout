@@ -18,7 +18,10 @@ import java.util.List;
 /**
  * A fragment with a view pager to display other fragments!
  */
-public class ItemFragment extends Fragment {
+public class ItemFragment extends Fragment implements ViewPager.OnPageChangeListener{
+    private int mCurrentPosition;
+    private Adapter mAdapter;
+
     public static ItemFragment newInstance() {
         return new ItemFragment();
     }
@@ -31,15 +34,35 @@ public class ItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_holder, container, false);
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.viewpager);
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(EquipmentFragment.newInstance(), getString(R.string.equipped_items));
-        adapter.addFragment(InventoryFragment.newInstance(), getString(R.string.inventory));
-        viewPager.setAdapter(adapter);
+        mAdapter = new Adapter(getChildFragmentManager());
+        mAdapter.addFragment(EquipmentFragment.newInstance(), getString(R.string.equipped_items));
+        mAdapter.addFragment(InventoryFragment.newInstance(), getString(R.string.inventory));
+        viewPager.setAdapter(mAdapter);
+        viewPager.addOnPageChangeListener(this);
 
         TabLayout tabs = (TabLayout)view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
         return view;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        FragmentLifecycle fragmentToShow = (FragmentLifecycle)mAdapter.getItem(position);
+        fragmentToShow.onResumeFragment();
+
+        FragmentLifecycle fragmentToHide = (FragmentLifecycle)mAdapter.getItem(mCurrentPosition);
+        fragmentToHide.onPauseFragment();
+
+        mCurrentPosition = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
     }
 
     static class Adapter extends FragmentPagerAdapter {

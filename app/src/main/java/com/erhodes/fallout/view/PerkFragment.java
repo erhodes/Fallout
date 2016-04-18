@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by Eric on 19/03/2016.
  */
-public class PerkFragment extends BaseFragment implements PerkContract.View, FragmentLifecycle{
+public class PerkFragment extends BaseFragment implements PerkContract.View, FragmentLifecycle {
     PerkAdapter mAdapter;
     PerkContract.UserActionListener mListener;
     ExpandableListView mListView;

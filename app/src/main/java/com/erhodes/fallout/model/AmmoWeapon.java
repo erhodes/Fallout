@@ -30,6 +30,10 @@ public class AmmoWeapon extends Weapon {
         actions.add(reloadAction);
     }
 
+    public AmmoWeapon(AmmoWeapon oldWeapon) {
+        this(oldWeapon.mDisplayName, oldWeapon.mDescription, oldWeapon.mId, oldWeapon.mWeight, oldWeapon.mDamage, oldWeapon.mAmmoType, oldWeapon.getAttributeValue(Attributes.AMMUNITION_MAX));
+        this.actions = oldWeapon.actions;
+    }
     public String getAmmoType() {return mAmmoType;}
 
     public Action buildStandardAttackAction(int apCost) {

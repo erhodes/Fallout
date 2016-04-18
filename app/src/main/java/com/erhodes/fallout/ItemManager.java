@@ -54,7 +54,7 @@ public class ItemManager {
         mItems.add(poison);
 
         // Revolver
-        Weapon revolver = new AmmoWeapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
+        AmmoWeapon revolver = new AmmoWeapon("Revolver", "Classic 6 shooter", ITEM_REVOLVER, 4, 6, ITEM_38_ROUND, 6);
         revolver.actions.add(revolver.buildStandardAttackAction(2));
         mItems.add(revolver);
 
@@ -62,7 +62,7 @@ public class ItemManager {
         mItems.add(revolverAmmo);
 
         // Poison Gun
-        Weapon poisonGun = new AmmoWeapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
+        AmmoWeapon poisonGun = new AmmoWeapon("Poison Gun", "Deals poison damage to a target if you hit them", ITEM_POISON_GUN, 1, 2, ITEM_POISON_DART, 6);
         Action poisonGunAction = poisonGun.buildStandardAttackAction(2); //new ItemAction("Poison Gun Attack","Shoot a poison dart a target", 2, poisonGun);
         SkillCheck poisonGunAttackCheck = poisonGunAction.skillCheck;
 

@@ -17,6 +17,10 @@ public class Weapon extends Item {
         mDamage = damage;
     }
 
+    public Weapon(Weapon oldWeapon) {
+        super(oldWeapon);
+        mDamage = oldWeapon.mDamage;
+    }
     @Override
     public boolean isValidAttribute(String attrKey) {
         return Attributes.getWeaponAttributes().contains(attrKey);

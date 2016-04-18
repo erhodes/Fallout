@@ -242,12 +242,26 @@ public class Character extends GameObject {
         if (mInventory.containsKey(item.mId)) {
             mInventory.get(item.mId).mQuantity++;
         } else {
-            mInventory.put(item.mId, new Item(item));
+            Item newItem;
+            if (item instanceof AmmoWeapon) {
+                Log.d("Eric", "acquiring ammoweapon");
+                newItem = new AmmoWeapon((AmmoWeapon) item);
+            } else if (item instanceof Weapon) {
+                Log.d("Eric","acquiring weapon");
+                newItem = new Weapon((Weapon)item);
+            } else {
+                newItem = new Item(item);
+            }
+            mInventory.put(item.mId, newItem);
         }
         return true;
     }
 
     public ArrayList<Item> getInventory() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (String string : mInventory.keySet()) {
+            items.add(mInventory.get(string));
+        }
         return new ArrayList<>(mInventory.values());
     }
 

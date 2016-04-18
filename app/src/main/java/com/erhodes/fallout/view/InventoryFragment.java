@@ -1,10 +1,8 @@
 package com.erhodes.fallout.view;
 
 
-import android.content.Context;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -17,20 +15,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
-import com.erhodes.fallout.ItemAdapter;
 import com.erhodes.fallout.R;
-import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Item;
+import com.erhodes.fallout.presenter.InventoryContract;
+import com.erhodes.fallout.presenter.InventoryPresenter;
 
 import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link InventoryFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A fragment to display items currently in the character's inventory, as opposed to those equipped.
  */
-public class InventoryFragment extends BaseFragment {
+public class InventoryFragment extends BaseFragment implements InventoryContract.View {
+    InventoryContract.UserActionListener mActionListener;
     ListView mListView;
     TextView mWeightView;
     ItemAdapter mAdapter;
@@ -46,28 +43,38 @@ public class InventoryFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getCharacterService();
+        mActionListener = new InventoryPresenter(getActivity(), mCharacterService, this);
+    }
+
+    @Override
+    public void onResumeFragment(){
+        update();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getCharacterService();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item, container, false);
 
         mWeightView = (TextView)view.findViewById(R.id.weightView);
-        updateWeightView();
 
         mAdapter = new ItemAdapter(mCharacter.getInventory());
+
         mListView = (ListView)view.findViewById(R.id.inventoryListView);
         mListView.setAdapter(mAdapter);
 
         registerForContextMenu(mListView);
+
+        update();
         return view;
     }
 
-    private void updateWeightView() {
-        mWeightView.setText("Weight: " + mCharacter.mCarriedWeight + "/" + mCharacter.getAttributeValue(Attributes.WEIGHT_LIMIT));
+    public void update() {
+        mWeightView.setText(mActionListener.getWeightString());
+        mAdapter.updateDataSet(mCharacter.getInventory());
     }
 
     @Override
@@ -84,12 +91,10 @@ public class InventoryFragment extends BaseFragment {
         Item i = mAdapter.getItem(info.position);
         switch (item.getItemId()) {
             case R.id.action_equip:
-                Log.d("Eric","clicked on item " + i.mDisplayName + " with " + i.effects.size() + " effects");
-                mCharacter.equipItem(i);
-                mAdapter.notifyDataSetChanged();
+                mActionListener.equipItem(i);
                 return true;
             case R.id.action_drop:
-                mCharacter.removeItemFromInventory(i);
+                mActionListener.dropItem(i);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -102,6 +107,12 @@ public class InventoryFragment extends BaseFragment {
         public ItemAdapter(List<Item> items) {
             mItems = items;
         }
+
+        public void updateDataSet(List<Item> items) {
+            mItems = items;
+            notifyDataSetChanged();
+        }
+
         protected class ViewHolder {
             TextView nameView, descriptionView, quantityView;
         }

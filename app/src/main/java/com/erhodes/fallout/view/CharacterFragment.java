@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Eric on 14/03/2016.
+ * This fragment displays other fragments containing information about specific aspects of the active character.
+ *
  */
 public class CharacterFragment extends Fragment implements ViewPager.OnPageChangeListener {
     private int mCurrentPosition;

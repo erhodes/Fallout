@@ -1,6 +1,7 @@
 package com.erhodes.fallout.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.erhodes.fallout.model.AmmoWeapon;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Item;
 import com.erhodes.fallout.model.Weapon;
+import com.google.gson.internal.bind.MapTypeAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,10 @@ import java.util.List;
 /**
  * Created by Eric on 20/03/2016.
  */
-public class EquipmentFragment extends BaseFragment {
+public class EquipmentFragment extends BaseFragment implements FragmentLifecycle {
+    private ArrayList<Weapon> mWeapons;
+    private ArrayList<Item> mArmor;
+    private ItemAdapter mAdapter;
 
     public static EquipmentFragment newInstance() {
         return new EquipmentFragment();
@@ -32,25 +37,37 @@ public class EquipmentFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         getCharacterService();
     }
+
+    @Override
+    public void onResumeFragment(){
+        update();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_expandable_list_view, null);
 
         ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.expandableList);
-        ArrayList<Weapon> weapons = new ArrayList<>();
-        weapons.add(mCharacter.getWeapon());
+        mWeapons = new ArrayList<>();
+        mArmor = new ArrayList<>();
+        mAdapter = new ItemAdapter(mWeapons, mArmor, mCharacter.getQuickItems());
+        update();
 
-        ArrayList<Item> armor = new ArrayList<>();
-        armor.add(mCharacter.getArmor());
 
-        ItemAdapter adapter = new ItemAdapter(weapons, armor, mCharacter.getQuickItems());
-
-        expandableListView.setAdapter(adapter);
+        expandableListView.setAdapter(mAdapter);
         expandableListView.expandGroup(0);
         expandableListView.expandGroup(1);
         expandableListView.expandGroup(2);
         return view;
+    }
+
+    public void update() {
+        mWeapons.clear();
+        mWeapons.add(mCharacter.getWeapon());
+        mArmor.clear();
+        mArmor.add(mCharacter.getArmor());
+        mAdapter.notifyDataSetChanged();
     }
 
     public class ItemAdapter extends BaseExpandableListAdapter {
