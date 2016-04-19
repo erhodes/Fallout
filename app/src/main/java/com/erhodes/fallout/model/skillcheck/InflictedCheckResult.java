@@ -22,7 +22,7 @@ public class InflictedCheckResult extends CheckResult {
     @Override
     public void applyResult(Character performer, HashMap<Integer, TargetGroup> targetGroups) {
         for (int i = 0; i < mAffectedTargetGroups.size(); i++) {
-            for (GameObject gameObject : targetGroups.get(i).mTargets) {
+            for (GameObject gameObject : targetGroups.get(mAffectedTargetGroups.get(i)).mTargets) {
                 if (gameObject instanceof com.erhodes.fallout.model.Character) {
                     mNextCheck.makeCheck((com.erhodes.fallout.model.Character)gameObject, targetGroups);
                 }

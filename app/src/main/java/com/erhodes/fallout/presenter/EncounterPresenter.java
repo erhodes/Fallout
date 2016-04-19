@@ -46,6 +46,9 @@ public class EncounterPresenter implements EncounterContract.UserActionListener 
         mTargetGroups = mSelectedAction.getDynamicTargetGroups();
         Log.d("Eric","action has " + mTargetGroups.size() + " dynamic groups");
 
+        if (mTargetGroups.size() > 0) {
+            setActiveTargetGroup(0);
+        }
         List<String> result = new ArrayList<>();
         for (TargetGroup targetGroup : mTargetGroups) {
             result.add(targetGroup.getName());

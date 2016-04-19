@@ -2,6 +2,7 @@ package com.erhodes.fallout.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,7 @@ public class SkillsFragment extends BaseFragment implements SkillsContract.View 
             final Skill skill = getItem(position);
             viewHolder.nameView.setText(skill.getName());
             viewHolder.valueView.setText(String.format("%d", skill.getFinalValue()));
-            String detailsText = mActivity.getString(R.string.ranks) + ": " + skill.getRanks() + " + " + skill.getBaseAttribute().getName() + ": " + Math.round(skill.getBaseAttribute().getFinalValue()/2);
+            String detailsText = mActivity.getString(R.string.ranks) + ": " + skill.getRanks() + " + " + skill.getBaseAttribute().getName() + ": " + Math.round(skill.getBaseAttribute().getFinalValue()*0.5f);
             viewHolder.detailsView.setText(detailsText);
 
             final View secondaryView = viewHolder.secondaryView;

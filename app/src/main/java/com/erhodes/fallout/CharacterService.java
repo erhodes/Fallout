@@ -36,6 +36,9 @@ public class CharacterService {
         mainChar.applyPerk(PerkManager.getInstance().getPerk(PerkManager.PERK_STRENGTH));
         mainChar.mCurrentExperience = 6;
         mainChar.mAvailablePerks++;
+        for (int i = 0; i < 5; i++) {
+            mainChar.addRank(Skills.GUNS);
+        }
         setActiveCharacter(mainChar);
 
         mCharacters.add(new Character("Raider 1"));

@@ -51,7 +51,6 @@ public class PerkFragment extends BaseFragment implements PerkContract.View, Fra
 
     @Override
     public void update() {
-        Log.d("Eric","well that worked");
         mAdapter = new PerkAdapter();
         mAdapter.addGroup(getString(R.string.perks), mCharacter.getPerks());
         mAdapter.addGroup(getString(R.string.remaining_perks), PerkManager.getInstance().getUnacquiredPerks(mCharacter));
