@@ -86,6 +86,7 @@ public abstract class SkillCheck {
             }
         }
 
+        GameLog gameLog = GameLog.getInstance();
         // check the costs for this skill check
         boolean allCanPay = true;
         for (Cost cost : mCosts) {
@@ -120,7 +121,7 @@ public abstract class SkillCheck {
         return Action.RESULT_PASSED;
     }
 
-    protected int resolveFail(com.erhodes.fallout.model.Character performer) {
+    protected int resolveFail(Character performer) {
         // boo, failed
         Log.d("Eric","failed the check");
         for (CheckResult checkResult : mFailResults) {

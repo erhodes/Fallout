@@ -37,9 +37,16 @@ public class Effect {
         duration = original.duration;
     }
 
+    public String getKey() { return key; }
+    public int getMagnitude() { return magnitude; }
+    public int getDuration() { return duration; }
+
     @Override
     public String toString() {
-        return "modify " + key + " by " + magnitude + " for " + duration;
+        String result = "modify " + key + " by " + magnitude;
+        if (duration > 0)
+            result += " for " + duration + " rounds";
+        return result;
     }
 
 }

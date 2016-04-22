@@ -21,6 +21,7 @@ import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Action;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.Character;
+import com.erhodes.fallout.model.GameLog;
 import com.erhodes.fallout.model.TargetGroup;
 import com.erhodes.fallout.presenter.EncounterContract;
 import com.erhodes.fallout.presenter.EncounterPresenter;
@@ -30,13 +31,15 @@ import java.util.List;
 /**
  * Created by Eric on 03/04/2016.
  */
-public class EncounterFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, EncounterContract.View {
+public class EncounterFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, EncounterContract.View, GameLog.GameLogListener {
     private EncounterContract.UserActionListener mActionListener;
     CharacterAdapter mCharacterAdapter;
     ActionAdapter mActionAdapter;
-    ListView mListView;
+    ArrayAdapter mLogAdapter;
+    ListView mListView, mLogView;
     TextView mApCountView;
     Spinner mActionSpinner;
+    GameLog mLog;
     LinearLayout mTargetButtons;
     Button mPerformButton;
     Button[] mButtons = new Button[3];
@@ -46,6 +49,14 @@ public class EncounterFragment extends BaseFragment implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         getCharacterService();
         mActionListener = new EncounterPresenter(this, mCharacterService);
+        mLog = GameLog.getInstance();
+        mLog.registerListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLog.unregisterListener(this);
     }
 
     @Override
@@ -62,6 +73,11 @@ public class EncounterFragment extends BaseFragment implements AdapterView.OnIte
             }
         });
 
+        mLogView = (ListView)view.findViewById(R.id.logView);
+        mLogAdapter = new LogAdapter(getActivity(), mLog.getLogs());
+        mLogView.setAdapter(mLogAdapter);
+        mLogView.setSelection(mLogAdapter.getCount()-1);
+
         mTargetButtons = (LinearLayout)view.findViewById(R.id.targetButtonLayout);
 
         mActionAdapter = new ActionAdapter(getActivity(), mCharacter.getActions());
@@ -70,7 +86,6 @@ public class EncounterFragment extends BaseFragment implements AdapterView.OnIte
         mActionSpinner.setOnItemSelectedListener(this);
 
         mApCountView = (TextView)view.findViewById(R.id.apCountView);
-
 
         // should probably redo this with a recycler view
         mButtons[0] = (Button)view.findViewById(R.id.button);
@@ -119,6 +134,12 @@ public class EncounterFragment extends BaseFragment implements AdapterView.OnIte
         }
     }
 
+    public void newEvent() {
+        mLogAdapter.notifyDataSetChanged();
+        if (mLogView != null)
+            mLogView.setSelection(mLogAdapter.getCount()-1);
+    }
+
     // candidate for removal
     public View.OnClickListener mTargetButtonListener = new View.OnClickListener() {
         @Override
@@ -155,6 +176,14 @@ public class EncounterFragment extends BaseFragment implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    class LogAdapter extends ArrayAdapter {
+        List<String> mLogs;
+
+        public LogAdapter(Context context, List<String> logs) {
+            super(context, R.layout.list_action, logs);
+        }
     }
 
     class ActionAdapter extends ArrayAdapter {

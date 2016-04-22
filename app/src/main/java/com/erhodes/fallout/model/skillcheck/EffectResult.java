@@ -45,6 +45,7 @@ public class EffectResult extends CheckResult {
         if (mAffectsPerformer) {
             for (Effect e : mTargetEffects) {
                 performer.applyEffect(e);
+                GameLog.getInstance().addEffectEvent(performer.getName(), e.getKey(), e.getMagnitude(), e.getDuration());
             }
         }
         for (int i = 0; i < mAffectedTargetGroups.size(); i++) {
@@ -55,6 +56,7 @@ public class EffectResult extends CheckResult {
     private void applyEffects(TargetGroup targetGroup) {
         for (GameObject gameObject : targetGroup.mTargets) {
             for (Effect e: mTargetEffects) {
+                GameLog.getInstance().addEffectEvent(gameObject.getName(), e.getKey(), e.getMagnitude(), e.getDuration());
                 gameObject.applyEffect(e);
             }
         }

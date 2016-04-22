@@ -16,12 +16,11 @@ public class OpposedSkillCheck extends SkillCheck {
         mTargetGroups.put(TargetGroup.TARGET_PRIMARY, targets);
     }
 
-    //TODO: this results in a system where ties are handled inconsistently. Maybe this and unopposed skill checks should both inherit from a superclass?
     @Override
     public int roll(Character performer) {
         int skillValue = performer.getAttributeValue(mSkillKey);
         for (GameObject target : mTargetGroups.get(0).mTargets) {
-            if (rollOff(skillValue, target.getAttributeValue(mOpposedSkillKey))) {
+            if (rollOff(performer.getName(), skillValue, target.getName(), target.getAttributeValue(mOpposedSkillKey))) {
                 resolvePass(performer);
             } else {
                 resolveFail(performer);
@@ -30,15 +29,14 @@ public class OpposedSkillCheck extends SkillCheck {
         return Action.RESULT_PASSED;
     }
 
-    private boolean rollOff(int performerSkillValue, int targetSkillValue) {
+    private boolean rollOff(String performerName, int performerSkillValue, String targetName, int targetSkillValue) {
         int a = rollDice(performerSkillValue);
         int b = rollDice(targetSkillValue);
         if (a == b) {
-            return rollOff(performerSkillValue, targetSkillValue);
-        } else if (a > b) {
-            return true;
+            return rollOff(performerName, performerSkillValue, targetName, targetSkillValue);
         } else {
-            return false;
+            GameLog.getInstance().addOpposedRollEvent(performerName, a, targetName, b, mOpposedSkillKey);
+            return a > b;
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.erhodes.fallout.model.skillcheck;
 
 import android.util.Log;
+import com.erhodes.fallout.model.Character;
+import com.erhodes.fallout.model.GameLog;
 
 import java.lang.*;
 
 /**
- * Created by Eric on 25/01/2016.
+ * A skill check against a predefined, static target.
  */
 public class StaticSkillCheck extends SkillCheck {
     private int mDifficulty;
@@ -16,10 +18,10 @@ public class StaticSkillCheck extends SkillCheck {
     }
 
     @Override
-    public int roll(com.erhodes.fallout.model.Character performer) {
+    public int roll(Character performer) {
         int skillValue = performer.getAttributeValue(mSkillKey);
         int roll = rollDice(skillValue);
-        Log.d("Eric", performer.name + " rolled a " + roll + "(" + (roll - skillValue) + "+" + skillValue + ") against difficulty " + mDifficulty);
+        GameLog.getInstance().addRollEvent(performer.name, roll, mSkillKey, skillValue, mDifficulty);
         if (roll >= mDifficulty) {
             return resolvePass(performer);
         } else {

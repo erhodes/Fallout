@@ -30,5 +30,6 @@ public class ReloadResult extends CheckResult {
         performer.removeItemsFromInventory(ammoType, reloadAmount);
         Log.d("Eric","character has " + spareAmmo + " ammo, and weapon is missing " + missingAmmo + "; final reload amount is " + reloadAmount);
         weapon.modifyAttribute(Attributes.AMMUNITION_CURRENT, reloadAmount);
+        GameLog.getInstance().addReloadEvent(weapon.getName(), reloadAmount);
     }
 }
