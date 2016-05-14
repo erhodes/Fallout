@@ -62,6 +62,6 @@ public class Item extends GameObject {
         return Attributes.getAllItemAttributes().contains(attrKey);
     }
     public void applyEffect(Effect e) {
-        modifyAttribute(e.key, e.magnitude);
+        modifyAttribute(e.mKey, e.mMagnitude);
     }
 }

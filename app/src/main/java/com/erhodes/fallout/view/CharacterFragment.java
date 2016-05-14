@@ -36,9 +36,10 @@ public class CharacterFragment extends Fragment implements ViewPager.OnPageChang
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.viewpager);
         mAdapter = new Adapter(getChildFragmentManager());
-        mAdapter.addFragment(new AttributesFragment(), "Attributes");
-        mAdapter.addFragment(new SkillsFragment(), "Skills");
-        mAdapter.addFragment(new PerkFragment(), "Perks");
+        mAdapter.addFragment(new AttributesFragment(), getString(R.string.attributes));
+        mAdapter.addFragment(new SkillsFragment(), getString(R.string.skills));
+        mAdapter.addFragment(new PerkFragment(), getString(R.string.perks));
+        mAdapter.addFragment(new EffectFragment(), getString(R.string.effects));
         viewPager.setAdapter(mAdapter);
         viewPager.addOnPageChangeListener(this);
 

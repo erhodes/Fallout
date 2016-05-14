@@ -85,6 +85,33 @@ public class GameLog {
         addEvent(result);
     }
 
+    public void addRecurringEffectTickEvent(String name, String skillKey, int magnitude, int duration) {
+        String result = name;
+        if (magnitude >= 0) {
+            result += String.format(Locale.CANADA," gaining %d", magnitude);
+        } else {
+            result += String.format(Locale.CANADA," losing %d", -magnitude);
+        }
+        result += " " + skillKey;
+        if (duration > 0) {
+            result += String.format(Locale.CANADA, " each round for %d rounds.", duration);
+        } else {
+            result += ".";
+        }
+        addEvent(result);
+    }
+
+    public void addRecurringEffectEvent(String name, String skillKey, int magnitude) {
+        String result = name;
+        if (magnitude >= 0) {
+            result += String.format(Locale.CANADA," gained %d", magnitude);
+        } else {
+            result += String.format(Locale.CANADA," lost %d", -magnitude);
+        }
+        result += " " + skillKey + ".";
+        addEvent(result);
+    }
+
     public void addReloadEvent(String weaponName, int reloadedAmount) {
         String result = "Reloaded " + reloadedAmount + " round";
         if (reloadedAmount > 1)

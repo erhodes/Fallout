@@ -4,48 +4,55 @@ package com.erhodes.fallout.model;
  * Created by Eric on 17/10/2015.
  */
 public class Effect {
-    String key;
-    int magnitude, duration;
+    String mKey;
+    int mMagnitude, mDuration;
+    boolean mRecurring;
 
     public Effect() {}
 
     /**
      *
-     * @param k Attribute key
-     * @param m Magnitude of the effect
+     * @param key Attribute key
+     * @param magnitude Magnitude of the effect
      */
-    public Effect (String k, int m) {
-        key = k;
-        magnitude = m;
+    public Effect (String key, int magnitude) {
+        this(key, magnitude, 0, false);
     }
 
     /**
      *
-     * @param k Attribute key
-     * @param m Magnitude of the effect
-     * @param d Duration of the effect.
+     * @param key Attribute key
+     * @param magnitude Magnitude of the effect
+     * @param duration Duration of the effect.
      */
-    public Effect(String k, int m, int d) {
-        key = k;
-        magnitude = m;
-        duration = d;
+    public Effect(String key, int magnitude, int duration) {
+        this(key, magnitude, duration, false);
+    }
+
+    public Effect(String key, int magnitude, int duration, boolean recurring) {
+        mKey = key;
+        mMagnitude = magnitude;
+        mDuration = duration;
+        mRecurring = recurring;
     }
 
     public Effect(Effect original) {
-        key = original.key;
-        magnitude = original.magnitude;
-        duration = original.duration;
+        mKey = original.mKey;
+        mMagnitude = original.mMagnitude;
+        mDuration = original.mDuration;
+        mRecurring = original.mRecurring;
     }
 
-    public String getKey() { return key; }
-    public int getMagnitude() { return magnitude; }
-    public int getDuration() { return duration; }
+    public String getKey() { return mKey; }
+    public int getMagnitude() { return mMagnitude; }
+    public int getDuration() { return mDuration; }
+    public boolean isRecurring() { return mRecurring; }
 
     @Override
     public String toString() {
-        String result = "modify " + key + " by " + magnitude;
-        if (duration > 0)
-            result += " for " + duration + " rounds";
+        String result = "modify " + mKey + " by " + mMagnitude;
+        if (mDuration > 0)
+            result += " for " + mDuration + " rounds";
         return result;
     }
 

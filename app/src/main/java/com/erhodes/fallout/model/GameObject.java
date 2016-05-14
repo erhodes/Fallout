@@ -16,7 +16,8 @@ public abstract class GameObject {
     public abstract String getName();
 
     public void removeEffect(Effect e) {
-        modifyAttribute(e.key, -e.magnitude);
+        if (!e.isRecurring())
+            modifyAttribute(e.mKey, -e.mMagnitude);
     }
 
     public abstract boolean isValidAttribute(String attributeKey);

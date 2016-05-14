@@ -3,8 +3,10 @@
 
     <string name="character">Character</string>
     <string name="combat">Combat</string>
+    <string name="skills">Skills</string>
     <string name="perks">Perks</string>
     <string name="remaining_perks">Other Perks</string>
+    <string name="effects">Effects</string>
     <string name="equipment">Equipment</string>
     <string name="inventory">Inventory</string>
     <string name="encounter">Encounter</string>
@@ -31,6 +33,7 @@
     <string name="intelligence">Intelligence</string>
     <string name="morale">Morale</string>
 
+    <string name="attributes">Attributes</string>
     <string name="primary_attributes">Primary Attributes</string>
     <string name="secondary_attributes">Secondary Attributes</string>
     <string name="capacity_attributes">Capacity Attributes</string>
@@ -46,6 +49,7 @@
     <string name="remaining_ap">Remaining AP:</string>
     <string name="end_turn">End Turn</string>
 
+    <string name="remaining_rounds">Duration: </string>
     <string name="current_weight" formatted="false">Weight: %d/%d</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -23,7 +23,7 @@ public class EffectResult extends CheckResult {
     public EffectResult(String attributeKey, int magnitude, boolean affectsPerformer) {
         this(new Effect(attributeKey, magnitude), affectsPerformer);
     }
-    EffectResult(Effect effect, boolean affectsPerformer) {
+    public EffectResult(Effect effect, boolean affectsPerformer) {
         super();
         mAffectsPerformer = affectsPerformer;
         mTargetEffects = new ArrayList<>();
@@ -45,7 +45,11 @@ public class EffectResult extends CheckResult {
         if (mAffectsPerformer) {
             for (Effect e : mTargetEffects) {
                 performer.applyEffect(e);
-                GameLog.getInstance().addEffectEvent(performer.getName(), e.getKey(), e.getMagnitude(), e.getDuration());
+                if (e.isRecurring()) {
+                    GameLog.getInstance().addRecurringEffectTickEvent(performer.getName(), e.getKey(), e.getMagnitude(), e.getDuration());
+                } else {
+                    GameLog.getInstance().addEffectEvent(performer.getName(), e.getKey(), e.getMagnitude(), e.getDuration());
+                }
             }
         }
         for (int i = 0; i < mAffectedTargetGroups.size(); i++) {

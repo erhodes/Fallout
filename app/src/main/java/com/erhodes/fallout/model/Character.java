@@ -111,14 +111,19 @@ public class Character extends GameObject {
         return result;
     }
 
+    // *** Effects
     @Override
     public void applyEffect(Effect e) {
-        modifyAttribute(e.key, e.magnitude);
+        modifyAttribute(e.mKey, e.mMagnitude);
 
-        if (e.duration > 0) {
+        if (e.mDuration > 0) {
             Effect effect = new Effect(e);
             mActiveEffects.add(effect);
         }
+    }
+
+    public ArrayList<Effect> getActiveEffects() {
+        return mActiveEffects;
     }
 
     // called when this character begins a new turn
@@ -127,8 +132,12 @@ public class Character extends GameObject {
         Iterator iterator = mActiveEffects.iterator();
         while (iterator.hasNext()) {
             Effect e = (Effect)iterator.next();
-            e.duration--;
-            if (e.duration <1) {
+            e.mDuration--;
+            if (e.isRecurring()) {
+                GameLog.getInstance().addRecurringEffectEvent(getName(), e.getKey(), e.getMagnitude());
+                modifyAttribute(e.getKey(), e.getMagnitude());
+            }
+            if (e.mDuration <1) {
                 iterator.remove();
                 removeEffect(e);
             }
@@ -207,6 +216,15 @@ public class Character extends GameObject {
         medCheck.addPassResult(selfHealResult);
         selfHeal.skillCheck = medCheck;
         mActions.add(selfHeal);
+
+        Action adrenalineSurge = new Action("Adrenaline Surge","Take damage to boost your strength", 1);
+        SkillCheck surgeCheck = new AutopassSkillCheck();
+        EffectResult damageSelfResult = new EffectResult(new Effect(Attributes.HEALTH, -2, 5, true), true);
+        EffectResult strengthBoostResult = new EffectResult(new Effect(Attributes.STRENGTH, 2, 5), true);
+        surgeCheck.addPassResult(damageSelfResult);
+        surgeCheck.addPassResult(strengthBoostResult);
+        adrenalineSurge.skillCheck = surgeCheck;
+        mActions.add(adrenalineSurge);
 
         Action firebolt = new Action("Fire Bolt", "Deal fire damage to an enemy",2);
         TargetGroup enemyGroup = new TargetGroup("Primary Target", 1, 1);
