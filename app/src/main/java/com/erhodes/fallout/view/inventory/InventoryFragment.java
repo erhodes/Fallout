@@ -1,8 +1,11 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.inventory;
 
 
-import android.app.Fragment;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -15,22 +18,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
+import com.erhodes.fallout.CharacterRepository;
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Item;
 import com.erhodes.fallout.presenter.InventoryContract;
 import com.erhodes.fallout.presenter.InventoryPresenter;
+import com.erhodes.fallout.view.encounter.EncounterViewModel;
+import com.erhodes.fallout.view.perk.PerkViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * A fragment to display items currently in the character's inventory, as opposed to those equipped.
  */
-public class InventoryFragment extends BaseFragment implements InventoryContract.View {
+public class InventoryFragment extends Fragment implements InventoryContract.View {
     InventoryContract.UserActionListener mActionListener;
     ListView mListView;
     TextView mWeightView;
     ItemAdapter mAdapter;
+    private InventoryViewModel mViewModel;
+    private Character mCharacter;
 
     public static InventoryFragment newInstance() {
         InventoryFragment fragment = new InventoryFragment();
@@ -43,32 +53,34 @@ public class InventoryFragment extends BaseFragment implements InventoryContract
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCharacterService();
-        mActionListener = new InventoryPresenter(getActivity(), mCharacterService, this);
-    }
 
-    @Override
-    public void onResumeFragment(){
-        update();
+        mViewModel = ViewModelProviders.of(this).get(InventoryViewModel.class);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                mCharacter = character;
+                update();
+            }
+        });
+
+        mActionListener = new InventoryPresenter(getActivity(), mViewModel.getRepo(), this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item, container, false);
 
         mWeightView = (TextView)view.findViewById(R.id.weightView);
 
-        mAdapter = new ItemAdapter(mCharacter.getInventory());
+        mAdapter = new ItemAdapter(new ArrayList<Item>());
 
         mListView = (ListView)view.findViewById(R.id.inventoryListView);
         mListView.setAdapter(mAdapter);
 
         registerForContextMenu(mListView);
 
-        update();
         return view;
     }
 

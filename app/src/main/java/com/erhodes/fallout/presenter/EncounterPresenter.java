@@ -3,7 +3,7 @@ package com.erhodes.fallout.presenter;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.erhodes.fallout.CharacterService;
+import com.erhodes.fallout.CharacterRepository;
 import com.erhodes.fallout.model.Action;
 import com.erhodes.fallout.model.GameObject;
 import com.erhodes.fallout.model.TargetGroup;
@@ -26,9 +26,9 @@ public class EncounterPresenter implements EncounterContract.UserActionListener 
     ArrayList<Integer> mColors;
     int mTargetGroupId;
 
-    public EncounterPresenter(EncounterContract.View view, CharacterService service) {
+    public EncounterPresenter(EncounterContract.View view, CharacterRepository service) {
         mView = view;
-        mCharacter = service.getActiveCharacter();
+        mCharacter = service.getActiveCharacter().getValue();
 
         mColors = new ArrayList<>();
         mColors.add(Color.RED);

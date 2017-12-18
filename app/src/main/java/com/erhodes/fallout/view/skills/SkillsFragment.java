@@ -1,64 +1,69 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.skills;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Skill;
-import com.erhodes.fallout.presenter.SkillsContract;
-import com.erhodes.fallout.presenter.SkillsPresenter;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 /**
  * Created by Eric on 14/03/2016.
  */
-public class SkillsFragment extends BaseFragment implements SkillsContract.View {
-    private SkillsContract.UserActionsListener mActionListener;
-    TextView mExpDisplayView;
-    SkillAdapter mAdapter;
+public class SkillsFragment extends Fragment {
+    private SkillsViewModel mViewModel;
+    private TextView mExpDisplayView;
+    private SkillAdapter mAdapter;
+    private ArrayList<Skill> mSkills;
+    private Character mCharacter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCharacterService();
-        mActionListener = new SkillsPresenter(mCharacterService, this);
+
+        mViewModel = ViewModelProviders.of(this).get(SkillsViewModel.class);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                mCharacter = character;
+                update();
+            }
+        });
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_skills, null);
         ListView skillsList = (ListView)view.findViewById(R.id.listView);
-        mAdapter = new SkillAdapter(getActivity(), mCharacter.getSkills());
+        mSkills = new ArrayList<>();
+        mAdapter = new SkillAdapter(getActivity(), mSkills);
         skillsList.setAdapter(mAdapter);
 
         mExpDisplayView = (TextView)view.findViewById(R.id.expView);
 
-        update();
         return view;
     }
 
-    @Override
     public void update() {
         String text = getString(R.string.remaining_exp) + " " + mCharacter.mCurrentExperience;
         mExpDisplayView.setText(text);
+        mSkills.clear();
+        mSkills.addAll(mCharacter.getSkills());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -120,7 +125,7 @@ public class SkillsFragment extends BaseFragment implements SkillsContract.View 
             viewHolder.addRankView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mActionListener.addRank(skill.getKey());
+                    mViewModel.addRank(skill.getKey());
                 }
             });
 

@@ -1,6 +1,11 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.attributes;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +15,7 @@ import android.widget.TextView;
 
 import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Attribute;
 import com.erhodes.fallout.model.Attributes;
 import com.erhodes.fallout.model.CapacityAttribute;
@@ -21,39 +27,65 @@ import java.util.List;
 /**
  * Created by Eric on 14/03/2016.
  */
-public class AttributesFragment extends BaseFragment {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getCharacterService();
-    }
+public class AttributesFragment extends Fragment {
+    private static final String TAG = AttributesFragment.class.getSimpleName();
+    private ArrayList<Attribute> mPrimaryAttributes, mSecondaryAttributes, mCapacityAttributes;
+    private Character mCharacter;
+    AttributesViewModel mViewModel;
+    AttributeAdapter mAdapter;
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this).get(AttributesViewModel.class);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                mCharacter = character;
+                update();
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_expandable_list_view, null);
 
+        mPrimaryAttributes = new ArrayList<>();
+        mSecondaryAttributes = new ArrayList<>();
+        mCapacityAttributes = new ArrayList<>();
+
         ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.expandableList);
-        AttributeAdapter adapter = new AttributeAdapter();
-        adapter.addGroup(getResources().getString(R.string.primary_attributes), mCharacter.getPrimaryAttributes());
-        ArrayList<Attribute> secondaryAttributes = new ArrayList<>();
-        secondaryAttributes.add(mCharacter.getAttribute(Attributes.DEFENCE));
-        secondaryAttributes.add(mCharacter.getAttribute(Attributes.TOUGHNESS));
-        secondaryAttributes.add(mCharacter.getAttribute(Attributes.ACTION_POINTS));
-        secondaryAttributes.add(mCharacter.getAttribute(Attributes.WEIGHT_LIMIT));
-        adapter.addGroup(getResources().getString(R.string.secondary_attributes), secondaryAttributes);
+        mAdapter = new AttributeAdapter();
+        mAdapter.addGroup(getResources().getString(R.string.primary_attributes), mPrimaryAttributes);
+        mAdapter.addGroup(getResources().getString(R.string.secondary_attributes), mSecondaryAttributes);
+        mAdapter.addGroup(getResources().getString(R.string.capacity_attributes), mCapacityAttributes);
 
-        ArrayList<Attribute> capacityAttributes = new ArrayList<>();
-        capacityAttributes.add(mCharacter.getAttribute(Attributes.HEALTH));
-        capacityAttributes.add(mCharacter.getAttribute(Attributes.MORALE));
-        adapter.addGroup(getResources().getString(R.string.capacity_attributes), capacityAttributes);
-
-        expandableListView.setAdapter(adapter);
+        expandableListView.setAdapter(mAdapter);
         expandableListView.expandGroup(0);
         expandableListView.expandGroup(1);
         expandableListView.expandGroup(2);
+
         return view;
+    }
+
+    public void update() {
+        mPrimaryAttributes.clear();
+        mPrimaryAttributes.addAll(mCharacter.getPrimaryAttributes());
+
+        mSecondaryAttributes.clear();
+        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.DEFENCE));
+        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.TOUGHNESS));
+        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.ACTION_POINTS));
+        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.WEIGHT_LIMIT));
+
+        mCapacityAttributes.clear();
+        mCapacityAttributes.add(mCharacter.getAttribute(Attributes.HEALTH));
+        mCapacityAttributes.add(mCharacter.getAttribute(Attributes.MORALE));
+
+        mAdapter.notifyDataSetChanged();
     }
 
     public class AttributeAdapter extends BaseExpandableListAdapter {

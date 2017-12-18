@@ -1,16 +1,24 @@
 apply plugin: 'com.android.application'
 
+def daggerVersion = "2.13"
+def supportLibraryVersion = "26.1.0"
+
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 26
 
     dependencies {
         compile fileTree(dir: 'libs', include: ['*.jar'])
-        testCompile 'junit:junit:4.12'
-        testCompile 'org.mockito:mockito-core:1.10.19'
-        compile 'com.android.support:appcompat-v7:22.2.1'
-        compile 'com.android.support:support-v4:22.2.1'
-        compile 'com.android.support:design:22.2.1'
+        testImplementation 'junit:junit:4.12'
+        testImplementation 'org.mockito:mockito-core:1.10.19'
+        implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+        implementation "com.android.support:support-v4:$supportLibraryVersion"
+        implementation "com.android.support:design:$supportLibraryVersion"
+        implementation "android.arch.lifecycle:extensions:1.0.0"
+
+        implementation "com.google.dagger:dagger:$daggerVersion"
+        implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+        annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+        annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
         compile files('libs/gson-2.4.jar')
     }
 

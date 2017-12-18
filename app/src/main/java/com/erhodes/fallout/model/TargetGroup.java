@@ -28,6 +28,7 @@ public class TargetGroup {
         mTargets = new ArrayList<>();
     }
 
+    // this is for when the target will always be the same.
     public TargetGroup(GameObject target) {
         mTargets = new ArrayList<>();
         mTargets.add(target);

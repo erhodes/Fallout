@@ -15,7 +15,7 @@ public class CapacityAttribute extends Attribute {
         name = n;
         mMaxAttribute = maxAttribute;
         mMaxAttribute.calculateFinalValue();
-        Log.d("Eric", "max attribute is " + mMaxAttribute.key + ", value is " + mMaxAttribute.getFinalValue());
+//        Log.d("Eric", "max attribute is " + mMaxAttribute.key + ", value is " + mMaxAttribute.getFinalValue());
         modifier = mMaxAttribute.getFinalValue();
     }
 

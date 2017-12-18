@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.view.equipment.EquipmentFragment;
+import com.erhodes.fallout.view.inventory.InventoryFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +54,11 @@ public class ItemFragment extends Fragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onPageSelected(int position) {
-        FragmentLifecycle fragmentToShow = (FragmentLifecycle)mAdapter.getItem(position);
-        fragmentToShow.onResumeFragment();
-
-        FragmentLifecycle fragmentToHide = (FragmentLifecycle)mAdapter.getItem(mCurrentPosition);
-        fragmentToHide.onPauseFragment();
+//        FragmentLifecycle fragmentToShow = (FragmentLifecycle)mAdapter.getItem(position);
+//        fragmentToShow.onResumeFragment();
+//
+//        FragmentLifecycle fragmentToHide = (FragmentLifecycle)mAdapter.getItem(mCurrentPosition);
+//        fragmentToHide.onPauseFragment();
 
         mCurrentPosition = position;
     }

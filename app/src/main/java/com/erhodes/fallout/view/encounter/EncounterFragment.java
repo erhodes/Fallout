@@ -1,8 +1,10 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.encounter;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
+import com.erhodes.fallout.CharacterRepository;
 import com.erhodes.fallout.R;
 
 import com.erhodes.fallout.model.Action;
@@ -26,29 +28,40 @@ import com.erhodes.fallout.model.TargetGroup;
 import com.erhodes.fallout.presenter.EncounterContract;
 import com.erhodes.fallout.presenter.EncounterPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Eric on 03/04/2016.
  */
-public class EncounterFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, EncounterContract.View, GameLog.GameLogListener {
+public class EncounterFragment extends Fragment implements AdapterView.OnItemSelectedListener, EncounterContract.View, GameLog.GameLogListener {
     private EncounterContract.UserActionListener mActionListener;
-    CharacterAdapter mCharacterAdapter;
-    ActionAdapter mActionAdapter;
-    ArrayAdapter mLogAdapter;
-    ListView mListView, mLogView;
-    TextView mApCountView;
-    Spinner mActionSpinner;
-    GameLog mLog;
-    LinearLayout mTargetButtons;
-    Button mPerformButton;
-    Button[] mButtons = new Button[3];
+    private EncounterViewModel mViewModel;
+    private CharacterAdapter mCharacterAdapter;
+    private ActionAdapter mActionAdapter;
+    private ArrayAdapter mLogAdapter;
+    private ListView mListView, mLogView;
+    private TextView mApCountView;
+    private Spinner mActionSpinner;
+    private GameLog mLog;
+    private LinearLayout mTargetButtons;
+    private Button mPerformButton;
+    private Button[] mButtons = new Button[3];
+    private ArrayList<Character> mNonActiveCharacters;
+
+    // this should be removed and replaced with live data listeners, but I'm kinda lazy right now
+    private CharacterRepository mCharacterRepository;
+    private Character mCharacter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCharacterService();
-        mActionListener = new EncounterPresenter(this, mCharacterService);
+
+        mViewModel = ViewModelProviders.of(this).get(EncounterViewModel.class);
+        mCharacterRepository = mViewModel.getRepository();
+        mCharacter = mCharacterRepository.getActiveCharacter().getValue();
+        mActionListener = new EncounterPresenter(this, mCharacterRepository);
+
         mLog = GameLog.getInstance();
         mLog.registerListener(this);
     }
@@ -63,7 +76,7 @@ public class EncounterFragment extends BaseFragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_encounter, null);
-        mCharacterAdapter = new CharacterAdapter(mCharacterService.getNonActiveCharacters());
+        mCharacterAdapter = new CharacterAdapter(mCharacterRepository.getNonActiveCharacters());
         mListView = (ListView)view.findViewById(R.id.listView);
         mListView.setAdapter(mCharacterAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

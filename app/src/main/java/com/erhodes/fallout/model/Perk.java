@@ -19,4 +19,11 @@ public class Perk {
         this.id = id;
         effects = new ArrayList<>();
     }
+
+    public Perk(String id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        effects = new ArrayList<>();
+    }
 }

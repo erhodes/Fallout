@@ -1,22 +1,32 @@
 package com.erhodes.fallout;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
 import com.erhodes.fallout.model.*;
 import com.erhodes.fallout.model.Character;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Created by Eric on 19/12/2015.
  */
-public class CharacterService {
+@Singleton
+public class CharacterRepository {
+    private static final String TAG = "CharacterRepository";
     private ArrayList<Character> mCharacters;
+    private MutableLiveData<Character> mActiveCharacterData;
     private Character mActiveCharacter;
 
-    public CharacterService() {
+    @Inject
+    public CharacterRepository() {
         mCharacters = new ArrayList<>();
-        mActiveCharacter = null;
-
-
+        mActiveCharacterData = new MutableLiveData<>();
+        //TODO remove this line once a database is functional
+        addTestChars();
     }
 
     public void addTestChars() {
@@ -51,10 +61,28 @@ public class CharacterService {
 
     public void setActiveCharacter(Character c) {
         mActiveCharacter = c;
+        mActiveCharacterData.setValue(c);
     }
 
-    public Character getActiveCharacter() {
-        return mActiveCharacter;
+    public LiveData<Character> getActiveCharacter() {
+        return mActiveCharacterData;
+    }
+
+    public void addPerkToActiveCharacter(Perk perk) {
+        // at some point, the active character will be LiveData from a database
+        if (mActiveCharacter == null) {
+            return;
+        }
+        mActiveCharacter.acquirePerk(perk);
+        mActiveCharacterData.setValue(mActiveCharacter);
+    }
+
+    public void addSkillRankToActiveChar(String skillKey) {
+        if (mActiveCharacter == null) {
+            return;
+        }
+        mActiveCharacter.addRank(skillKey);
+        mActiveCharacterData.setValue(mActiveCharacter);
     }
 
     public ArrayList<Character> getNonActiveCharacters() {
@@ -63,7 +91,7 @@ public class CharacterService {
 
     public ArrayList<Character> getAllCharacters() {
         ArrayList<Character> result = new ArrayList<>(mCharacters);
-        result.add(mActiveCharacter);
+        result.add(mActiveCharacterData.getValue());
         return result;
     }
 }

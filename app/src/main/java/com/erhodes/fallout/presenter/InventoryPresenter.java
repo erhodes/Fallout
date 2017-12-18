@@ -3,7 +3,7 @@ package com.erhodes.fallout.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.erhodes.fallout.CharacterService;
+import com.erhodes.fallout.CharacterRepository;
 import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Attributes;
@@ -17,10 +17,10 @@ public class InventoryPresenter implements InventoryContract.UserActionListener 
     Character mCharacter;
     InventoryContract.View mView;
 
-    public InventoryPresenter(Context context, CharacterService characterService, InventoryContract.View view) {
+    public InventoryPresenter(Context context, CharacterRepository characterRepository, InventoryContract.View view) {
         mView = view;
         mContext = context;
-        mCharacter = characterService.getActiveCharacter();
+        mCharacter = characterRepository.getActiveCharacter().getValue();
     }
 
     @Override

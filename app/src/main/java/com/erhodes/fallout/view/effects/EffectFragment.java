@@ -1,9 +1,10 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.effects;
 
-import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Effect;
 
 import java.util.ArrayList;
@@ -20,32 +21,32 @@ import java.util.ArrayList;
 /**
  * Displays information about effects currently affecting a character.
  */
-public class EffectFragment extends BaseFragment implements FragmentLifecycle {
-    ListView mListView;
-    EffectAdapter mAdapter;
+public class EffectFragment extends Fragment {
+    private ListView mListView;
+    private EffectAdapter mAdapter;
+    private EffectsViewModel mViewModel;
+    private Character mCharacter;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this).get(EffectsViewModel.class);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                mCharacter = character;
+                update();
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_effect,null);
         mListView = (ListView)view.findViewById(R.id.effectListView);
-        update();
         return view;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (mCharacter == null) {
-            getCharacterService();
-        }
-    }
-
-    @Override
-    public void onResumeFragment(){
-        if (mCharacter != null) {
-            update();
-        }
     }
 
     public void update() {

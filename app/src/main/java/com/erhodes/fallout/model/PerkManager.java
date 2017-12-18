@@ -19,6 +19,7 @@ import java.util.Set;
  */
 public class PerkManager {
     public static final String PERK_STRENGTH = "gain_str";
+    public static final String PERK_ENDURANCE = "gain_end";
 
     private HashMap<String, Perk> mPerks;
 
@@ -37,16 +38,25 @@ public class PerkManager {
 
     //TODO: this is a horrible hack! Maybe this should be an actual service or something?
     public void loadPerks(Context context) {
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("perks.json")));
-            Gson gson = new GsonBuilder().create();
-            Perk[] perkArray = gson.fromJson(reader, Perk[].class);
-            for (Perk p : perkArray) {
-                addPerk(p);
-            }
-        } catch (IOException ex) {
-            // well shit
-        }
+        Perk strPerk = new Perk(PERK_STRENGTH,"Gain Strength", "Grants +1 Strength");
+        strPerk.effects.add(new Effect(Attributes.STRENGTH, 1));
+        addPerk(strPerk);
+
+        Perk endPerk = new Perk(PERK_ENDURANCE,"Gain Endurance", "Grants +1 Endurance");
+        endPerk.effects.add(new Effect(Attributes.ENDURANCE, 1));
+        addPerk(endPerk);
+
+        //TODO not only is this a hack, but the gson serializer seems to have broken.
+//        try {
+//            Reader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("perks.json")));
+//            Gson gson = new GsonBuilder().create();
+//            Perk[] perkArray = gson.fromJson(reader, Perk[].class);
+//            for (Perk p : perkArray) {
+//                addPerk(p);
+//            }
+//        } catch (IOException ex) {
+//            // well shit
+//        }
     }
 
     private void addPerk(Perk perk) {

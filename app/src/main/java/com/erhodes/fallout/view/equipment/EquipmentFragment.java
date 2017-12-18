@@ -1,7 +1,10 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.equipment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +12,12 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.AmmoWeapon;
 import com.erhodes.fallout.model.Attributes;
+import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Item;
 import com.erhodes.fallout.model.Weapon;
-import com.google.gson.internal.bind.MapTypeAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,12 @@ import java.util.List;
 /**
  * Created by Eric on 20/03/2016.
  */
-public class EquipmentFragment extends BaseFragment implements FragmentLifecycle {
+public class EquipmentFragment extends Fragment {
     private ArrayList<Weapon> mWeapons;
-    private ArrayList<Item> mArmor;
+    private ArrayList<Item> mArmor, mQuickItems;
     private ItemAdapter mAdapter;
+    private EquipmentViewModel mViewModel;
+    private Character mCharacter;
 
     public static EquipmentFragment newInstance() {
         return new EquipmentFragment();
@@ -35,12 +39,14 @@ public class EquipmentFragment extends BaseFragment implements FragmentLifecycle
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCharacterService();
-    }
-
-    @Override
-    public void onResumeFragment(){
-        update();
+        mViewModel = ViewModelProviders.of(this).get(EquipmentViewModel.class);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                mCharacter = character;
+                update();
+            }
+        });
     }
 
     @Override
@@ -51,9 +57,8 @@ public class EquipmentFragment extends BaseFragment implements FragmentLifecycle
         ExpandableListView expandableListView = (ExpandableListView)view.findViewById(R.id.expandableList);
         mWeapons = new ArrayList<>();
         mArmor = new ArrayList<>();
-        mAdapter = new ItemAdapter(mWeapons, mArmor, mCharacter.getQuickItems());
-        update();
-
+        mQuickItems = new ArrayList<>();
+        mAdapter = new ItemAdapter(mWeapons, mArmor, mQuickItems);
 
         expandableListView.setAdapter(mAdapter);
         expandableListView.expandGroup(0);
@@ -67,6 +72,8 @@ public class EquipmentFragment extends BaseFragment implements FragmentLifecycle
         mWeapons.add(mCharacter.getWeapon());
         mArmor.clear();
         mArmor.add(mCharacter.getArmor());
+        mQuickItems.clear();
+        mQuickItems.addAll(mCharacter.getQuickItems());
         mAdapter.notifyDataSetChanged();
     }
 

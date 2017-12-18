@@ -72,7 +72,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
         ArrayList<TargetGroup> targetGroups = action.getDynamicTargetGroups();
         if (targetGroups.size() > 0) {
             final TargetGroup mainTargetGroup = targetGroups.get(0);
-            final CharacterAdapter characterAdapter = new CharacterAdapter(getActivity(), R.layout.list_character_summary, mCharacterService.getNonActiveCharacters());
+            final CharacterAdapter characterAdapter = new CharacterAdapter(getActivity(), R.layout.list_character_summary, mCharacterRepository.getNonActiveCharacters());
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Select " + mainTargetGroup.getName())
                     .setAdapter(characterAdapter, new DialogInterface.OnClickListener() {

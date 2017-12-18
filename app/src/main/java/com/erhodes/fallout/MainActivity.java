@@ -17,16 +17,16 @@ import android.view.MenuItem;
 
 import com.erhodes.fallout.model.PerkManager;
 import com.erhodes.fallout.view.CharacterFragment;
-import com.erhodes.fallout.view.EncounterFragment;
+import com.erhodes.fallout.view.encounter.EncounterFragment;
 
 interface CharacterInterface {
-    public CharacterService getCharacterService();
+    public CharacterRepository getCharacterService();
 }
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CharacterInterface {
     CharacterFragment mCharFragment;
-    private CharacterService mCharacterService;
+    private CharacterRepository mCharacterRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity
 
         PerkManager.getInstance().loadPerks(this);
         ItemManager.loadItems(this);
-        mCharacterService = new CharacterService();
-        mCharacterService.addTestChars();
+        mCharacterRepository = new CharacterRepository();
+        mCharacterRepository.addTestChars();
         mCharFragment = CharacterFragment.newInstance();
         if (savedInstanceState == null) {
-            startFragment(new EncounterFragment());
+            startFragment(new CharacterFragment());
         }
     }
 
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public CharacterService getCharacterService() {
-        return mCharacterService;
+    public CharacterRepository getCharacterService() {
+        return mCharacterRepository;
     }
 }

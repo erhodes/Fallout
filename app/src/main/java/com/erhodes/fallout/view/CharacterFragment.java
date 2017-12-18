@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.view.attributes.AttributesFragment;
+import com.erhodes.fallout.view.effects.EffectFragment;
+import com.erhodes.fallout.view.perk.PerkFragment;
+import com.erhodes.fallout.view.skills.SkillsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +59,11 @@ public class CharacterFragment extends Fragment implements ViewPager.OnPageChang
 
     @Override
     public void onPageSelected(int position) {
-        FragmentLifecycle fragmentToShow = (FragmentLifecycle)mAdapter.getItem(position);
-        fragmentToShow.onResumeFragment();
-
-        FragmentLifecycle fragmentToHide = (FragmentLifecycle)mAdapter.getItem(mCurrentPosition);
-        fragmentToHide.onPauseFragment();
+//        FragmentLifecycle fragmentToShow = (FragmentLifecycle)mAdapter.getItem(position);
+//        fragmentToShow.onResumeFragment();
+//
+//        FragmentLifecycle fragmentToHide = (FragmentLifecycle)mAdapter.getItem(mCurrentPosition);
+//        fragmentToHide.onPauseFragment();
 
         mCurrentPosition = position;
     }

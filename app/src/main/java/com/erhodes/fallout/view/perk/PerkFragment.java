@@ -1,7 +1,10 @@
-package com.erhodes.fallout.view;
+package com.erhodes.fallout.view.perk;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +12,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
+import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Perk;
 import com.erhodes.fallout.model.PerkManager;
-import com.erhodes.fallout.presenter.PerkContract;
-import com.erhodes.fallout.presenter.PerkPresenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,21 +24,25 @@ import java.util.List;
 /**
  * Created by Eric on 19/03/2016.
  */
-public class PerkFragment extends BaseFragment implements PerkContract.View, FragmentLifecycle {
+public class PerkFragment extends Fragment {
+    private static final String TAG = PerkFragment.class.getCanonicalName();
     PerkAdapter mAdapter;
-    PerkContract.UserActionListener mListener;
     ExpandableListView mListView;
+    PerkViewModel mViewModel;
+    Character mCharacter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCharacterService();
-        mListener = new PerkPresenter(mCharacter, this);
-    }
 
-    @Override
-    public void onResumeFragment(){
-        update();
+        mViewModel = ViewModelProviders.of(this).get(PerkViewModel.class);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                mCharacter = character;
+                update();
+            }
+        });
     }
 
     @Override
@@ -45,11 +50,9 @@ public class PerkFragment extends BaseFragment implements PerkContract.View, Fra
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_expandable_list_view, null);
         mListView = (ExpandableListView)view.findViewById(R.id.expandableList);
-        update();
         return view;
     }
 
-    @Override
     public void update() {
         mAdapter = new PerkAdapter();
         mAdapter.addGroup(getString(R.string.perks), mCharacter.getPerks());
@@ -162,7 +165,7 @@ public class PerkFragment extends BaseFragment implements PerkContract.View, Fra
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListener.acquirePerk(perk);
+                        mViewModel.acquirePerk(perk);
                     }
                 });
             }
