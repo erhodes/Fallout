@@ -35,8 +35,10 @@ public class EffectFragment extends Fragment {
         mViewModel.getCharacter().observe(this, new Observer<Character>() {
             @Override
             public void onChanged(@Nullable Character character) {
-                mCharacter = character;
-                update();
+                if (character != null) {
+                    mCharacter = character;
+                    update();
+                }
             }
         });
     }

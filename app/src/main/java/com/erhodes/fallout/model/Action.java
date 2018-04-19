@@ -44,10 +44,10 @@ public class Action {
      * @param performer
      */
     public int performAction(Character performer) {
-        if (performer.mActionPoints < cost) {
+        if (performer.actionPoints < cost) {
             return RESULT_INSUFFICIENT_AP;
         }
-        performer.mActionPoints -= cost;
+        performer.actionPoints -= cost;
 
         for (Effect e : performerEffects) {
             performer.applyEffect(e);

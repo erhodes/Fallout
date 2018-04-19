@@ -1,8 +1,6 @@
 package com.erhodes.fallout.model;
 
 import com.erhodes.fallout.model.skillcheck.AutopassSkillCheck;
-import com.erhodes.fallout.model.skillcheck.EffectResult;
-import com.erhodes.fallout.model.skillcheck.OpposedStaticSkillCheck;
 import com.erhodes.fallout.model.skillcheck.ReloadResult;
 import com.erhodes.fallout.model.skillcheck.SkillCheck;
 
@@ -17,8 +15,8 @@ public class AmmoWeapon extends Weapon {
         mAmmoType = ammoType;
 
         // attributes
-        mAttributes.put(Attributes.AMMUNITION_MAX, new Attribute("Max Ammo", Attributes.AMMUNITION_MAX, maxAmmo));
-        mAttributes.put(Attributes.AMMUNITION_CURRENT, new CapacityAttribute(Attributes.AMMUNITION_CURRENT, mAttributes.get(Attributes.AMMUNITION_MAX)));
+        attributes.put(Attributes.AMMUNITION_MAX, new Attribute("Max Ammo", Attributes.AMMUNITION_MAX, maxAmmo));
+        attributes.put(Attributes.AMMUNITION_CURRENT, new CapacityAttribute("Ammo", Attributes.AMMUNITION_CURRENT, attributes.get(Attributes.AMMUNITION_MAX)));
 
         Action reloadAction = new Action("Reload","Reload " + name, 2);
         SkillCheck check = new AutopassSkillCheck();

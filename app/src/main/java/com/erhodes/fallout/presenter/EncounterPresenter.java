@@ -111,7 +111,7 @@ public class EncounterPresenter implements EncounterContract.UserActionListener 
         if (mSelectedAction == null) {
             return false;
         }
-        return mCharacter.mActionPoints >= mSelectedAction.cost;
+        return mCharacter.actionPoints >= mSelectedAction.cost;
     }
 
     @Override

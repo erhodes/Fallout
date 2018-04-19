@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Fallout</string>
 
+    <string name="menu_home">Home</string>
     <string name="character">Character</string>
     <string name="combat">Combat</string>
     <string name="skills">Skills</string>
@@ -57,6 +58,8 @@
 
     <string name="action_settings">Settings</string>
 
+    <string name="button_load_character">Load Character</string>
+    <string name="available_characters">Available Characters</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

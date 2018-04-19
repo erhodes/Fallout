@@ -13,7 +13,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Attribute;
@@ -30,7 +29,7 @@ import java.util.List;
 public class AttributesFragment extends Fragment {
     private static final String TAG = AttributesFragment.class.getSimpleName();
     private ArrayList<Attribute> mPrimaryAttributes, mSecondaryAttributes, mCapacityAttributes;
-    private Character mCharacter;
+    private Character character;
     AttributesViewModel mViewModel;
     AttributeAdapter mAdapter;
 
@@ -42,8 +41,9 @@ public class AttributesFragment extends Fragment {
         mViewModel.getCharacter().observe(this, new Observer<Character>() {
             @Override
             public void onChanged(@Nullable Character character) {
-                mCharacter = character;
-                update();
+                if (character != null) {
+                    update(character);
+                }
             }
         });
     }
@@ -71,19 +71,19 @@ public class AttributesFragment extends Fragment {
         return view;
     }
 
-    public void update() {
+    public void update(Character character) {
         mPrimaryAttributes.clear();
-        mPrimaryAttributes.addAll(mCharacter.getPrimaryAttributes());
+        mPrimaryAttributes.addAll(character.getPrimaryAttributes());
 
         mSecondaryAttributes.clear();
-        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.DEFENCE));
-        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.TOUGHNESS));
-        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.ACTION_POINTS));
-        mSecondaryAttributes.add(mCharacter.getAttribute(Attributes.WEIGHT_LIMIT));
+        mSecondaryAttributes.add(character.getAttribute(Attributes.DEFENCE));
+        mSecondaryAttributes.add(character.getAttribute(Attributes.TOUGHNESS));
+        mSecondaryAttributes.add(character.getAttribute(Attributes.ACTION_POINTS));
+        mSecondaryAttributes.add(character.getAttribute(Attributes.WEIGHT_LIMIT));
 
         mCapacityAttributes.clear();
-        mCapacityAttributes.add(mCharacter.getAttribute(Attributes.HEALTH));
-        mCapacityAttributes.add(mCharacter.getAttribute(Attributes.MORALE));
+        mCapacityAttributes.add(character.getAttribute(Attributes.HEALTH));
+        mCapacityAttributes.add(character.getAttribute(Attributes.MORALE));
 
         mAdapter.notifyDataSetChanged();
     }

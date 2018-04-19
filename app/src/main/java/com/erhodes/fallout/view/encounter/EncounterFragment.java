@@ -131,7 +131,7 @@ public class EncounterFragment extends Fragment implements AdapterView.OnItemSel
 
     public void update() {
         mCharacterAdapter.notifyDataSetChanged();
-        String text = getString(R.string.remaining_ap) + mCharacter.mActionPoints;
+        String text = getString(R.string.remaining_ap) + mCharacter.actionPoints;
         mApCountView.setText(text);
         mPerformButton.setEnabled(mActionListener.sufficientApRemaining());
 

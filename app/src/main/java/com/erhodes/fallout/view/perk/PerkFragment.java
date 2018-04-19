@@ -39,8 +39,10 @@ public class PerkFragment extends Fragment {
         mViewModel.getCharacter().observe(this, new Observer<Character>() {
             @Override
             public void onChanged(@Nullable Character character) {
-                mCharacter = character;
-                update();
+                if (mCharacter != null) {
+                    mCharacter = character;
+                    update();
+                }
             }
         });
     }
@@ -59,7 +61,7 @@ public class PerkFragment extends Fragment {
         mAdapter.addGroup(getString(R.string.remaining_perks), PerkManager.getInstance().getUnacquiredPerks(mCharacter));
         mListView.setAdapter(mAdapter);
         mListView.expandGroup(0);
-        if (mCharacter.mAvailablePerks > 0)
+        if (mCharacter.availablePerks > 0)
             mListView.expandGroup(1);
     }
 
@@ -133,8 +135,8 @@ public class PerkFragment extends Fragment {
             }
             TextView groupName = (TextView)convertView.findViewById(R.id.groupNameView);
             String otherPerks = mGroups.get(groupPosition);
-            if (groupPosition > 0 && mCharacter.mAvailablePerks > 0) {
-                otherPerks += "(" + mCharacter.mAvailablePerks + " remaining)";
+            if (groupPosition > 0 && mCharacter.availablePerks > 0) {
+                otherPerks += "(" + mCharacter.availablePerks + " remaining)";
             }
             groupName.setText(otherPerks);
             return convertView;
@@ -161,7 +163,7 @@ public class PerkFragment extends Fragment {
             final Perk perk = getChild(groupPosition, childPosition);
             holder.nameView.setText(perk.name);
             holder.descView.setText(perk.description);
-            if (groupPosition == UNACQUIRED_PERKS && mCharacter.mAvailablePerks > 0) {
+            if (groupPosition == UNACQUIRED_PERKS && mCharacter.availablePerks > 0) {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

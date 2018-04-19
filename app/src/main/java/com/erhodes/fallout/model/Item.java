@@ -48,7 +48,7 @@ public class Item extends GameObject {
         mWeight = item.mWeight;
         mQuantity = item.mQuantity;
         effects = new ArrayList<>(item.effects);
-        mAttributes = new HashMap<>(item.mAttributes);
+        attributes = new HashMap<>(item.attributes);
         actions = item.actions;
     }
 

@@ -49,7 +49,7 @@ public class AttributeTests {
     @Test
     public void testCapacityAttributes() {
         Attribute attribute = new Attribute(BASE_ATTRIBUTE, BASE_ATTRIBUTE, 5);
-        CapacityAttribute capacityAttribute = new CapacityAttribute(CAPACITY_ATTRIBUTE, attribute);
+        CapacityAttribute capacityAttribute = new CapacityAttribute(CAPACITY_ATTRIBUTE, CAPACITY_ATTRIBUTE, attribute);
 
         int startingValue = capacityAttribute.getFinalValue();
         assertEquals(capacityAttribute.getMaxValue(), attribute.getFinalValue());

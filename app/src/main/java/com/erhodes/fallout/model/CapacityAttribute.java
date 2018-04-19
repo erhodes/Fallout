@@ -9,30 +9,47 @@ import android.util.Log;
  * By default, a capacity attribute is at it's maximum value
  */
 public class CapacityAttribute extends Attribute {
-    Attribute mMaxAttribute;
+    private transient Attribute maxAttribute;
+    private String parentKey;
 
-    public CapacityAttribute(String n, Attribute maxAttribute) {
-        name = n;
-        mMaxAttribute = maxAttribute;
-        mMaxAttribute.calculateFinalValue();
-//        Log.d("Eric", "max attribute is " + mMaxAttribute.key + ", value is " + mMaxAttribute.getFinalValue());
-        modifier = mMaxAttribute.getFinalValue();
+    public CapacityAttribute(String n, String key, Attribute maxAttribute) {
+        super(n, key, 0);
+        this.parentKey = maxAttribute.getKey();
+        this.maxAttribute = maxAttribute;
+        this.maxAttribute.calculateFinalValue();
+//        Log.d("Eric", "max attribute is " + maxAttribute.key + ", value is " + maxAttribute.getFinalValue());
+        modifier = this.maxAttribute.getFinalValue();
+    }
+
+    /**
+     * Used after deserialization.
+     * @param attribute
+     */
+    public void reloadParentAttribute(Attribute attribute) {
+        if (attribute.getKey().equals(parentKey)) {
+            maxAttribute = attribute;
+        }
+        // maybe reinitialize some stuff, I dunno, I just want it to even sort of work
+    }
+
+    public String getParentKey() {
+        return parentKey;
     }
 
     public void addModifier(int m) {
         modifier += m;
-        if (modifier > mMaxAttribute.getFinalValue())
-            modifier = mMaxAttribute.getFinalValue();
+        if (modifier > maxAttribute.getFinalValue())
+            modifier = maxAttribute.getFinalValue();
     }
 
     public void resetToMax() {
-        modifier = mMaxAttribute.getFinalValue();
+        modifier = maxAttribute.getFinalValue();
     }
 
     @Override
     public void calculateFinalValue() {
-        if (modifier > mMaxAttribute.getFinalValue())
-            modifier = mMaxAttribute.getFinalValue();
+        if (modifier > maxAttribute.getFinalValue())
+            modifier = maxAttribute.getFinalValue();
     }
 
     /**
@@ -40,7 +57,7 @@ public class CapacityAttribute extends Attribute {
      * @return The maximum value of this attribute, based on it's base attribute
      */
     public int getMaxValue() {
-        return mMaxAttribute.getFinalValue();
+        return maxAttribute.getFinalValue();
     }
     @Override
     public int getFinalValue() {

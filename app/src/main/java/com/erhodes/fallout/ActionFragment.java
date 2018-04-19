@@ -114,7 +114,7 @@ public class ActionFragment extends BaseFragment implements AbsListView.OnItemCl
     }
 
     private void update() {
-        mAPView.setText("Action Points: " + mCharacter.mActionPoints + "/" + mCharacter.getAttributeValue(Attributes.ACTION_POINTS));
+        mAPView.setText("Action Points: " + mCharacter.actionPoints + "/" + mCharacter.getAttributeValue(Attributes.ACTION_POINTS));
         mHealthView.setText("Health: " + mCharacter.getAttributeValue(Attributes.HEALTH) + "/" + mCharacter.getAttributeValue(Attributes.MAX_HEALTH));
     }
 

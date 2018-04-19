@@ -38,6 +38,6 @@ public class InventoryPresenter implements InventoryContract.UserActionListener 
 
     @Override
     public String getWeightString() {
-        return String.format(mContext.getString(R.string.current_weight), mCharacter.mCarriedWeight, mCharacter.getAttributeValue(Attributes.WEIGHT_LIMIT));
+        return String.format(mContext.getString(R.string.current_weight), mCharacter.carriedWeight, mCharacter.getAttributeValue(Attributes.WEIGHT_LIMIT));
     }
 }

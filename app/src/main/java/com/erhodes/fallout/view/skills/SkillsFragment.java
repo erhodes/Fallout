@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Skill;
@@ -39,8 +38,10 @@ public class SkillsFragment extends Fragment {
         mViewModel.getCharacter().observe(this, new Observer<Character>() {
             @Override
             public void onChanged(@Nullable Character character) {
-                mCharacter = character;
-                update();
+                if (character != null) {
+                    mCharacter = character;
+                    update();
+                }
             }
         });
     }
@@ -60,7 +61,7 @@ public class SkillsFragment extends Fragment {
     }
 
     public void update() {
-        String text = getString(R.string.remaining_exp) + " " + mCharacter.mCurrentExperience;
+        String text = getString(R.string.remaining_exp) + " " + mCharacter.currentExperience;
         mExpDisplayView.setText(text);
         mSkills.clear();
         mSkills.addAll(mCharacter.getSkills());

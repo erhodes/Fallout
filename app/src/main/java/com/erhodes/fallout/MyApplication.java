@@ -3,6 +3,7 @@ package com.erhodes.fallout;
 import android.app.Application;
 
 import com.erhodes.fallout.dagger.AppComponent;
+import com.erhodes.fallout.dagger.AppModule;
 import com.erhodes.fallout.dagger.DaggerAppComponent;
 
 /**
@@ -15,7 +16,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mAppComponent = DaggerAppComponent.create();
+        mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
     public static AppComponent getComponent() {

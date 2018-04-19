@@ -17,15 +17,11 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.erhodes.fallout.BaseFragment;
-import com.erhodes.fallout.CharacterRepository;
 import com.erhodes.fallout.R;
 import com.erhodes.fallout.model.Character;
 import com.erhodes.fallout.model.Item;
 import com.erhodes.fallout.presenter.InventoryContract;
 import com.erhodes.fallout.presenter.InventoryPresenter;
-import com.erhodes.fallout.view.encounter.EncounterViewModel;
-import com.erhodes.fallout.view.perk.PerkViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +82,7 @@ public class InventoryFragment extends Fragment implements InventoryContract.Vie
 
     public void update() {
         mWeightView.setText(mActionListener.getWeightString());
-        mAdapter.updateDataSet(mCharacter.getInventory());
+        mAdapter.updateDataSet(mCharacter.getInventoryList());
     }
 
     @Override

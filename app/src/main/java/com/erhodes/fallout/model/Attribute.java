@@ -6,16 +6,19 @@ import android.util.Log;
  * Created by Eric on 20/10/2015.
  */
 public class Attribute {
-    String name, key;
+    public String type;
+    protected String name, key;
     protected int mBaseValue, modifier, finalValue;
 
-    public Attribute(){}
+    public Attribute(){
+        type = getClass().getSimpleName();
+    }
 
-    public Attribute(String n, String k, int b) {
-        name = n;
-        key = k;
-        mBaseValue = b;
-        calculateFinalValue();
+    public Attribute(String name, String key, int base) {
+        this();
+        this.name = name;
+        this.key = key;
+        mBaseValue = base;
     }
 
     public void addModifier(int m) {

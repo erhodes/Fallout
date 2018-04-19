@@ -15,15 +15,12 @@ import javax.inject.Inject;
 
 public class AttributesViewModel extends ViewModel {
     private CharacterRepository mCharacterRepository;
-    private LiveData<Character> mActiveCharacter;
 
-    @Inject
     public AttributesViewModel() {
         mCharacterRepository = MyApplication.getComponent().getCharacterRepo();
-        mActiveCharacter = mCharacterRepository.getActiveCharacter();
     }
 
     public LiveData<Character> getCharacter() {
-        return mActiveCharacter;
+        return mCharacterRepository.getActiveCharacter();
     }
 }

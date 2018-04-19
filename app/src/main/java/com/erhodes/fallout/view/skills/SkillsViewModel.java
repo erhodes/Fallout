@@ -20,11 +20,10 @@ public class SkillsViewModel extends ViewModel {
     @Inject
     public SkillsViewModel() {
         mCharacterRepository = MyApplication.getComponent().getCharacterRepo();
-        mActiveCharacter = mCharacterRepository.getActiveCharacter();
     }
 
     public LiveData<Character> getCharacter() {
-        return mActiveCharacter;
+        return mCharacterRepository.getActiveCharacter();
     }
 
     public void addRank(String skill) {

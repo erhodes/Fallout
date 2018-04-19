@@ -49,20 +49,20 @@ public class CharacterTests {
     @Test
     public void testAcquireItem() {
         Item item = new Item(TEST_ITEM, TEST_ITEM, TEST_ITEM, Item.TYPE_DEFAULT, 2);
-        int startWeight = mCharacter.mCarriedWeight;
+        int startWeight = mCharacter.carriedWeight;
         int startingItems = mCharacter.hasItem(TEST_ITEM);
         mCharacter.acquireItem(item);
 
-        assertEquals(startWeight + 2, mCharacter.mCarriedWeight);
+        assertEquals(startWeight + 2, mCharacter.carriedWeight);
         assertEquals(mCharacter.hasItem(TEST_ITEM), startingItems + 1);
 
         mCharacter.acquireItem(item);
         assertEquals(mCharacter.hasItem(TEST_ITEM), startingItems + 2);
-        assertEquals(startWeight + 4, mCharacter.mCarriedWeight);
+        assertEquals(startWeight + 4, mCharacter.carriedWeight);
 
         assertEquals(0, mCharacter.removeItemsFromInventory(TEST_ITEM, 2));
 
-        assertEquals(mCharacter.mCarriedWeight, startWeight);
+        assertEquals(mCharacter.carriedWeight, startWeight);
         assertEquals(mCharacter.hasItem(TEST_ITEM), startingItems);
     }
 
@@ -89,9 +89,9 @@ public class CharacterTests {
     public void testAcquirePerk() {
         Perk perk = new Perk(TEST_PERK ,"this is a test perk");
 
-        assertEquals(0, mCharacter.mAvailablePerks);
+        assertEquals(0, mCharacter.availablePerks);
         assertFalse(mCharacter.acquirePerk(perk));
-        mCharacter.mAvailablePerks++;
+        mCharacter.availablePerks++;
         assertTrue(mCharacter.acquirePerk(perk));
         assertFalse(mCharacter.acquirePerk(perk));
     }
