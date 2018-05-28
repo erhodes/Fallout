@@ -1,9 +1,13 @@
 package com.erhodes.fallout;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Process;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import com.erhodes.fallout.database.CharacterDao;
@@ -26,11 +30,15 @@ public class CharacterRepository {
     private static final String TAG = "CharacterRepository";
     private static final String PREF_ACTIVE_CHARACTER = "pref_active_character";
 
+    private static final int MESSAGE_SAVE = 0;
+
     private ArrayList<Character> mCharacters;
     private LiveData<List<Character>> mCharactersLiveData;
     private LiveData<Character> mActiveCharacterData;
     private CharacterDao mCharacterDao;
     private SharedPreferences mSharedPreferences;
+
+    private DatabaseHandler mHandler;
 
 
     @Inject
@@ -39,6 +47,10 @@ public class CharacterRepository {
         mCharacters = new ArrayList<>();
         mCharacterDao = database.characterDao();
         mCharactersLiveData = mCharacterDao.loadAll();
+
+        HandlerThread handlerThread = new HandlerThread("databaseThread", Process.THREAD_PRIORITY_BACKGROUND);
+        handlerThread.start();
+        mHandler = new DatabaseHandler(handlerThread.getLooper(), this);
 
         long activeCharId = mSharedPreferences.getLong(PREF_ACTIVE_CHARACTER, -1);
         if (activeCharId != 1) {
@@ -133,13 +145,33 @@ public class CharacterRepository {
     }
 
     public void saveCharacter(final Character character) {
-        //todo don't use an async task, setup a proper thread
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                mCharacterDao.save(character);
-                return null;
+        Message message = new Message();
+        message.what = MESSAGE_SAVE;
+        message.obj = character;
+        mHandler.sendMessage(message);
+    }
+
+    private void saveCharacterInternal(Character character) {
+        mCharacterDao.save(character);
+    }
+
+    private static final class DatabaseHandler extends Handler {
+        private final CharacterRepository repository;
+
+        DatabaseHandler(Looper looper, CharacterRepository repository) {
+            super(looper);
+            this.repository = repository;
+        }
+
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                case MESSAGE_SAVE:
+                    Character character = (Character) message.obj;
+                    repository.saveCharacterInternal(character);
+                    break;
+                default:
             }
-        }.execute();
+        }
     }
 }
