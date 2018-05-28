@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,15 +37,6 @@ public class PerkFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mViewModel = ViewModelProviders.of(this).get(PerkViewModel.class);
-        mViewModel.getCharacter().observe(this, new Observer<Character>() {
-            @Override
-            public void onChanged(@Nullable Character character) {
-                if (mCharacter != null) {
-                    mCharacter = character;
-                    update();
-                }
-            }
-        });
     }
 
     @Override
@@ -53,6 +45,22 @@ public class PerkFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_expandable_list_view, null);
         mListView = (ExpandableListView)view.findViewById(R.id.expandableList);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+
+        mViewModel.getCharacter().removeObservers(this);
+        mViewModel.getCharacter().observe(this, new Observer<Character>() {
+            @Override
+            public void onChanged(@Nullable Character character) {
+                if (character != null) {
+                    mCharacter = character;
+                    update();
+                }
+            }
+        });
     }
 
     public void update() {
@@ -167,7 +175,7 @@ public class PerkFragment extends Fragment {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mViewModel.acquirePerk(perk);
+                        mViewModel.acquirePerk(mCharacter, perk);
                     }
                 });
             }

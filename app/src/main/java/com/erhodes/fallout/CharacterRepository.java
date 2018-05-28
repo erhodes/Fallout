@@ -14,6 +14,7 @@ import com.erhodes.fallout.model.Character;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -104,23 +105,17 @@ public class CharacterRepository {
         return mActiveCharacterData;
     }
 
-    public void addPerkToActiveCharacter(Perk perk) {
-        //todo reimplement this
-//        // at some point, the active character will be LiveData from a database
-//        if (mActiveCharacter == null) {
-//            return;
-//        }
-//        mActiveCharacter.acquirePerk(perk);
-//        mCharacterDao.save(mActiveCharacter);
+    public void addPerkToCharacter(Character character, Perk perk) {
+        if (character.acquirePerk(perk)) {
+            saveCharacter(character);
+        }
     }
 
-    public void addSkillRankToActiveChar(String skillKey) {
-        //todo reimplement this
-//        if (mActiveCharacter == null) {
-//            return;
-//        }
-//        mActiveCharacter.addRank(skillKey);
-//        mCharacterDao.save(mActiveCharacter);
+    public void addSkillRankToCharacter(@Nonnull Character character, String skillKey) {
+        //todo consider how to handle synchronizing saves, so different versions of the same character don't get added at the same time
+        if (character.addRank(skillKey)) {
+            saveCharacter(character);
+        }
     }
 
     public ArrayList<Character> getNonActiveCharacters() {

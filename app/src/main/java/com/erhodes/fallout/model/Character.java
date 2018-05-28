@@ -163,9 +163,9 @@ public class Character extends GameObject {
         }
     }
 
-    public void addRank(String skillId) {
+    public boolean addRank(String skillId) {
         if (currentExperience < 1)
-            return;
+            return false;
         Skill skill = (Skill)getAttribute(skillId);
         skill.addRank();
         currentExperience--;
@@ -174,6 +174,7 @@ public class Character extends GameObject {
             spentExperience = 0;
             availablePerks++;
         }
+        return true;
     }
     // Perk Methods
     public boolean hasPerk(Perk p) {

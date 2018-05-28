@@ -8,6 +8,10 @@ public class DerivedAttribute extends Attribute {
     protected float attributeMultiplier;
     private String parentKey;
 
+    DerivedAttribute() {
+        super();
+    }
+
     /**
      *
      * @param name

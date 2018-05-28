@@ -12,6 +12,10 @@ public class CapacityAttribute extends Attribute {
     private transient Attribute maxAttribute;
     private String parentKey;
 
+    CapacityAttribute() {
+        super();
+    }
+
     public CapacityAttribute(String n, String key, Attribute maxAttribute) {
         super(n, key, 0);
         this.parentKey = maxAttribute.getKey();

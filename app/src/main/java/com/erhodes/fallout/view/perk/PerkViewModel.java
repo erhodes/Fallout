@@ -16,18 +16,16 @@ import javax.inject.Inject;
 
 public class PerkViewModel extends ViewModel {
     private CharacterRepository mCharacterRepository;
-    private LiveData<Character> mActiveCharacter;
 
     @Inject
     public PerkViewModel() {
         mCharacterRepository = MyApplication.getComponent().getCharacterRepo();
-        mActiveCharacter = mCharacterRepository.getActiveCharacter();
     }
 
     public LiveData<Character> getCharacter() {
-        return mActiveCharacter;
+        return mCharacterRepository.getActiveCharacter();
     }
-    public void acquirePerk(Perk perk) {
-        mCharacterRepository.addPerkToActiveCharacter(perk);
+    public void acquirePerk(Character character, Perk perk) {
+        mCharacterRepository.addPerkToCharacter(character, perk);
     }
 }

@@ -28,10 +28,17 @@ public class EffectFragment extends Fragment {
     private Character mCharacter;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this).get(EffectsViewModel.class);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(EffectsViewModel.class);
+        mViewModel.getCharacter().removeObservers(this);
         mViewModel.getCharacter().observe(this, new Observer<Character>() {
             @Override
             public void onChanged(@Nullable Character character) {

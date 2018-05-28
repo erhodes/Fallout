@@ -8,6 +8,10 @@ package com.erhodes.fallout.model;
 public class Skill extends DerivedAttribute {
     boolean mSpecialized = false;
 
+    Skill() {
+        super();
+    }
+
     Skill(String n, String k, Attribute bse) {
         super(n, k, bse, 0.5f, 0);
     }

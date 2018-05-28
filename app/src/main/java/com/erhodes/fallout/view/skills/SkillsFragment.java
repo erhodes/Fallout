@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +34,14 @@ public class SkillsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mViewModel = ViewModelProviders.of(this).get(SkillsViewModel.class);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+
+        mViewModel.getCharacter().removeObservers(this);
         mViewModel.getCharacter().observe(this, new Observer<Character>() {
             @Override
             public void onChanged(@Nullable Character character) {
@@ -111,7 +118,7 @@ public class SkillsFragment extends Fragment {
                 viewHolder = (ViewHolder)convertView.getTag();
             }
             final Skill skill = getItem(position);
-            viewHolder.nameView.setText(skill.getName());
+            viewHolder.nameView.setText(skill.getName() + " " + skill.type);
             viewHolder.valueView.setText(String.format("%d", skill.getFinalValue()));
             String detailsText = mActivity.getString(R.string.ranks) + ": " + skill.getRanks() + " + " + skill.getBaseAttribute().getName() + ": " + Math.round(skill.getBaseAttribute().getFinalValue()*0.5f);
             viewHolder.detailsView.setText(detailsText);
@@ -126,7 +133,7 @@ public class SkillsFragment extends Fragment {
             viewHolder.addRankView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mViewModel.addRank(skill.getKey());
+                    mViewModel.addRank(mCharacter, skill.getKey());
                 }
             });
 

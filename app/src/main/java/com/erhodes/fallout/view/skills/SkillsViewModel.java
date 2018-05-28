@@ -15,7 +15,6 @@ import javax.inject.Inject;
 
 public class SkillsViewModel extends ViewModel {
     private CharacterRepository mCharacterRepository;
-    private LiveData<Character> mActiveCharacter;
 
     @Inject
     public SkillsViewModel() {
@@ -26,7 +25,7 @@ public class SkillsViewModel extends ViewModel {
         return mCharacterRepository.getActiveCharacter();
     }
 
-    public void addRank(String skill) {
-        mCharacterRepository.addSkillRankToActiveChar(skill);
+    public void addRank(Character character, String skill) {
+        mCharacterRepository.addSkillRankToCharacter(character, skill);
     }
 }
